@@ -22,20 +22,22 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* תפריט עליון - שם במרכז עם תיאור */
+        /* תפריט עליון */
         header {
             padding: 60px 5% 40px;
             display: grid;
-            grid-template-columns: 1fr auto 1fr; /* חלוקה ל-3 חלקים: תפריט, שם, תפריט */
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
             text-align: center;
+            position: relative;
+            z-index: 2000;
         }
 
         .brand-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 300px;
+            min-width: 250px;
         }
 
         .logo {
@@ -49,13 +51,14 @@
         }
 
         .sub-logo {
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
             color: var(--text-muted);
             text-transform: uppercase;
         }
 
-        /* ניווט מפוצל */
+        /* ניווט רגיל למחשב */
+        nav.desktop-nav { display: contents; }
         nav.nav-right { text-align: right; }
         nav.nav-left { text-align: left; }
 
@@ -70,34 +73,83 @@
 
         nav a:hover { color: var(--text-main); }
 
-        /* גריד הפרויקטים - תגובתי לכל סוגי הזום */
+        /* כפתור המבורגר (מוסתר במחשב) */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 10px;
+            z-index: 3000;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 25px;
+            height: 1px;
+            background-color: var(--text-main);
+            transition: 0.3s;
+        }
+
+        /* תפריט נייד נפתח */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2500;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-overlay a {
+            font-size: 24px;
+            text-decoration: none;
+            color: var(--text-main);
+            margin: 20px 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* התאמה למסכים קטנים וזום גבוה */
+        @media (max-width: 1024px) {
+            nav.desktop-nav { display: none; }
+            header { grid-template-columns: 1fr auto; padding: 30px 5%; }
+            .menu-toggle { display: flex; order: 2; }
+            .brand-container { align-items: flex-start; min-width: auto; text-align: left; }
+        }
+
+        /* גריד הפרויקטים */
         .portfolio-grid {
             display: grid;
-            /* שימוש ב-auto-fill ו-minmax כדי לאפשר מעבר בין 4 ל-3 בשורה באופן טבעי */
             grid-template-columns: repeat(auto-fill, minmax(23%, 1fr)); 
             gap: 15px;
             padding: 0 15px 100px;
         }
 
-        /* התאמה למצבי זום גבוהים או מסכים בינוניים (מעבר ל-3 בשורה) */
         @media (max-width: 1400px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-            }
+            .portfolio-grid { grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)); }
         }
 
-        /* התאמה לניידים */
         @media (max-width: 768px) {
-            header { 
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            nav.nav-left, nav.nav-right { text-align: center; }
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
+            .portfolio-grid { grid-template-columns: 1fr; }
         }
 
+        /* עיצוב כרטיס פרויקט */
         .project-card {
             position: relative;
             overflow: hidden;
@@ -123,30 +175,31 @@
             opacity: 0;
             transition: opacity 0.4s ease;
             padding: 20px;
-            text-align: center;
         }
 
         .project-card:hover img { transform: scale(1.05); }
         .project-card:hover .project-overlay { opacity: 1; }
 
-        .project-title {
-            font-size: 14px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .project-category {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
+        .project-title { font-size: 14px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+        .project-category { font-size: 11px; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
+<button class="menu-toggle" id="menuBtn">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<div class="mobile-overlay" id="mobileMenu">
+    <a href="#">PROJECTS</a>
+    <a href="#">ABOUT</a>
+    <a href="#">CONTACT</a>
+</div>
+
 <header>
-    <nav class="nav-right">
+    <nav class="desktop-nav nav-right">
         <a href="#">PROJECTS</a>
     </nav>
     
@@ -155,7 +208,7 @@
         <span class="sub-logo">Exhibition Architecture</span>
     </div>
 
-    <nav class="nav-left">
+    <nav class="desktop-nav nav-left">
         <a href="#">ABOUT</a>
         <a href="#">CONTACT</a>
     </nav>
@@ -169,7 +222,6 @@
             <div class="project-category">Exhibition Design</div>
         </div>
     </div>
-    
     <div class="project-card">
         <img src="images/project2.jpg" alt="Exhibition">
         <div class="project-overlay">
@@ -177,7 +229,6 @@
             <div class="project-category">Architecture</div>
         </div>
     </div>
-
     <div class="project-card">
         <img src="images/project3.jpg" alt="Exhibition">
         <div class="project-overlay">
@@ -185,7 +236,6 @@
             <div class="project-category">Exhibition Architecture</div>
         </div>
     </div>
-
     <div class="project-card">
         <img src="images/project4.jpg" alt="Exhibition">
         <div class="project-overlay">
@@ -195,9 +245,36 @@
     </div>
 </main>
 
-<footer>
-    <p style="text-align: center; color: #ccc; font-size: 11px; padding: 40px; letter-spacing: 1px;">&copy; 2026 ARIEL ARMONI</p>
-</footer>
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        // אנימציה קטנה לכפתור ההמבורגר (הפיכה ל-X)
+        const spans = menuBtn.querySelectorAll('span');
+        if (mobileMenu.classList.contains('active')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        } else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }
+    });
+
+    // סגירת התפריט בלחיצה על לינק
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            const spans = menuBtn.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        });
+    });
+</script>
 
 </body>
 </html>
