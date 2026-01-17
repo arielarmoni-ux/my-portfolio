@@ -9,18 +9,20 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        /* Header דק יותר (160px) וקבוע בראש הדף */
+        /* Header דק וקבוע - הקו מסתיים בדיוק מתחת לטקסט */
         header {
-            height: 160px; 
+            min-height: 120px;
+            padding-top: 40px;
+            padding-bottom: 15px;
             display: flex;
             flex-direction: column;
             justify-content: center; 
             align-items: center;
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.96); 
+            background: rgba(255, 255, 255, 0.98); 
             z-index: 2000;
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .brand {
@@ -30,35 +32,31 @@
             text-align: center;
         }
 
-        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
+        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; line-height: 1; }
 
+        /* ניהול התפריט - מיושר לקו התחתון של ה-Header */
         .nav-wrapper {
             position: absolute;
             left: 5%;
-            top: 50%; 
-            transform: translateY(-50%);
+            bottom: 15px; 
             display: flex;
             flex-direction: column;
             align-items: flex-start;
         }
 
         .menu-toggle {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 22px; height: 12px;
-            cursor: pointer; border: none; background: none; padding: 0;
+            display: flex; flex-direction: column; justify-content: space-between;
+            width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0;
             margin-bottom: 10px;
         }
-
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
         .menu-dropdown { display: none; flex-direction: column; text-align: left; background: transparent; padding-top: 5px; }
         .menu-dropdown.active { display: flex; }
         .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* גריד המציג 3 פרויקטים בשורה ב-100% */
+        /* גריד הפרויקטים - 3 בשורה */
         .portfolio-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -83,18 +81,15 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
 
-        /* התאמה למסכים קטנים - מעבר לשורה אחת */
-        @media (max-width: 1024px) {
-            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
-            header { height: 130px; }
+            header { min-height: 100px; padding-top: 30px; }
             .portfolio-grid { grid-template-columns: 1fr; }
+            .logo { font-size: 20px; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="nav-wrapper">
             <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
@@ -113,7 +108,6 @@
     <main class="portfolio-grid" id="portfolio-grid"></main>
 
     <script>
-        // רשימת פרויקטים (הסדר המקורי מהאתר שלך)
         const projectsData = [
             { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
             { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
