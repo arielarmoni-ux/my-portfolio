@@ -7,14 +7,14 @@
     <style>
         :root { --bg: #fff; --main: #000; --muted: #888; }
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        /* Header - שם במרכז וכפתור תפריט משמאל */
+        /* Header - השם במרכז והתפריט משמאל */
         header {
             padding: 60px 5% 40px;
             display: flex;
             justify-content: center; 
-            align-items: center; /* ממקם את האלמנטים במרכז אנכי */
+            align-items: center; /* ממרכז אנכית את התפריט מול השם */
             position: relative;
             z-index: 2000;
         }
@@ -48,12 +48,12 @@
             flex-direction: column;
             justify-content: space-between;
             width: 25px;
-            height: 18px;
+            height: 16px; /* מעט צר יותר למראה עדין */
             cursor: pointer;
             border: none;
             background: none;
             position: absolute;
-            left: 5%; /* שינוי לצד שמאל */
+            left: 5%; /* צד שמאל */
             z-index: 3000;
         }
 
@@ -65,7 +65,7 @@
             transition: 0.3s;
         }
 
-        /* תפריט נפתח */
+        /* תפריט נפתח במסך מלא */
         .mobile-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -83,12 +83,12 @@
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { font-size: 24px; text-decoration: none; color: var(--main); margin: 20px 0; text-transform: uppercase; letter-spacing: 3px; }
 
-        /* גריד הפרויקטים - יחס 4:3 */
+        /* גריד הפרויקטים - יחס 4:3 ומרווח מהכותרת */
         .portfolio-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 20px; 
-            padding: 120px 5% 100px; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 25px; 
+            padding: 120px 5% 100px; /* מרווח של 120 פיקסלים מהכותרת */
             max-width: 1600px; 
             margin: 0 auto; 
         }
@@ -96,7 +96,7 @@
         .project-link { text-decoration: none; color: inherit; }
         .project-card { 
             position: relative; 
-            aspect-ratio: 4 / 3; /* שינוי ליחס 4:3 */
+            aspect-ratio: 4 / 3; /* יחס 4:3 */
             overflow: hidden; 
             background: #fcfcfc; 
         }
@@ -106,7 +106,7 @@
         .project-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.92);
+            background: rgba(255,255,255,0.94);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -121,10 +121,11 @@
         .project-card:hover .project-overlay { opacity: 1; }
         
         .project-title { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
-        .project-category { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 5px; }
+        .project-category { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
 
         @media (max-width: 768px) {
             .portfolio-grid { grid-template-columns: 1fr; padding-top: 80px; }
+            header { padding-top: 40px; }
         }
     </style>
 </head>
@@ -150,7 +151,7 @@
     <main class="portfolio-grid">
         <a href="we-the-people.html" class="project-link">
             <div class="project-card">
-                <img src="images/we_the_people/cover.jpg" alt="We The People">
+                <img src="images/we-the-people/cover.jpg" alt="We The People">
                 <div class="project-overlay">
                     <div class="project-title">We The People</div>
                     <div class="project-category">Exhibition Architecture</div>
@@ -166,9 +167,9 @@
             menu.classList.toggle('active');
             const s = btn.querySelectorAll('span');
             if(menu.classList.contains('active')) {
-                s[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
                 s[1].style.opacity = '0';
-                s[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+                s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
             } else {
                 s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
             }
