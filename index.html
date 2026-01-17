@@ -45,7 +45,7 @@
         .nav-wrapper {
             position: absolute;
             left: 5%;
-            bottom: 40px; /* מיישר את האייקון לשורה התחתונה של ה-Header */
+            bottom: 40px; 
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -72,9 +72,8 @@
             transition: 0.3s;
         }
 
-        /* התפריט הפירוטי שמופיע מתחת לאייקון */
         .menu-dropdown {
-            display: none; /* מוסתר כברירת מחדל */
+            display: none; 
             flex-direction: column;
             text-align: left;
             background: var(--bg);
@@ -96,7 +95,7 @@
 
         .menu-dropdown a:hover { color: var(--main); }
 
-        /* גריד הפרויקטים */
+        /* גריד הפרויקטים - יחס 4:3 */
         .portfolio-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -159,72 +158,56 @@
         </div>
     </header>
 
-    <main class="portfolio-grid" id="portfolio-grid">
-        </main>
+    <main class="portfolio-grid" id="portfolio-grid"></main>
 
     <script>
+        // ניהול רשימת הפרויקטים - כאן אתה מוסיף פרטים כמו שנה, תפקיד ואוצר
         const projectsData = [
-            {folder: "We-The-People", 
-                title: "We The People",
-                year: "2023",
-                role: "Exhibition Design",
-                curator: "Joshua Simon",
-                description: "An exhibition exploring contemporary civil rights through visual culture."" },
-            {folder: "The-Shadow-of-Color", 
-                title: "The Shadow of Color",
-                year: "2024",
-                role: "Lead Architect",
-                curator: "Dr. Ayala Ben-Nathan",
-                description: "A spatial study on the intersection of lighting and pigmented surfaces."},
-            { folder: "Efrat-Natan---Museum-Villa-Stuck,-Munich", title: "Efrat Natan – Museum Villa Stuck" },
-            { folder: "Efrat-Natan---Whitewash-and-Tar", title: "Efrat Natan – Whitewash and Tar" },
-            { folder: "Ilit-Azoulai---No-Things-Dies", title: "Ilit Azoulai – No Things Dies" },
-            { folder: "In-Full-Color---60-Years-of-Design-by-Dan-Reisinger", title: "In Full Color – Dan Reisinger" },
-            { folder: "Gil-Marco-Shani---Buses", title: "Gil Marco Shani – Buses" },
-            { folder: "Yael-Bartana---Redemption-Now", title: "Yael Bartana – Redemption Now" },
-            { folder: "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden", title: "Ruth Dorrit Yacoby" },
-            { folder: "Haifa-Museum-of-Art---Renewal", title: "Haifa Museum of Art – Renewal" },
-            { folder: "Adrian-Paci_-Still-Voices", title: "Adrian Paci – Still Voices" },
-            { folder: "Back-to-Aleppo---A-Virtual-Reality-Tour", title: "Back to Aleppo" },
-            { folder: "Wandering-Dreams---Headrests-from-Africa", title: "Wandering Dreams" },
-            { folder: "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am", title: "The Last Photograph" },
-            { folder: "Doug-Aitken---Flags-and-Debris", title: "Doug Aitken – Flags and Debris" },
-            { folder: "Resting-Bitch-_-Sharon-Balaban", title: "Sharon Balaban" },
-            { folder: "Guy-Ben-Ner_-Go-Back-Where-U-Came-From", title: "Guy Ben Ner" },
-            { folder: "Vital-Signs", title: "Vital Signs" },
-            { folder: "Tell-Me-More", title: "Tell Me More" },
-            { folder: "Wonders-of-the-Deep", title: "Wonders of the Deep" },
-            { folder: "My-Own-Room---The-BFAMI-Family-Gallery", title: "My Own Room" },
-            { folder: "Green-Through-and-Through", title: "Green Through and Through" },
-            { folder: "A-Treasury-of-Words", title: "A Treasury of Words" },
-            { folder: "COLOR", title: "COLOR" },
-            { folder: "Eternal-Spring-_-Mambush-Tapestry-Workshop", title: "Eternal Spring" },
-            { folder: "Bella-Brisel_-Waters-from-Waters", title: "Bella Brisel" },
-            { folder: "Everyday-Wonder---TAAD-Show", title: "Everyday Wonder" },
-            { folder: "Africa-Calling", title: "Africa Calling" },
-            { folder: "Desktop_-A-Physical-Exhibition-about-a-Digital-Era", title: "Desktop Exhibition" },
-            { folder: "6-Exhibitions", title: "6 Exhibitions" }
+            { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "", description: "" },
+            { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "", role: "", curator: "", description: "" },
+            { folder: "Efrat-Natan---Museum-Villa-Stuck,-Munich", title: "Efrat Natan – Museum Villa Stuck", year: "", role: "", curator: "", description: "" },
+            { folder: "Efrat-Natan---Whitewash-and-Tar", title: "Efrat Natan – Whitewash and Tar", year: "", role: "", curator: "", description: "" },
+            { folder: "Ilit-Azoulai---No-Things-Dies", title: "Ilit Azoulai – No Things Dies", year: "", role: "", curator: "", description: "" },
+            { folder: "In-Full-Color---60-Years-of-Design-by-Dan-Reisinger", title: "In Full Color – Dan Reisinger", year: "", role: "", curator: "", description: "" },
+            { folder: "Gil-Marco-Shani---Buses", title: "Gil Marco Shani – Buses", year: "", role: "", curator: "", description: "" },
+            { folder: "Yael-Bartana---Redemption-Now", title: "Yael Bartana – Redemption Now", year: "", role: "", curator: "", description: "" },
+            { folder: "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden", title: "Ruth Dorrit Yacoby", year: "", role: "", curator: "", description: "" },
+            { folder: "Haifa-Museum-of-Art---Renewal", title: "Haifa Museum of Art – Renewal", year: "", role: "", curator: "", description: "" },
+            { folder: "Adrian-Paci_-Still-Voices", title: "Adrian Paci – Still Voices", year: "", role: "", curator: "", description: "" },
+            { folder: "Back-to-Aleppo---A-Virtual-Reality-Tour", title: "Back to Aleppo", year: "", role: "", curator: "", description: "" },
+            { folder: "Wandering-Dreams---Headrests-from-Africa", title: "Wandering Dreams", year: "", role: "", curator: "", description: "" },
+            { folder: "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am", title: "The Last Photograph", year: "", role: "", curator: "", description: "" },
+            { folder: "Doug-Aitken---Flags-and-Debris", title: "Doug Aitken – Flags and Debris", year: "", role: "", curator: "", description: "" },
+            { folder: "Resting-Bitch-_-Sharon-Balaban", title: "Sharon Balaban", year: "", role: "", curator: "", description: "" },
+            { folder: "Guy-Ben-Ner_-Go-Back-Where-U-Came-From", title: "Guy Ben Ner", year: "", role: "", curator: "", description: "" },
+            { folder: "Vital-Signs", title: "Vital Signs", year: "", role: "", curator: "", description: "" },
+            { folder: "Tell-Me-More", title: "Tell Me More", year: "", role: "", curator: "", description: "" },
+            { folder: "Wonders-of-the-Deep", title: "Wonders of the Deep", year: "", role: "", curator: "", description: "" },
+            { folder: "My-Own-Room---The-BFAMI-Family-Gallery", title: "My Own Room", year: "", role: "", curator: "", description: "" },
+            { folder: "Green-Through-and-Through", title: "Green Through and Through", year: "", role: "", curator: "", description: "" },
+            { folder: "A-Treasury-of-Words", title: "A Treasury of Words", year: "", role: "", curator: "", description: "" },
+            { folder: "COLOR", title: "COLOR", year: "", role: "", curator: "", description: "" },
+            { folder: "Eternal-Spring-_-Mambush-Tapestry-Workshop", title: "Eternal Spring", year: "", role: "", curator: "", description: "" },
+            { folder: "Bella-Brisel_-Waters-from-Waters", title: "Bella Brisel", year: "", role: "", curator: "", description: "" },
+            { folder: "Everyday-Wonder---TAAD-Show", title: "Everyday Wonder", year: "", role: "", curator: "", description: "" },
+            { folder: "Africa-Calling", title: "Africa Calling", year: "", role: "", curator: "", description: "" },
+            { folder: "Desktop_-A-Physical-Exhibition-about-a-Digital-Era", title: "Desktop Exhibition", year: "", role: "", curator: "", description: "" },
+            { folder: "6-Exhibitions", title: "6 Exhibitions", year: "", role: "", curator: "", description: "" }
         ];
 
         const grid = document.getElementById('portfolio-grid');
-        projectsData.forEach(project => {
-            const html = `
-                <a href="project.html?folder=${project.folder}&title=${encodeURIComponent(project.title)}" class="project-link">
+        projectsData.forEach(p => {
+            const link = `project.html?folder=${p.folder}&title=${encodeURIComponent(p.title)}&year=${p.year}&role=${encodeURIComponent(p.role)}&curator=${encodeURIComponent(p.curator)}&desc=${encodeURIComponent(p.description)}`;
+            grid.innerHTML += `
+                <a href="${link}" class="project-link">
                     <div class="project-card">
-                        <img src="images/${project.folder}/cover.jpg" alt="${project.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Cover+Missing'">
-                        <div class="project-overlay">
-                            <div class="project-title">${project.title}</div>
-                        </div>
+                        <img src="images/${p.folder}/cover.jpg" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Cover+Missing'">
+                        <div class="project-overlay"><div class="project-title">${p.title}</div></div>
                     </div>
-                </a>
-            `;
-            grid.innerHTML += html;
+                </a>`;
         });
 
-        // לוגיקה של פתיחת התפריט מתחת לאייקון
-        const btn = document.getElementById('btn');
-        const dropdown = document.getElementById('dropdown');
-        
+        const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
         btn.addEventListener('click', () => {
             dropdown.classList.toggle('active');
             const spans = btn.querySelectorAll('span');
@@ -233,9 +216,7 @@
                 spans[1].style.opacity = '0';
                 spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
             } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
+                spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
             }
         });
     </script>
