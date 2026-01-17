@@ -9,7 +9,7 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); text-align: center; -webkit-font-smoothing: antialiased; }
 
-        /* Header קבוע המכיל את שני האלמנטים */
+        /* Header קבוע - שם הפרויקט הוא הכותרת הראשית */
         header {
             height: 160px; 
             display: flex;
@@ -21,38 +21,26 @@
             background: rgba(255, 255, 255, 0.98); 
             z-index: 2000;
             border-bottom: 1px solid rgba(0,0,0,0.03);
-            transition: all 0.4s ease;
         }
 
-        /* מיתוג ראשי - יעלם בגלילה */
-        .brand {
+        .project-brand {
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: opacity 0.3s, transform 0.3s;
+            text-align: center;
         }
 
-        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
-
-        /* שם הפרויקט - יופיע בגלילה */
-        .sticky-project-title {
-            position: absolute;
-            font-size: 18px;
-            letter-spacing: 2px;
+        /* שם הפרויקט ככותרת ראשית */
+        .project-main-title { 
+            font-size: 24px; 
+            letter-spacing: 4px; 
+            text-decoration: none; 
+            color: var(--main); 
             text-transform: uppercase;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            pointer-events: none;
+            font-weight: 400;
         }
 
-        /* מצב גלילה */
-        body.scrolled header { height: 80px; }
-        body.scrolled .brand { opacity: 0; transform: translateY(-10px); pointer-events: none; }
-        body.scrolled .sticky-project-title { opacity: 1; transform: translateY(0); }
-
-        /* תפריט המבורגר */
+        /* ניהול התפריט בצד שמאל */
         .nav-wrapper {
             position: absolute;
             left: 5%;
@@ -74,9 +62,9 @@
         .menu-dropdown.active { display: flex; }
         .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* תוכן הפרויקט */
+        /* פרטי פרויקט ותיאור */
         .project-meta { 
-            max-width: 900px; margin: 60px auto 20px; padding: 0 5%; 
+            max-width: 900px; margin: 40px auto 20px; padding: 0 5%; 
             display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; 
             font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px;
         }
@@ -84,21 +72,21 @@
 
         .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--text); line-height: 1.6; }
 
+        /* גלריה */
         .content { max-width: 1200px; margin: 0 auto; padding: 0 5%; display: flex; flex-direction: column; align-items: center; }
         .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
         
         .photo-credit { text-align: center; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 100px; }
 
         @media (max-width: 768px) {
-            header { height: 130px; }
-            body.scrolled header { height: 70px; }
-            .sticky-project-title { font-size: 14px; }
+            header { height: 120px; }
+            .project-main-title { font-size: 18px; letter-spacing: 2px; }
         }
     </style>
 </head>
 <body>
 
-    <header id="main-header">
+    <header>
         <div class="nav-wrapper">
             <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
             <nav class="menu-dropdown" id="dropdown">
@@ -108,12 +96,9 @@
             </nav>
         </div>
         
-        <div class="brand">
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <span class="sub-logo">Exhibition Architecture</span>
+        <div class="project-brand">
+            <div class="project-main-title" id="project-title">Loading...</div>
         </div>
-
-        <div class="sticky-project-title" id="sticky-title"></div>
     </header>
 
     <div class="project-meta" id="project-meta"></div>
@@ -129,7 +114,7 @@
 
         if (folder && title) {
             const decodedTitle = decodeURIComponent(title);
-            document.getElementById('sticky-title').innerText = decodedTitle;
+            document.getElementById('project-title').innerText = decodedTitle;
             document.title = decodedTitle + " | Ariel Armoni";
 
             const meta = document.getElementById('project-meta');
@@ -155,15 +140,6 @@
                 };
             }
         }
-
-        // לוגיקה להחלפת כותרת בגלילה
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                document.body.classList.add('scrolled');
-            } else {
-                document.body.classList.remove('scrolled');
-            }
-        });
 
         // לוגיקה לתפריט
         const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
