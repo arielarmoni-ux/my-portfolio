@@ -5,18 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Ariel Armoni</title>
     <style>
-        body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; color: #000; }
-        header { padding: 40px 5%; text-align: center; border-bottom: 1px solid #eee; }
-        .back-link { font-size: 11px; text-decoration: none; color: #999; text-transform: uppercase; letter-spacing: 1px; }
-        h1 { font-size: 22px; font-weight: 400; letter-spacing: 2px; margin: 20px 0 10px; text-transform: uppercase; }
-        
-        /* עיצוב המידע על הפרויקט */
-        .project-meta { max-width: 800px; margin: 40px auto; padding: 0 5%; font-size: 13px; color: #666; display: flex; flex-wrap: wrap; gap: 20px; border-bottom: 1px solid #f5f5f5; padding-bottom: 30px; }
-        .meta-item b { color: #000; text-transform: uppercase; font-weight: 500; margin-left: 5px; }
-        .project-description { max-width: 800px; margin: 30px auto 60px; padding: 0 5%; font-size: 15px; line-height: 1.6; color: #333; text-align: justify; }
+        :root { --bg: #fff; --main: #000; --muted: #888; --text: #333; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); text-align: center; }
 
-        .content { max-width: 1100px; margin: 0 auto; padding: 0 5%; }
-        .gallery img { width: 100%; height: auto; margin-bottom: 40px; display: block; }
+        header { padding: 40px 5%; border-bottom: 1px solid #f0f0f0; }
+        .back-link { font-size: 11px; text-decoration: none; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+        h1 { font-size: 24px; font-weight: 400; letter-spacing: 2px; margin: 25px 0 10px; text-transform: uppercase; }
+
+        .project-meta { 
+            max-width: 900px; margin: 40px auto 20px; padding: 0 5%; 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; 
+            font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px;
+        }
+        .meta-item b { color: var(--main); text-transform: uppercase; font-weight: 600; margin-left: 6px; }
+
+        .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--text); line-height: 1.6; }
+
+        .content { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
+        
+        .photo-credit { text-align: center; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 100px; }
     </style>
 </head>
 <body>
@@ -25,43 +34,42 @@
         <h1 id="project-title">Loading...</h1>
     </header>
 
-    <div class="project-meta" id="project-meta">
-        </div>
-
-    <div class="project-description" id="project-desc">
-        </div>
+    <div class="project-meta" id="project-meta"></div>
+    <div class="project-description" id="project-desc"></div>
 
     <main class="content">
         <div id="gallery" class="gallery"></div>
     </main>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const folder = urlParams.get('folder');
-        const title = urlParams.get('title');
-        const year = urlParams.get('year');
-        const role = urlParams.get('role');
-        const curator = urlParams.get('curator');
-        const desc = urlParams.get('desc');
+        const params = new URLSearchParams(window.location.search);
+        const folder = params.get('folder'), title = params.get('title'), year = params.get('year'), role = params.get('role'), curator = params.get('curator'), desc = params.get('desc');
 
         if (folder && title) {
-            document.getElementById('project-title').innerText = title;
-            document.title = title + " | Ariel Armoni";
+            document.getElementById('project-title').innerText = decodeURIComponent(title);
+            document.title = decodeURIComponent(title) + " | Ariel Armoni";
 
-            // הזרקת המידע
             const meta = document.getElementById('project-meta');
-            if(year) meta.innerHTML += `<div class="meta-item"><b>Year:</b> ${year}</div>`;
-            if(role) meta.innerHTML += `<div class="meta-item"><b>Role:</b> ${role}</div>`;
-            if(curator) meta.innerHTML += `<div class="meta-item"><b>Curator:</b> ${curator}</div>`;
-            
-            // הזרקת תיאור
-            if(desc) document.getElementById('project-desc').innerText = desc;
+            if (year && year !== 'undefined') meta.innerHTML += `<div class="meta-item"><b>Year</b> ${year}</div>`;
+            if (role && role !== 'undefined') meta.innerHTML += `<div class="meta-item"><b>Role</b> ${decodeURIComponent(role)}</div>`;
+            if (curator && curator !== 'undefined') meta.innerHTML += `<div class="meta-item"><b>Curator</b> ${decodeURIComponent(curator)}</div>`;
+
+            if (desc && desc !== 'undefined') document.getElementById('project-desc').innerText = decodeURIComponent(desc);
 
             const gallery = document.getElementById('gallery');
-            for (let i = 1; i <= 20; i++) {
+            let imagesLoaded = 0;
+            for (let i = 1; i <= 25; i++) {
                 const img = new Image();
                 img.src = `images/${folder}/${i}.jpg`;
-                img.onload = function() { gallery.appendChild(this); };
+                img.onload = function() { gallery.appendChild(this); imagesLoaded++; };
+                img.onerror = function() {
+                    if (!document.getElementById('credit') && imagesLoaded > 0) {
+                        const credit = document.createElement('div');
+                        credit.id = 'credit'; credit.className = 'photo-credit';
+                        credit.innerText = 'Photos by Eli Posner';
+                        gallery.after(credit);
+                    }
+                };
             }
         }
     </script>
