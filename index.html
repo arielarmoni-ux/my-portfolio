@@ -9,12 +9,12 @@
         * { box-sizing: border-box; }
         body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        /* Header - שם במרכז וכפתור תפריט */
+        /* Header - שם במרכז וכפתור תפריט משמאל */
         header {
-            padding: 60px 5%;
+            padding: 60px 5% 40px;
             display: flex;
-            justify-content: center; /* מרכז את השם */
-            align-items: center;
+            justify-content: center; 
+            align-items: center; /* ממקם את האלמנטים במרכז אנכי */
             position: relative;
             z-index: 2000;
         }
@@ -42,7 +42,7 @@
             margin-top: 8px;
         }
 
-        /* כפתור המבורגר - שלושה פסים */
+        /* כפתור המבורגר - צד שמאל וממורכז אנכית */
         .menu-toggle {
             display: flex;
             flex-direction: column;
@@ -53,7 +53,7 @@
             border: none;
             background: none;
             position: absolute;
-            right: 5%; /* מיקום בצד ימין כפי שביקשת */
+            left: 5%; /* שינוי לצד שמאל */
             z-index: 3000;
         }
 
@@ -65,7 +65,7 @@
             transition: 0.3s;
         }
 
-        /* תפריט נפתח במסך מלא */
+        /* תפריט נפתח */
         .mobile-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -81,31 +81,26 @@
         }
 
         .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { font-size: 24px; text-decoration: none; color: var(--main); margin: 20px 0; text-transform: uppercase; letter-spacing: 3px; }
 
-        .mobile-overlay a {
-            font-size: 24px;
-            text-decoration: none;
-            color: var(--main);
-            margin: 20px 0;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            transition: color 0.3s;
-        }
-        
-        .mobile-overlay a:hover { color: var(--muted); }
-
-        /* גריד הפרויקטים - מרווח גדול יותר מהכותרת */
+        /* גריד הפרויקטים - יחס 4:3 */
         .portfolio-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
             gap: 20px; 
-            padding: 120px 5% 100px; /* הוספת מרווח עליון משמעותי - 120px */
+            padding: 120px 5% 100px; 
             max-width: 1600px; 
             margin: 0 auto; 
         }
 
         .project-link { text-decoration: none; color: inherit; }
-        .project-card { position: relative; aspect-ratio: 1/1; overflow: hidden; background: #fcfcfc; }
+        .project-card { 
+            position: relative; 
+            aspect-ratio: 4 / 3; /* שינוי ליחס 4:3 */
+            overflow: hidden; 
+            background: #fcfcfc; 
+        }
+        
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
         
         .project-overlay {
@@ -130,16 +125,13 @@
 
         @media (max-width: 768px) {
             .portfolio-grid { grid-template-columns: 1fr; padding-top: 80px; }
-            .logo { font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
     <button class="menu-toggle" id="btn">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </button>
 
     <div class="mobile-overlay" id="menu">
@@ -158,7 +150,7 @@
     <main class="portfolio-grid">
         <a href="we-the-people.html" class="project-link">
             <div class="project-card">
-                <img src="images/we-the-people/cover.jpg" alt="We The People">
+                <img src="images/we_the_people/cover.jpg" alt="We The People">
                 <div class="project-overlay">
                     <div class="project-title">We The People</div>
                     <div class="project-category">Exhibition Architecture</div>
@@ -170,31 +162,16 @@
     <script>
         const btn = document.getElementById('btn');
         const menu = document.getElementById('menu');
-        
         btn.addEventListener('click', () => {
             menu.classList.toggle('active');
             const s = btn.querySelectorAll('span');
             if(menu.classList.contains('active')) {
-                // הפיכה ל-X בעת פתיחה
                 s[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
                 s[1].style.opacity = '0';
                 s[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
             } else {
-                s[0].style.transform = 'none';
-                s[1].style.opacity = '1';
-                s[2].style.transform = 'none';
+                s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
             }
-        });
-
-        // סגירת תפריט בלחיצה על לינק
-        menu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.remove('active');
-                const s = btn.querySelectorAll('span');
-                s[0].style.transform = 'none';
-                s[1].style.opacity = '1';
-                s[2].style.transform = 'none';
-            });
         });
     </script>
 </body>
