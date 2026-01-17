@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Ariel Armoni</title>
+    <style>
+        body { margin: 0; font-family: 'Inter', sans-serif; background: #fff; }
+        header { padding: 40px 5%; text-align: center; border-bottom: 1px solid #eee; }
+        .back-link { font-size: 12px; text-decoration: none; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+        h1 { font-size: 24px; font-weight: 400; letter-spacing: 2px; margin: 20px 0; text-transform: uppercase; }
+        .content { max-width: 1000px; margin: 60px auto; padding: 0 5%; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 30px; display: block; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">← Back to Projects</a>
+        <h1 id="project-title">Loading...</h1>
+    </header>
+    <main class="content">
+        <div id="gallery" class="gallery">
+            </div>
+    </main>
+
+    <script>
+        // פונקציה שקוראת את שם התיקייה מהכתובת
+        const urlParams = new URLSearchParams(window.location.search);
+        const folder = urlParams.get('folder');
+        const title = urlParams.get('title');
+
+        if (folder && title) {
+            document.getElementById('project-title').innerText = decodeURIComponent(title);
+            document.title = title + " | Ariel Armoni";
+
+            const gallery = document.getElementById('gallery');
+            
+            // לולאה שטוענת את התמונות (נניח עד 10 תמונות לפרויקט)
+            for (let i = 1; i <= 10; i++) {
+                const img = document.createElement('img');
+                img.src = `images/${folder}/${i}.jpg`;
+                img.alt = `${title} - Image ${i}`;
+                
+                // בדיקה אם התמונה קיימת לפני הצגה
+                img.onerror = function() { this.style.display = 'none'; }; 
+                gallery.appendChild(img);
+            }
+        }
+    </script>
+</body>
+</html>
