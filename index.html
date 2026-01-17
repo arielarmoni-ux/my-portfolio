@@ -108,41 +108,38 @@
     <main class="portfolio-grid" id="portfolio-grid"></main>
 
     <script>
-        // רשימת הפרויקטים המלאה שלך
         const projectsData = [
-            // רשימת הפרויקטים בסדר הפוך (מהחדש לישן)
-        const projectsData = [
-            { folder: "6-Exhibitions", title: "6 Exhibitions", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "New exhibitions at the Haifa Museum of Art." },
-            { folder: "Desktop_-A-Physical-Exhibition-about-a-Digital-Era", title: "Desktop Exhibition", year: "2022", role: "Exhibition Design", curator: "Revital Ben-Asher Peretz", description: "Exhibition at Artport Tel Aviv." },
-            { folder: "Africa-Calling", title: "Africa Calling", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "Everyday-Wonder---TAAD-Show", title: "Everyday Wonder", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Bella-Brisel_-Waters-from-Waters", title: "Bella Brisel", year: "2021", role: "Exhibition Design", curator: "Shira Friedman", description: "Exhibition at the Jerusalem Print Workshop." },
-            { folder: "Eternal-Spring-_-Mambush-Tapestry-Workshop", title: "Eternal Spring", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "COLOR", title: "COLOR", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
+            { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
+            { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
             { folder: "A-Treasury-of-Words", title: "A Treasury of Words", year: "2023", role: "Exhibition Design", curator: "Netta Assaf", description: "Permanent exhibition at the National Library of Israel." },
-            { folder: "Green-Through-and-Through", title: "Green Through and Through", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "My-Own-Room---The-BFAMI-Family-Gallery", title: "My Own Room", year: "2022", role: "Exhibition Design", curator: "Efrat Bar-Nir", description: "Family gallery at the Israel Museum." },
-            { folder: "Wonders-of-the-Deep", title: "Wonders of the Deep", year: "2022", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "Tell-Me-More", title: "Tell Me More", year: "2021", role: "Exhibition Design", curator: "Shira Friedman", description: "Exhibition at the Jerusalem Print Workshop." },
-            { folder: "Vital-Signs", title: "Vital Signs", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Group exhibition at the Haifa Museum of Art." },
-            { folder: "Guy-Ben-Ner_-Go-Back-Where-U-Came-From", title: "Guy Ben Ner", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Resting-Bitch-_-Sharon-Balaban", title: "Sharon Balaban", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Doug-Aitken---Flags-and-Debris", title: "Doug Aitken – Flags and Debris", year: "2021", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Exhibition at the Israel Museum." },
-            { folder: "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am", title: "The Last Photograph", year: "2022", role: "Exhibition Design", curator: "Noam Gal", description: "Ran Tal film installation." },
-            { folder: "Wandering-Dreams---Headrests-from-Africa", title: "Wandering Dreams", year: "2022", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "Back-to-Aleppo---A-Virtual-Reality-Tour", title: "Back to Aleppo", year: "2021", role: "Exhibition Design", curator: "Ariella Amar", description: "Virtual reality tour of the Great Synagogue." },
-            { folder: "Adrian-Paci_-Still-Voices", title: "Adrian Paci – Still Voices", year: "2022", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
             { folder: "Haifa-Museum-of-Art---Renewal", title: "Haifa Museum of Art – Renewal", year: "2023", role: "Architectural Planning", curator: "", description: "Renewal of the museum's entrance floor." },
-            { folder: "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden", title: "Ruth Dorrit Yacoby", year: "2021", role: "Exhibition Design", curator: "Vardit Gross", description: "Exhibition at Artport Tel Aviv." },
+            { folder: "Adrian-Paci_-Still-Voices", title: "Adrian Paci – Still Voices", year: "2022", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
+            { folder: "Wandering-Dreams---Headrests-from-Africa", title: "Wandering Dreams", year: "2022", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
+            { folder: "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am", title: "The Last Photograph", year: "2022", role: "Exhibition Design", curator: "Noam Gal", description: "Ran Tal film installation." },
+            { folder: "Wonders-of-the-Deep", title: "Wonders of the Deep", year: "2022", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
+            { folder: "My-Own-Room---The-BFAMI-Family-Gallery", title: "My Own Room", year: "2022", role: "Exhibition Design", curator: "Efrat Bar-Nir", description: "Family gallery at the Israel Museum." },
+            { folder: "Efrat-Natan---Museum-Villa-Stuck,-Munich", title: "Efrat Natan – Museum Villa Stuck", year: "2022", role: "Exhibition Design", curator: "Verena Hein", description: "Solo exhibition in Munich." },
+            { folder: "Desktop_-A-Physical-Exhibition-about-a-Digital-Era", title: "Desktop Exhibition", year: "2022", role: "Exhibition Design", curator: "Revital Ben-Asher Peretz", description: "Exhibition at Artport Tel Aviv." },
             { folder: "Yael-Bartana---Redemption-Now", title: "Yael Bartana – Redemption Now", year: "2021", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Solo exhibition at the Jewish Museum Berlin." },
+            { folder: "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden", title: "Ruth Dorrit Yacoby", year: "2021", role: "Exhibition Design", curator: "Vardit Gross", description: "Exhibition at Artport Tel Aviv." },
+            { folder: "Back-to-Aleppo---A-Virtual-Reality-Tour", title: "Back to Aleppo", year: "2021", role: "Exhibition Design", curator: "Ariella Amar", description: "Virtual reality tour of the Great Synagogue." },
+            { folder: "Doug-Aitken---Flags-and-Debris", title: "Doug Aitken – Flags and Debris", year: "2021", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Exhibition at the Israel Museum." },
+            { folder: "Resting-Bitch-_-Sharon-Balaban", title: "Sharon Balaban", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
+            { folder: "Guy-Ben-Ner_-Go-Back-Where-U-Came-From", title: "Guy Ben Ner", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
+            { folder: "Vital-Signs", title: "Vital Signs", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Group exhibition at the Haifa Museum of Art." },
+            { folder: "Tell-Me-More", title: "Tell Me More", year: "2021", role: "Exhibition Design", curator: "Shira Friedman", description: "Exhibition at the Jerusalem Print Workshop." },
+            { folder: "Green-Through-and-Through", title: "Green Through and Through", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
+            { folder: "COLOR", title: "COLOR", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
+            { folder: "Eternal-Spring-_-Mambush-Tapestry-Workshop", title: "Eternal Spring", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
+            { folder: "Bella-Brisel_-Waters-from-Waters", title: "Bella Brisel", year: "2021", role: "Exhibition Design", curator: "Shira Friedman", description: "Exhibition at the Jerusalem Print Workshop." },
+            { folder: "Everyday-Wonder---TAAD-Show", title: "Everyday Wonder", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
+            { folder: "Africa-Calling", title: "Africa Calling", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
+            { folder: "6-Exhibitions", title: "6 Exhibitions", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "New exhibitions at the Haifa Museum of Art." },
+            { folder: "Ilit-Azoulai---No-Things-Dies", title: "Ilit Azoulai – No Things Dies", year: "2019", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Exhibition at the Israel Museum, Jerusalem." },
             { folder: "Gil-Marco-Shani---Buses", title: "Gil Marco Shani – Buses", year: "2018", role: "Exhibition Design", curator: "Aya Miron", description: "Site-specific installation at the Israel Museum." },
             { folder: "In-Full-Color---60-Years-of-Design-by-Dan-Reisinger", title: "In Full Color – Dan Reisinger", year: "2017", role: "Exhibition Design", curator: "Adi Shelach", description: "Retrospective at the Israel Museum." },
-            { folder: "Ilit-Azoulai---No-Things-Dies", title: "Ilit Azoulai – No Things Dies", year: "2019", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Exhibition at the Israel Museum, Jerusalem." },
-            { folder: "Efrat-Natan---Whitewash-and-Tar", title: "Efrat Natan – Whitewash and Tar", year: "2016", role: "Exhibition Design", curator: "Vardit Gross", description: "Solo exhibition at the Israel Museum, Jerusalem." },
-            { folder: "Efrat-Natan---Museum-Villa-Stuck,-Munich", title: "Efrat Natan – Museum Villa Stuck", year: "2022", role: "Exhibition Design", curator: "Verena Hein", description: "Solo exhibition in Munich." },
-            { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
-            { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." }
-        ]; 
+            { folder: "Efrat-Natan---Whitewash-and-Tar", title: "Efrat Natan – Whitewash and Tar", year: "2016", role: "Exhibition Design", curator: "Vardit Gross", description: "Solo exhibition at the Israel Museum, Jerusalem." }
+        ];
 
         const grid = document.getElementById('portfolio-grid');
         projectsData.forEach(p => {
