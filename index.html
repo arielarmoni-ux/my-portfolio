@@ -9,18 +9,18 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        /* Header - קבוע בראש הדף עם רקע לבן שקוף */
+        /* Header דק יותר (160px) וקבוע בראש הדף */
         header {
-            height: 220px; 
+            height: 160px; 
             display: flex;
             flex-direction: column;
             justify-content: center; 
             align-items: center;
-            position: sticky; /* שומר על הכותרת קבועה בגלילה */
+            position: sticky;
             top: 0;
             background: rgba(255, 255, 255, 0.96); 
             z-index: 2000;
-            border-bottom: 1px solid rgba(0,0,0,0.03); /* קו עדין מאוד המפריד בין הכותרת לתוכן בזמן גלילה */
+            border-bottom: 1px solid rgba(0,0,0,0.03);
         }
 
         .brand {
@@ -33,11 +33,10 @@
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
 
-        /* ניהול התפריט - מיושר אנכית ל-Sub-logo ונפתח כלפי מטה */
         .nav-wrapper {
             position: absolute;
             left: 5%;
-            top: 58%; 
+            top: 50%; 
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
@@ -59,10 +58,10 @@
         .menu-dropdown.active { display: flex; }
         .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* גריד הפרויקטים */
+        /* גריד המציג 3 פרויקטים בשורה ב-100% */
         .portfolio-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            grid-template-columns: repeat(3, 1fr); 
             gap: 30px; 
             padding: 40px 5% 100px; 
             max-width: 1600px; 
@@ -73,7 +72,6 @@
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
         
-        /* Overlay מיושר למרכז */
         .project-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.94);
@@ -85,8 +83,12 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
 
+        /* התאמה למסכים קטנים - מעבר לשורה אחת */
+        @media (max-width: 1024px) {
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 768px) {
-            header { height: 180px; }
+            header { height: 130px; }
             .portfolio-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -111,7 +113,7 @@
     <main class="portfolio-grid" id="portfolio-grid"></main>
 
     <script>
-        // רשימת הפרויקטים בסדר המקורי (מהחדש לישן)
+        // רשימת פרויקטים (הסדר המקורי מהאתר שלך)
         const projectsData = [
             { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
             { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
