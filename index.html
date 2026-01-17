@@ -3,250 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariel Armoni | Architecture & Exhibition Design</title>
+    <title>Ariel Armoni | Exhibition Architecture</title>
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-main: #000000;
-            --text-muted: #888888;
-        }
-
+        :root { --bg: #fff; --main: #000; --muted: #888; }
         * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* תפריט עליון - שם במרכז */
-        header {
-            padding: 60px 5% 80px; /* הגדלת המרווח התחתון ל-80px */
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            z-index: 2000;
-        }
-
-        .brand-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 250px;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 400;
-            letter-spacing: 4px;
-            text-decoration: none;
-            color: var(--text-main);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .sub-logo {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        /* ניווט מחשב */
+        header { padding: 60px 5% 80px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; text-align: center; position: relative; z-index: 2000; }
+        .brand { display: flex; flex-direction: column; align-items: center; min-width: 250px; }
+        .logo { font-size: 22px; letter-spacing: 4px; text-decoration: none; color: var(--main); text-transform: uppercase; }
+        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 5px; }
+        
         nav.desktop-nav { display: contents; }
-        nav.nav-right { text-align: right; }
-        nav.nav-left { text-align: left; }
+        nav a { text-decoration: none; color: var(--muted); font-size: 12px; letter-spacing: 1px; margin: 0 15px; transition: 0.3s; }
+        nav a:hover { color: var(--main); }
 
-        nav a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 12px;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-            margin: 0 15px;
-        }
-
-        nav a:hover { color: var(--text-main); }
-
-        /* כפתור המבורגר לנייד */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            padding: 10px;
-            z-index: 3000;
-            position: absolute;
-            top: 50px;
-            left: 5%;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 20px;
-            height: 1px;
-            background-color: var(--text-main);
-            transition: 0.3s;
-        }
-
-        /* תפריט נייד */
-        .mobile-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2500;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
+        .menu-toggle { display: none; cursor: pointer; border: none; background: none; position: absolute; top: 50px; left: 5%; z-index: 3000; }
+        .menu-toggle span { display: block; width: 20px; height: 1px; background: var(--main); margin: 5px 0; transition: 0.3s; }
+        
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2500; opacity: 0; visibility: hidden; transition: 0.4s; }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { font-size: 20px; text-decoration: none; color: var(--main); margin: 15px 0; text-transform: uppercase; letter-spacing: 2px; }
 
-        .mobile-overlay a {
-            font-size: 20px;
-            text-decoration: none;
-            color: var(--text-main);
-            margin: 15px 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* גריד הפרויקטים - מוקטן ומרווח */
-        .portfolio-grid {
-            display: grid;
-            /* שינוי למינימום 220px ליצירת ריבועים קטנים יותר */
+        .portfolio-grid { 
+            display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 20px;
-            padding: 0 5% 100px;
-            max-width: 1600px;
-            margin: 0 auto;
+            gap: 20px; padding: 0 5% 100px; max-width: 1600px; margin: 0 auto; 
         }
-
-        @media (max-width: 1024px) {
-            nav.desktop-nav { display: none; }
-            header { grid-template-columns: 1fr; padding: 40px 5% 50px; }
-            .menu-toggle { display: flex; }
-        }
-
-        /* כרטיס פרויקט כלחיץ */
-        .project-link {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .project-card {
-            position: relative;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-            background-color: #fcfcfc;
-        }
-
-        .project-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .project-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            padding: 20px;
-            text-align: center;
-        }
-
+        .project-link { text-decoration: none; color: inherit; }
+        .project-card { position: relative; aspect-ratio: 1/1; overflow: hidden; background: #fcfcfc; }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.4s; padding: 20px; text-align: center; }
         .project-card:hover img { transform: scale(1.05); }
         .project-card:hover .project-overlay { opacity: 1; }
+        .project-title { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+        .project-category { font-size: 10px; color: var(--muted); text-transform: uppercase; margin-top: 5px; }
 
-        .project-title { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; margin-bottom: 4px; }
-        .project-category { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        @media (max-width: 1024px) { nav.desktop-nav { display: none; } .menu-toggle { display: block; } header { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-
-<button class="menu-toggle" id="menuBtn">
-    <span></span><span></span><span></span>
-</button>
-
-<div class="mobile-overlay" id="mobileMenu">
-    <a href="index.html">Projects</a>
-    <a href="#">About</a>
-    <a href="#">Contact</a>
-</div>
-
-<header>
-    <nav class="desktop-nav nav-right">
-        <a href="index.html">PROJECTS</a>
-    </nav>
-    
-    <div class="brand-container">
-        <a href="index.html" class="logo">ARIEL ARMONI</a>
-        <span class="sub-logo">Exhibition Architecture</span>
+    <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
+    <div class="mobile-overlay" id="menu">
+        <a href="index.html">Projects</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
     </div>
-
-    <nav class="desktop-nav nav-left">
-        <a href="#">ABOUT</a>
-        <a href="#">CONTACT</a>
-    </nav>
-</header>
-
-<main class="portfolio-grid">
-    <a href="project-detail.html" class="project-link">
-        <div class="project-card">
-            <img src="images/project1.jpg" alt="Exhibition">
-            <div class="project-overlay">
-                <div class="project-title">Haifa Museum of Art</div>
-                <div class="project-category">Exhibition Design</div>
-            </div>
+    <header>
+        <nav class="desktop-nav" style="text-align: right;"><a href="index.html">PROJECTS</a></nav>
+        <div class="brand">
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <span class="sub-logo">Exhibition Architecture</span>
         </div>
-    </a>
-    
-    <a href="project-detail.html" class="project-link">
-        <div class="project-card">
-            <img src="images/project2.jpg" alt="Exhibition">
-            <div class="project-overlay">
-                <div class="project-title">Desktop Exhibition</div>
-                <div class="project-category">Architecture</div>
+        <nav class="desktop-nav" style="text-align: left;"><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav>
+    </header>
+    <main class="portfolio-grid">
+        <a href="project-detail.html" class="project-link">
+            <div class="project-card">
+                <img src="images/haifa-museum/cover.jpg" alt="Haifa Museum">
+                <div class="project-overlay">
+                    <div class="project-title">Haifa Museum of Art</div>
+                    <div class="project-category">Exhibition Design</div>
+                </div>
             </div>
-        </div>
-    </a>
-</main>
-
-<script>
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        const spans = menuBtn.querySelectorAll('span');
-        if (mobileMenu.classList.contains('active')) {
-            spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
-        } else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        }
-    });
-</script>
-
+        </a>
+    </main>
+    <script>
+        const btn = document.getElementById('btn'), menu = document.getElementById('menu');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            const s = btn.querySelectorAll('span');
+            if(menu.classList.contains('active')) {
+                s[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+                s[1].style.opacity = '0';
+                s[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+            } else {
+                s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
