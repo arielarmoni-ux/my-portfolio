@@ -11,7 +11,9 @@
 
         /* Header קבוע - שם הפרויקט הוא הכותרת הראשית */
         header {
-            height: 160px; 
+            min-height: 120px;
+            padding-top: 40px;
+            padding-bottom: 15px;
             display: flex;
             flex-direction: column;
             justify-content: center; 
@@ -20,32 +22,21 @@
             top: 0;
             background: rgba(255, 255, 255, 0.98); 
             z-index: 2000;
-            border-bottom: 1px solid rgba(0,0,0,0.03);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .project-brand {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        /* שם הפרויקט ככותרת ראשית */
         .project-main-title { 
             font-size: 24px; 
             letter-spacing: 4px; 
-            text-decoration: none; 
-            color: var(--main); 
             text-transform: uppercase;
             font-weight: 400;
+            line-height: 1;
         }
 
-        /* ניהול התפריט בצד שמאל */
         .nav-wrapper {
             position: absolute;
             left: 5%;
-            top: 50%; 
-            transform: translateY(-50%);
+            bottom: 15px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -62,7 +53,6 @@
         .menu-dropdown.active { display: flex; }
         .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* פרטי פרויקט ותיאור */
         .project-meta { 
             max-width: 900px; margin: 40px auto 20px; padding: 0 5%; 
             display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; 
@@ -72,20 +62,18 @@
 
         .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--text); line-height: 1.6; }
 
-        /* גלריה */
         .content { max-width: 1200px; margin: 0 auto; padding: 0 5%; display: flex; flex-direction: column; align-items: center; }
         .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
         
         .photo-credit { text-align: center; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 100px; }
 
         @media (max-width: 768px) {
-            header { height: 120px; }
+            header { min-height: 100px; padding-top: 30px; }
             .project-main-title { font-size: 18px; letter-spacing: 2px; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="nav-wrapper">
             <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
@@ -95,10 +83,7 @@
                 <a href="contact.html">Contact</a>
             </nav>
         </div>
-        
-        <div class="project-brand">
-            <div class="project-main-title" id="project-title">Loading...</div>
-        </div>
+        <div class="project-main-title" id="project-title">Loading...</div>
     </header>
 
     <div class="project-meta" id="project-meta"></div>
@@ -141,7 +126,6 @@
             }
         }
 
-        // לוגיקה לתפריט
         const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
         btn.addEventListener('click', () => {
             dropdown.classList.toggle('active');
