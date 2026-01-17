@@ -30,7 +30,7 @@
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
 
-        /* ניהול התפריט - מיושר אנכית ל-Sub-logo ונפתח כלפי מטה */
+        /* תפריט - מיושר אנכית ל-Sub-logo ונפתח כלפי מטה */
         .nav-wrapper {
             position: absolute;
             left: 5%;
@@ -55,7 +55,6 @@
         .menu-dropdown { display: none; flex-direction: column; text-align: left; background: var(--bg); padding-top: 5px; }
         .menu-dropdown.active { display: flex; }
         .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
-        .menu-dropdown a:hover { color: var(--main); }
 
         /* גריד הפרויקטים */
         .portfolio-grid { 
@@ -70,6 +69,8 @@
         .project-link { text-decoration: none; color: inherit; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        
+        /* Overlay מיושר למרכז */
         .project-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.94);
@@ -107,6 +108,7 @@
     <main class="portfolio-grid" id="portfolio-grid"></main>
 
     <script>
+        // רשימת הפרויקטים המלאה שלך
         const projectsData = [
             { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
             { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
