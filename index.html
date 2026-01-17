@@ -9,11 +9,13 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        /* Header - יישור איקון לשורה התחתונה של המותג */
+        /* Header - ממוקם במרכז המרווח העליון */
         header {
-            padding: 60px 5% 40px;
+            height: 220px; 
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
             position: relative;
             z-index: 2000;
         }
@@ -25,27 +27,15 @@
             text-align: center;
         }
 
-        .logo {
-            font-size: 24px;
-            letter-spacing: 5px;
-            text-decoration: none;
-            color: var(--main);
-            text-transform: uppercase;
-        }
+        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
+        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
 
-        .sub-logo {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--muted);
-            text-transform: uppercase;
-            margin-top: 8px;
-        }
-
-        /* ניהול התפריט בצד שמאל מיושר ל-Sub-logo */
+        /* ניהול התפריט - מיושר אנכית ל-Sub-logo ונפתח כלפי מטה */
         .nav-wrapper {
             position: absolute;
             left: 5%;
-            bottom: 40px; 
+            top: 58%; 
+            transform: translateY(-50%);
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -55,86 +45,45 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            width: 22px;
-            height: 14px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            padding: 0;
+            width: 22px; height: 12px;
+            cursor: pointer; border: none; background: none; padding: 0;
             margin-bottom: 10px;
         }
 
-        .menu-toggle span {
-            display: block;
-            width: 100%;
-            height: 1px;
-            background: var(--main);
-            transition: 0.3s;
-        }
+        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        .menu-dropdown {
-            display: none; 
-            flex-direction: column;
-            text-align: left;
-            background: var(--bg);
-        }
-
-        .menu-dropdown.active {
-            display: flex;
-        }
-
-        .menu-dropdown a {
-            font-size: 12px;
-            text-decoration: none;
-            color: var(--muted);
-            margin: 5px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
+        .menu-dropdown { display: none; flex-direction: column; text-align: left; background: var(--bg); padding-top: 5px; }
+        .menu-dropdown.active { display: flex; }
+        .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
         .menu-dropdown a:hover { color: var(--main); }
 
-        /* גריד הפרויקטים - יחס 4:3 */
+        /* גריד הפרויקטים */
         .portfolio-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
             gap: 30px; 
-            padding: 120px 5% 100px; 
+            padding: 40px 5% 100px; 
             max-width: 1600px; 
             margin: 0 auto; 
         }
 
         .project-link { text-decoration: none; color: inherit; }
-        .project-card { 
-            position: relative; 
-            aspect-ratio: 4 / 3; 
-            overflow: hidden; 
-            background: #fcfcfc; 
-        }
-        
+        .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
         .project-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255,255,255,0.94);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: 0.4s;
-            padding: 20px;
-            text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            opacity: 0; transition: 0.4s; padding: 20px; text-align: center;
         }
 
         .project-card:hover img { transform: scale(1.05); }
         .project-card:hover .project-overlay { opacity: 1; }
-        .project-title { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+        .project-title { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
 
         @media (max-width: 768px) {
-            .nav-wrapper { bottom: 20px; }
-            .portfolio-grid { grid-template-columns: 1fr; padding-top: 80px; }
+            header { height: 180px; }
+            .portfolio-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -142,16 +91,13 @@
 
     <header>
         <div class="nav-wrapper">
-            <button class="menu-toggle" id="btn">
-                <span></span><span></span><span></span>
-            </button>
+            <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
             <nav class="menu-dropdown" id="dropdown">
                 <a href="index.html">Projects</a>
                 <a href="about.html">About</a>
                 <a href="contact.html">Contact</a>
             </nav>
         </div>
-
         <div class="brand">
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <span class="sub-logo">Exhibition Architecture</span>
@@ -161,7 +107,6 @@
     <main class="portfolio-grid" id="portfolio-grid"></main>
 
     <script>
-        // המערך המלא של 30 הפרויקטים מהאתר המקורי שלך
         const projectsData = [
             { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
             { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
@@ -198,13 +143,7 @@
         const grid = document.getElementById('portfolio-grid');
         projectsData.forEach(p => {
             const link = `project.html?folder=${p.folder}&title=${encodeURIComponent(p.title)}&year=${p.year}&role=${encodeURIComponent(p.role)}&curator=${encodeURIComponent(p.curator)}&desc=${encodeURIComponent(p.description)}`;
-            grid.innerHTML += `
-                <a href="${link}" class="project-link">
-                    <div class="project-card">
-                        <img src="images/${p.folder}/cover.jpg" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Cover+Missing'">
-                        <div class="project-overlay"><div class="project-title">${p.title}</div></div>
-                    </div>
-                </a>`;
+            grid.innerHTML += `<a href="${link}" class="project-link"><div class="project-card"><img src="images/${p.folder}/cover.jpg" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Cover+Missing'"><div class="project-overlay"><div class="project-title">${p.title}</div></div></div></a>`;
         });
 
         const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
@@ -212,9 +151,7 @@
             dropdown.classList.toggle('active');
             const spans = btn.querySelectorAll('span');
             if(dropdown.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+                spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
             } else {
                 spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
             }
