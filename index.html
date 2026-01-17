@@ -9,40 +9,150 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
 
-        header { padding: 60px 5% 40px; display: flex; justify-content: center; align-items: center; position: relative; z-index: 2000; }
-        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+        /* Header - יישור איקון לשורה התחתונה */
+        header {
+            padding: 60px 5% 40px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2000;
+        }
 
-        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 25px; height: 16px; cursor: pointer; border: none; background: none; position: absolute; left: 5%; z-index: 3000; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
 
-        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2500; opacity: 0; visibility: hidden; transition: 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
-        .mobile-overlay.active { opacity: 1; visibility: visible; }
-        .mobile-overlay a { font-size: 24px; text-decoration: none; color: var(--main); margin: 20px 0; text-transform: uppercase; letter-spacing: 3px; }
+        .logo {
+            font-size: 24px;
+            letter-spacing: 5px;
+            text-decoration: none;
+            color: var(--main);
+            text-transform: uppercase;
+        }
 
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; padding: 120px 5% 100px; max-width: 1600px; margin: 0 auto; }
+        .sub-logo {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        /* ניהול התפריט בצד שמאל */
+        .nav-wrapper {
+            position: absolute;
+            left: 5%;
+            bottom: 40px; /* מיישר את האייקון לשורה התחתונה של ה-Header */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 22px;
+            height: 14px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 1px;
+            background: var(--main);
+            transition: 0.3s;
+        }
+
+        /* התפריט הפירוטי שמופיע מתחת לאייקון */
+        .menu-dropdown {
+            display: none; /* מוסתר כברירת מחדל */
+            flex-direction: column;
+            text-align: left;
+            background: var(--bg);
+        }
+
+        .menu-dropdown.active {
+            display: flex;
+        }
+
+        .menu-dropdown a {
+            font-size: 12px;
+            text-decoration: none;
+            color: var(--muted);
+            margin: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .menu-dropdown a:hover { color: var(--main); }
+
+        /* גריד הפרויקטים */
+        .portfolio-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 30px; 
+            padding: 120px 5% 100px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+        }
+
         .project-link { text-decoration: none; color: inherit; }
-        .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
+        .project-card { 
+            position: relative; 
+            aspect-ratio: 4 / 3; 
+            overflow: hidden; 
+            background: #fcfcfc; 
+        }
+        
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
-        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.94); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: 0.4s; padding: 20px; text-align: center; }
+        .project-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.94);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: 0.4s;
+            padding: 20px;
+            text-align: center;
+        }
+
         .project-card:hover img { transform: scale(1.05); }
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
 
-        @media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; padding-top: 80px; } }
+        @media (max-width: 768px) {
+            .nav-wrapper { bottom: 20px; }
+            .portfolio-grid { grid-template-columns: 1fr; padding-top: 80px; }
+        }
     </style>
 </head>
 <body>
 
-    <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
-    <div class="mobile-overlay" id="menu">
-        <a href="index.html">Projects</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </div>
-
     <header>
+        <div class="nav-wrapper">
+            <button class="menu-toggle" id="btn">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="menu-dropdown" id="dropdown">
+                <a href="index.html">Projects</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+
         <div class="brand">
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <span class="sub-logo">Exhibition Architecture</span>
@@ -53,10 +163,8 @@
         </main>
 
     <script>
-        // --- ניהול הפרויקטים שלך כאן ---
-        // פשוט תוסיף שורה חדשה לכל פרויקט: { folder: "שם התיקייה", title: "שם התצוגה" }
         const projectsData = [
-         { folder: "We-The-People", title: "We The People" },
+            { folder: "We-The-People", title: "We The People" },
             { folder: "The-Shadow-of-Color", title: "The Shadow of Color" },
             { folder: "Efrat-Natan---Museum-Villa-Stuck,-Munich", title: "Efrat Natan – Museum Villa Stuck" },
             { folder: "Efrat-Natan---Whitewash-and-Tar", title: "Efrat Natan – Whitewash and Tar" },
@@ -89,12 +197,11 @@
         ];
 
         const grid = document.getElementById('portfolio-grid');
-
         projectsData.forEach(project => {
             const html = `
                 <a href="project.html?folder=${project.folder}&title=${encodeURIComponent(project.title)}" class="project-link">
                     <div class="project-card">
-                        <img src="images/${project.folder}/cover.jpg" alt="${project.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Missing+Cover'">
+                        <img src="images/${project.folder}/cover.jpg" alt="${project.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Cover+Missing'">
                         <div class="project-overlay">
                             <div class="project-title">${project.title}</div>
                         </div>
@@ -104,17 +211,21 @@
             grid.innerHTML += html;
         });
 
-        // לוגיקה של התפריט
-        const btn = document.getElementById('btn'), menu = document.getElementById('menu');
+        // לוגיקה של פתיחת התפריט מתחת לאייקון
+        const btn = document.getElementById('btn');
+        const dropdown = document.getElementById('dropdown');
+        
         btn.addEventListener('click', () => {
-            menu.classList.toggle('active');
-            const s = btn.querySelectorAll('span');
-            if(menu.classList.contains('active')) {
-                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                s[1].style.opacity = '0';
-                s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+            dropdown.classList.toggle('active');
+            const spans = btn.querySelectorAll('span');
+            if(dropdown.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
             } else {
-                s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
             }
         });
     </script>
