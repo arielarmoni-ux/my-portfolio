@@ -9,7 +9,7 @@
         * { box-sizing: border-box; }
         body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); text-align: center; -webkit-font-smoothing: antialiased; }
 
-        /* Header זהה לדף הבית - דק וקבוע */
+        /* Header קבוע המכיל את שני האלמנטים */
         header {
             height: 160px; 
             display: flex;
@@ -18,22 +18,41 @@
             align-items: center;
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.96); 
+            background: rgba(255, 255, 255, 0.98); 
             z-index: 2000;
             border-bottom: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.4s ease;
         }
 
+        /* מיתוג ראשי - יעלם בגלילה */
         .brand {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
+            transition: opacity 0.3s, transform 0.3s;
         }
 
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
 
-        /* תפריט המבורגר זהה */
+        /* שם הפרויקט - יופיע בגלילה */
+        .sticky-project-title {
+            position: absolute;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        /* מצב גלילה */
+        body.scrolled header { height: 80px; }
+        body.scrolled .brand { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+        body.scrolled .sticky-project-title { opacity: 1; transform: translateY(0); }
+
+        /* תפריט המבורגר */
         .nav-wrapper {
             position: absolute;
             left: 5%;
@@ -45,32 +64,25 @@
         }
 
         .menu-toggle {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 22px; height: 12px;
-            cursor: pointer; border: none; background: none; padding: 0;
+            display: flex; flex-direction: column; justify-content: space-between;
+            width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0;
             margin-bottom: 10px;
         }
-
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        .menu-dropdown { display: none; flex-direction: column; text-align: left; background: transparent; padding-top: 5px; }
+        .menu-dropdown { display: none; flex-direction: column; text-align: left; padding-top: 5px; }
         .menu-dropdown.active { display: flex; }
         .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
 
         /* תוכן הפרויקט */
-        .project-title-area { margin-top: 40px; }
-        h1 { font-size: 24px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
-
         .project-meta { 
-            max-width: 900px; margin: 40px auto 20px; padding: 0 5%; 
+            max-width: 900px; margin: 60px auto 20px; padding: 0 5%; 
             display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; 
             font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px;
         }
         .meta-item b { color: var(--main); text-transform: uppercase; font-weight: 600; margin-left: 6px; }
 
-        .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--text); line-height: 1.6; text-align: center; }
+        .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--text); line-height: 1.6; }
 
         .content { max-width: 1200px; margin: 0 auto; padding: 0 5%; display: flex; flex-direction: column; align-items: center; }
         .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
@@ -79,12 +91,14 @@
 
         @media (max-width: 768px) {
             header { height: 130px; }
+            body.scrolled header { height: 70px; }
+            .sticky-project-title { font-size: 14px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <header id="main-header">
         <div class="nav-wrapper">
             <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
             <nav class="menu-dropdown" id="dropdown">
@@ -93,15 +107,14 @@
                 <a href="contact.html">Contact</a>
             </nav>
         </div>
+        
         <div class="brand">
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <span class="sub-logo">Exhibition Architecture</span>
         </div>
-    </header>
 
-    <div class="project-title-area">
-        <h1 id="project-title">Loading...</h1>
-    </div>
+        <div class="sticky-project-title" id="sticky-title"></div>
+    </header>
 
     <div class="project-meta" id="project-meta"></div>
     <div class="project-description" id="project-desc"></div>
@@ -115,8 +128,9 @@
         const folder = params.get('folder'), title = params.get('title'), year = params.get('year'), role = params.get('role'), curator = params.get('curator'), desc = params.get('desc');
 
         if (folder && title) {
-            document.getElementById('project-title').innerText = decodeURIComponent(title);
-            document.title = decodeURIComponent(title) + " | Ariel Armoni";
+            const decodedTitle = decodeURIComponent(title);
+            document.getElementById('sticky-title').innerText = decodedTitle;
+            document.title = decodedTitle + " | Ariel Armoni";
 
             const meta = document.getElementById('project-meta');
             if (year && year !== 'undefined' && year !== '') meta.innerHTML += `<div class="meta-item"><b>Year</b> ${year}</div>`;
@@ -142,7 +156,16 @@
             }
         }
 
-        // לוגיקה לתפריט המבורגר
+        // לוגיקה להחלפת כותרת בגלילה
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        });
+
+        // לוגיקה לתפריט
         const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
         btn.addEventListener('click', () => {
             dropdown.classList.toggle('active');
