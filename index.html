@@ -5,114 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ariel Armoni | Architecture & Exhibition Design</title>
     <style>
-        /* הגדרות כלליות */
         :root {
             --bg-color: #ffffff;
-            --text-main: #1a1a1a;
+            --text-main: #000000;
             --text-muted: #888888;
-            --grid-gap: 15px;
+            --spacing: 40px;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif; /* פונט נקי יותר */
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* תפריט עליון */
+        /* תפריט עליון - הפוך כפי שביקשת */
         header {
-            padding: 50px 5% 30px;
+            padding: 60px 5%;
             display: flex;
+            flex-direction: row-reverse; /* התפריט מימין, השם משמאל */
             justify-content: space-between;
-            align-items: baseline;
-            position: sticky;
-            top: 0;
-            background: rgba(255,255,255,0.9);
-            z-index: 1000;
+            align-items: center;
         }
 
         .logo {
-            font-size: 22px;
-            font-weight: 500;
-            letter-spacing: 1.5px;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 3px;
             text-decoration: none;
             color: var(--text-main);
+            text-transform: uppercase;
         }
 
         nav a {
-            margin-right: 25px;
+            margin-left: 30px;
             text-decoration: none;
             color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 400;
-            transition: color 0.3s;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
         }
 
-        nav a:hover {
-            color: var(--text-main);
-        }
+        nav a:hover { color: var(--text-main); }
 
-        /* גריד הפרויקטים */
+        /* גריד הפרויקטים - מותאם למראה של Carbonmade */
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: var(--grid-gap);
-            padding: 0 var(--grid-gap) 50px;
+            grid-template-columns: repeat(auto-fill, minmax(45%, 1fr)); /* תמונות גדולות יותר */
+            gap: 20px;
+            padding: 0 5% 100px;
         }
 
         .project-card {
             position: relative;
-            aspect-ratio: 4 / 3;
             overflow: hidden;
+            aspect-ratio: 16 / 10;
             background-color: #f9f9f9;
-            cursor: pointer;
         }
 
         .project-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        /* אפקט מעבר עכבר - טקסט על התמונה */
+        /* אפקט ה-Hover העדין של Carbonmade */
         .project-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9); /* רקע לבן שקוף במעבר עכבר */
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease;
         }
 
-        .project-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .project-card:hover .project-overlay {
-            opacity: 1;
-        }
+        .project-card:hover img { transform: scale(1.05); }
+        .project-card:hover .project-overlay { opacity: 1; }
 
         .project-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 300;
-            text-align: center;
-            padding: 0 20px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .project-category {
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         /* התאמה לנייד */
         @media (max-width: 768px) {
-            header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            nav a { margin-right: 0; margin-left: 15px; }
+            header { flex-direction: column; padding: 40px 5%; gap: 20px; text-align: center; }
+            nav a { margin: 0 10px; }
             .portfolio-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -122,38 +115,32 @@
 <header>
     <a href="#" class="logo">ARIEL ARMONI</a>
     <nav>
-        <a href="#projects">PROJECTS</a>
-        <a href="#about">ABOUT</a>
-        <a href="#contact">CONTACT</a>
+        <a href="#">PROJECTS</a>
+        <a href="#">ABOUT</a>
+        <a href="#">CONTACT</a>
     </nav>
 </header>
 
-<main class="portfolio-grid" id="projects">
+<main class="portfolio-grid">
     <div class="project-card">
-        <img src="https://via.placeholder.com/800x600" alt="Exhibition Architecture">
+        <img src="images/project1.jpg" alt="Exhibition Name">
         <div class="project-overlay">
-            <div class="project-title">Haifa Museum of Art - Renewal</div>
-        </div>
-    </div>
-
-    <div class="project-card">
-        <img src="https://via.placeholder.com/800x600" alt="Exhibition Architecture">
-        <div class="project-overlay">
-            <div class="project-title">Desktop: A Physical Exhibition</div>
-        </div>
-    </div>
-
-    <div class="project-card">
-        <img src="https://via.placeholder.com/800x600" alt="Exhibition Architecture">
-        <div class="project-overlay">
-            <div class="project-title">Wonders of the Deep</div>
+            <div class="project-title">Haifa Museum of Art</div>
+            <div class="project-category">Exhibition Architecture</div>
         </div>
     </div>
     
-    </main>
+    <div class="project-card">
+        <img src="images/project2.jpg" alt="Exhibition Name">
+        <div class="project-overlay">
+            <div class="project-title">Wonders of the Deep</div>
+            <div class="project-category">Architecture</div>
+        </div>
+    </div>
+</main>
 
 <footer>
-    <p style="text-align: center; color: #ccc; font-size: 12px; padding: 40px;">&copy; 2024 Ariel Armoni. All rights reserved.</p>
+    <p style="text-align: center; color: #eee; font-size: 11px; padding: 40px; letter-spacing: 1px;">&copy; 2026 ARIEL ARMONI</p>
 </footer>
 
 </body>
