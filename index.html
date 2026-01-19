@@ -127,62 +127,45 @@
     </div>
 
     <script>
-        // רשימת התיקיות בלבד בסדר שבו תרצה שיופיעו
+        // רשימת התיקיות בלבד
         const projectFolders = [
-            "The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words", 
-            "Haifa-Museum-of-Art---Renewal", "Adrian-Paci_-Still-Voices", 
-            "Wandering-Dreams---Headrests-from-Africa", "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am",
-            "Wonders-of-the-Deep", "My-Own-Room---The-BFAMI-Family-Gallery",
-            "Efrat-Natan---Museum-Villa-Stuck,-Munich", "Desktop_-A-Physical-Exhibition-about-a-Digital-Era",
-            "Yael-Bartana---Redemption-Now", "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden",
-            "Back-to-Aleppo---A-Virtual-Reality-Tour", "Doug-Aitken---Flags-and-Debris",
-            "Resting-Bitch-_-Sharon-Balaban", "Guy-Ben-Ner_-Go-Back-Where-U-Came-From",
-            "Vital-Signs", "Tell-Me-More", "Green-Through-and-Through",
-            "COLOR", "Eternal-Spring-_-Mambush-Tapestry-Workshop",
-            "Bella-Brisel_-Waters-from-Waters", "Everyday-Wonder---TAAD-Show",
-            "Africa-Calling", "6-Exhibitions", "Ilit-Azoulai---No-Things-Dies",
-            "Gil-Marco-Shani---Buses", "In-Full-Color---60-Years-of-Design-by-Dan-Reisinger",
-            "Efrat-Natan---Whitewash-and-Tar"
+            "Wonders-of-the-Deep", "The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words"
+            // פשוט הוסף כאן את שמות התיקיות לפי הסדר שתרצה
         ];
 
         const grid = document.getElementById('portfolio-grid');
         const sideList = document.getElementById('side-project-list');
 
-        async function loadProjects() {
-            for (const folder of projectFolders) {
+        async function loadContent() {
+            for (const f of projectFolders) {
                 try {
-                    const response = await fetch(`images/${folder}/info.txt`);
-                    const text = await response.text();
+                    const res = await fetch(`images/${f}/info.txt`);
+                    const text = await res.text();
                     const lines = text.split('\n');
-                    
-                    const data = {
-                        title: lines[0]?.trim() || folder,
-                        year: lines[1]?.trim() || "",
-                        role: lines[2]?.trim() || "",
-                        curator: lines[3]?.trim() || "",
-                        desc: lines[4]?.trim() || ""
-                    };
+                    const projectTitle = lines[0].trim();
 
-                    const linkUrl = `project.html?folder=${folder}&title=${encodeURIComponent(data.title)}&year=${data.year}&role=${encodeURIComponent(data.role)}&curator=${encodeURIComponent(data.curator)}&desc=${encodeURIComponent(data.desc)}`;
+                    const linkUrl = `project.html?folder=${f}`;
                     
                     // הוספה לאינדקס
-                    sideList.innerHTML += `<a href="${linkUrl}">${data.title}</a>`;
+                    sideList.innerHTML += `<a href="${linkUrl}">${projectTitle}</a>`;
                     
                     // הוספה לגריד
-                    grid.innerHTML += `
-                        <a href="${linkUrl}" class="project-link">
-                            <div class="project-card">
-                                <img src="images/${folder}/cover.jpg" alt="${data.title}">
-                                <div class="project-overlay">
-                                    <div class="project-title">${data.title}</div>
+                    if (grid) {
+                        grid.innerHTML += `
+                            <a href="${linkUrl}" class="project-link">
+                                <div class="project-card">
+                                    <img src="images/${f}/cover.jpg" alt="${projectTitle}">
+                                    <div class="project-overlay">
+                                        <div class="project-title">${projectTitle}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>`;
-                } catch (e) { console.error("Error loading project:", folder); }
+                            </a>`;
+                    }
+                } catch (e) { console.error("Error loading info.txt in", f); }
             }
         }
 
-        loadProjects();
+        loadContent();
 
         // לוגיקה לתפריט
         const menuBtn = document.getElementById('menu-btn');
