@@ -8,7 +8,6 @@
         :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
         * { box-sizing: border-box; }
         
-        /* מניעת גלילה אופקית כשהתפריט פתוח */
         html, body { 
             margin: 0; padding: 0; 
             font-family: 'Inter', sans-serif; 
@@ -17,7 +16,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* תפריט הצד - ממוקם מחוץ למסך משמאל */
+        /* תפריט הצד - קבוע בצד שמאל */
         #side-nav {
             position: fixed;
             top: 0;
@@ -28,35 +27,39 @@
             z-index: 3000;
             padding: 40px 30px;
             overflow-y: auto;
-            transition: left 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             text-align: left;
             border-right: 1px solid rgba(0,0,0,0.05);
-            direction: ltr; /* שמות הפרויקטים באנגלית */
+            direction: ltr;
         }
 
-        /* עטיפת האתר כולה */
+        /* עטיפת האתר - במקום לזוז, היא משנה רוחב */
         #site-wrapper {
             position: relative;
             width: 100%;
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            margin-left: 0;
+            transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1), margin-left 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             background: var(--bg);
             z-index: 1000;
         }
 
-        /* כשהתפריט פתוח - האתר זז ימינה */
+        /* כשהתפריט פתוח - האתר מתכווץ */
         body.nav-open #side-nav { left: 0; }
-        body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
+        body.nav-open #site-wrapper { 
+            width: calc(100% - var(--nav-width)); 
+            margin-left: var(--nav-width); 
+        }
 
-        /* עיצוב רשימת הפרויקטים בתפריט */
+        /* עיצוב התפריט */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         
         .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
         .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
-        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
+        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: 0.2s; }
         .project-list-nav a:hover { color: var(--main); }
 
-        /* Header קבוע */
+        /* Header */
         header {
             min-height: 100px; padding-top: 40px; padding-bottom: 8px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -75,11 +78,16 @@
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
 
-        /* גריד */
+        /* גריד - יתארגן מחדש כשהעמוד מתכווץ */
         .portfolio-grid { 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; 
-            padding: 40px 5% 100px; max-width: 1600px; margin: 0 auto; 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px; 
+            padding: 40px 5% 100px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
         }
+
         .project-link { text-decoration: none; color: inherit; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -91,12 +99,24 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
 
+        /* במצב כיווץ למסכים בינוניים, הגריד יעבור ל-2 עמודות */
+        body.nav-open .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+
+        @media (max-width: 1024px) { 
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); } 
+            body.nav-open .portfolio-grid { grid-template-columns: 1fr; }
+        }
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
             .nav-wrapper { top: 32px; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .logo { font-size: 20px; }
-            :root { --nav-width: 260px; }
+            /* במובייל נעדיף את הדחיפה הקודמת כי אין מספיק רוחב להתכווצות */
+            body.nav-open #site-wrapper { 
+                width: 100%; 
+                transform: translateX(var(--nav-width));
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -129,6 +149,7 @@
     </div>
 
     <script>
+        // רשימת פרויקטים
         const projectsData = [
             { folder: "The-Shadow-of-Color", title: "The Shadow of Color", year: "2024", role: "Exhibition Design", curator: "Limor Alpern", description: "Otto Treumann retrospective." },
             { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
@@ -183,7 +204,6 @@
             }
         });
 
-        // סגירה בלחיצה על כל מקום באתר
         document.addEventListener('click', (e) => {
             if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
                 document.body.classList.remove('nav-open');
