@@ -52,7 +52,6 @@
         /* עיצוב התפריט */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-        
         .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
         .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
         .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: 0.2s; }
@@ -77,16 +76,11 @@
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
 
-        /* גריד פרויקטים */
+        /* גריד */
         .portfolio-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 30px; 
-            padding: 40px 5% 100px; 
-            max-width: 1600px; 
-            margin: 0 auto; 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; 
+            padding: 40px 5% 100px; max-width: 1600px; margin: 0 auto; 
         }
-
         .project-link { text-decoration: none; color: inherit; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -98,13 +92,6 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
 
-        /* התאמות גריד כשהתפריט פתוח */
-        body.nav-open .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
-
-        @media (max-width: 1024px) { 
-            .portfolio-grid { grid-template-columns: repeat(2, 1fr); } 
-            body.nav-open .portfolio-grid { grid-template-columns: 1fr; }
-        }
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
             .nav-wrapper { top: 32px; }
@@ -129,68 +116,75 @@
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
+                <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
             </div>
             <div class="brand">
                 <a href="index.html" class="logo">ARIEL ARMONI</a>
                 <span class="sub-logo">Exhibition Architecture</span>
             </div>
         </header>
-
         <main class="portfolio-grid" id="portfolio-grid"></main>
     </div>
 
     <script>
-        const projectsData = [
-            { folder: "The-Shadow-of-Color", 
-             title: "The Shadow of Color", 
-             for: "Israel Museum Jerusalem",
-             year: "2024", 
-             role: "Exhibition Design", 
-             curator: "Limor Alpern", 
-             description: "Otto Treumann retrospective." },
-            { folder: "We-The-People", title: "We The People", year: "2023", role: "Exhibition Design", curator: "Joshua Simon", description: "Group exhibition at the Haifa Museum of Art." },
-            { folder: "A-Treasury-of-Words", title: "A Treasury of Words", year: "2023", role: "Exhibition Design", curator: "Netta Assaf", description: "Permanent exhibition at the National Library of Israel." },
-            { folder: "Haifa-Museum-of-Art---Renewal", title: "Haifa Museum of Art – Renewal", year: "2023", role: "Architectural Planning", curator: "", description: "Renewal of the museum's entrance floor." },
-            { folder: "Adrian-Paci_-Still-Voices", title: "Adrian Paci – Still Voices", year: "2022", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Wandering-Dreams---Headrests-from-Africa", title: "Wandering Dreams", year: "2022", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am", title: "The Last Photograph", year: "2022", role: "Exhibition Design", curator: "Noam Gal", description: "Ran Tal film installation." },
-            { folder: "Wonders-of-the-Deep", title: "Wonders of the Deep", year: "2022", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "My-Own-Room---The-BFAMI-Family-Gallery", title: "My Own Room", year: "2022", role: "Exhibition Design", curator: "Efrat Bar-Nir", description: "Family gallery at the Israel Museum." },
-            { folder: "Efrat-Natan---Museum-Villa-Stuck,-Munich", title: "Efrat Natan – Museum Villa Stuck", year: "2022", role: "Exhibition Design", curator: "Verena Hein", description: "Solo exhibition in Munich." },
-            { folder: "Desktop_-A-Physical-Exhibition-about-a-Digital-Era", title: "Desktop Exhibition", year: "2022", role: "Exhibition Design", curator: "Revital Ben-Asher Peretz", description: "Exhibition at Artport Tel Aviv." },
-            { folder: "Yael-Bartana---Redemption-Now", title: "Yael Bartana – Redemption Now", year: "2021", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Solo exhibition at the Jewish Museum Berlin." },
-            { folder: "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden", title: "Ruth Dorrit Yacoby", year: "2021", role: "Exhibition Design", curator: "Vardit Gross", description: "Exhibition at Artport Tel Aviv." },
-            { folder: "Back-to-Aleppo---A-Virtual-Reality-Tour", title: "Back to Aleppo", year: "2021", role: "Exhibition Design", curator: "Ariella Amar", description: "Virtual reality tour of the Great Synagogue." },
-            { folder: "Doug-Aitken---Flags-and-Debris", title: "Doug Aitken – Flags and Debris", year: "2021", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Exhibition at the Israel Museum." },
-            { folder: "Resting-Bitch-_-Sharon-Balaban", title: "Sharon Balaban", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Guy-Ben-Ner_-Go-Back-Where-U-Came-From", title: "Guy Ben Ner", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Vital-Signs", title: "Vital Signs", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Group exhibition at the Haifa Museum of Art." },
-            { folder: "Tell-Me-More", title: "Tell Me More", year: "2021", role: "Exhibition Design", curator: "Shira Friedman", description: "Exhibition at the Jerusalem Print Workshop." },
-            { folder: "Green-Through-and-Through", title: "Green Through and Through", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "COLOR", title: "COLOR", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "Eternal-Spring-_-Mambush-Tapestry-Workshop", title: "Eternal Spring", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Bella-Brisel_-Waters-from-Waters", title: "Bella Brisel", year: "2021", role: "Exhibition Design", curator: "Shira Friedman", description: "Exhibition at the Jerusalem Print Workshop." },
-            { folder: "Everyday-Wonder---TAAD-Show", title: "Everyday Wonder", year: "2021", role: "Exhibition Design", curator: "Kobi Ben-Meir", description: "Exhibition at the Haifa Museum of Art." },
-            { folder: "Africa-Calling", title: "Africa Calling", year: "2021", role: "Exhibition Design", curator: "Galit Bennett", description: "Exhibition at the Israel Museum." },
-            { folder: "6-Exhibitions", title: "6 Exhibitions", year: "2021", role: "Exhibition Design", curator: "Dr. Kobi Ben-Meir", description: "New exhibitions at the Haifa Museum of Art." },
-            { folder: "Ilit-Azoulai---No-Things-Dies", title: "Ilit Azoulai – No Things Dies", year: "2019", role: "Exhibition Design", curator: "Dr. Noam Gal", description: "Exhibition at the Israel Museum, Jerusalem." },
-            { folder: "Gil-Marco-Shani---Buses", title: "Gil Marco Shani – Buses", year: "2018", role: "Exhibition Design", curator: "Aya Miron", description: "Site-specific installation at the Israel Museum." },
-            { folder: "In-Full-Color---60-Years-of-Design-by-Dan-Reisinger", title: "In Full Color – Dan Reisinger", year: "2017", role: "Exhibition Design", curator: "Adi Shelach", description: "Retrospective at the Israel Museum." },
-            { folder: "Efrat-Natan---Whitewash-and-Tar", title: "Efrat Natan – Whitewash and Tar", year: "2016", role: "Exhibition Design", curator: "Vardit Gross", description: "Solo exhibition at the Israel Museum, Jerusalem." }
+        // רשימת התיקיות בלבד בסדר שבו תרצה שיופיעו
+        const projectFolders = [
+            "The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words", 
+            "Haifa-Museum-of-Art---Renewal", "Adrian-Paci_-Still-Voices", 
+            "Wandering-Dreams---Headrests-from-Africa", "The-Last-Photograph_-Ran-Tal-After-Micha-Bar-Am",
+            "Wonders-of-the-Deep", "My-Own-Room---The-BFAMI-Family-Gallery",
+            "Efrat-Natan---Museum-Villa-Stuck,-Munich", "Desktop_-A-Physical-Exhibition-about-a-Digital-Era",
+            "Yael-Bartana---Redemption-Now", "Ruth-Dorrit-Yacoby---The-Door-to-the-Secret-Garden",
+            "Back-to-Aleppo---A-Virtual-Reality-Tour", "Doug-Aitken---Flags-and-Debris",
+            "Resting-Bitch-_-Sharon-Balaban", "Guy-Ben-Ner_-Go-Back-Where-U-Came-From",
+            "Vital-Signs", "Tell-Me-More", "Green-Through-and-Through",
+            "COLOR", "Eternal-Spring-_-Mambush-Tapestry-Workshop",
+            "Bella-Brisel_-Waters-from-Waters", "Everyday-Wonder---TAAD-Show",
+            "Africa-Calling", "6-Exhibitions", "Ilit-Azoulai---No-Things-Dies",
+            "Gil-Marco-Shani---Buses", "In-Full-Color---60-Years-of-Design-by-Dan-Reisinger",
+            "Efrat-Natan---Whitewash-and-Tar"
         ];
 
         const grid = document.getElementById('portfolio-grid');
         const sideList = document.getElementById('side-project-list');
 
-        projectsData.forEach(p => {
-            const linkUrl = `project.html?folder=${p.folder}&title=${encodeURIComponent(p.title)}&year=${p.year}&role=${encodeURIComponent(p.role)}&curator=${encodeURIComponent(p.curator)}&desc=${encodeURIComponent(p.description)}`;
-            grid.innerHTML += `<a href="${linkUrl}" class="project-link"><div class="project-card"><img src="images/${p.folder}/cover.jpg" alt="${p.title}"><div class="project-overlay"><div class="project-title">${p.title}</div></div></div></a>`;
-            sideList.innerHTML += `<a href="${linkUrl}">${p.title}</a>`;
-        });
+        async function loadProjects() {
+            for (const folder of projectFolders) {
+                try {
+                    const response = await fetch(`images/${folder}/info.txt`);
+                    const text = await response.text();
+                    const lines = text.split('\n');
+                    
+                    const data = {
+                        title: lines[0]?.trim() || folder,
+                        year: lines[1]?.trim() || "",
+                        role: lines[2]?.trim() || "",
+                        curator: lines[3]?.trim() || "",
+                        desc: lines[4]?.trim() || ""
+                    };
 
+                    const linkUrl = `project.html?folder=${folder}&title=${encodeURIComponent(data.title)}&year=${data.year}&role=${encodeURIComponent(data.role)}&curator=${encodeURIComponent(data.curator)}&desc=${encodeURIComponent(data.desc)}`;
+                    
+                    // הוספה לאינדקס
+                    sideList.innerHTML += `<a href="${linkUrl}">${data.title}</a>`;
+                    
+                    // הוספה לגריד
+                    grid.innerHTML += `
+                        <a href="${linkUrl}" class="project-link">
+                            <div class="project-card">
+                                <img src="images/${folder}/cover.jpg" alt="${data.title}">
+                                <div class="project-overlay">
+                                    <div class="project-title">${data.title}</div>
+                                </div>
+                            </div>
+                        </a>`;
+                } catch (e) { console.error("Error loading project:", folder); }
+            }
+        }
+
+        loadProjects();
+
+        // לוגיקה לתפריט
         const menuBtn = document.getElementById('menu-btn');
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -198,9 +192,7 @@
             const spans = menuBtn.querySelectorAll('span');
             if(document.body.classList.contains('nav-open')) {
                 spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
-            } else {
-                spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
-            }
+            } else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
         });
 
         document.addEventListener('click', (e) => {
