@@ -5,107 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ariel Armoni | Exhibition Architecture</title>
     <style>
-        :root { --bg: #fff; --main: #000; --muted: #888; }
+        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; }
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* Header דק וקבוע - הקו מסתיים בדיוק מתחת לטקסט */
-        header {
-            min-height: 120px;
-            padding-top: 40px;
-            padding-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            position: sticky;
+        /* קונטיינר שעוטף את כל האתר ומאפשר הזזה שלו */
+        #site-wrapper {
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            width: 100%;
+            min-height: 100vh;
+            background: var(--bg);
+        }
+
+        /* תפריט צד (נמצא "מחוץ" למסך משמאל) */
+        .side-nav {
+            position: fixed;
             top: 0;
-            background: rgba(255, 255, 255, 0.98); 
-            z-index: 2000;
+            left: calc(-1 * var(--nav-width)); /* חבוי משמאל */
+            width: var(--nav-width);
+            height: 100%;
+            background: var(--bg);
+            z-index: 3000;
+            padding: 40px 30px;
+            overflow-y: auto;
+            transition: left 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            text-align: left;
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* מצב פתוח */
+        body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
+        body.nav-open .side-nav { left: 0; }
+
+        /* עיצוב התפריט */
+        .side-nav h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; font-weight: 500; }
+        .nav-links { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
+        .nav-links a { font-size: 13px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .project-list-nav { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #eee; padding-top: 20px; }
+        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: 0.2s; }
+        .project-list-nav a:hover { color: var(--main); }
+
+        /* Header - נשאר זהה בעיצובו */
+        header {
+            min-height: 100px; padding-top: 40px; padding-bottom: 8px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .brand {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
+        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; }
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; line-height: 1; }
+        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
 
-        /* ניהול התפריט - מיושר לקו התחתון של ה-Header */
-        .nav-wrapper {
-            position: absolute;
-            left: 5%;
-            bottom: 15px; 
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
+        .nav-wrapper { position: absolute; left: 5%; top: 43px; display: flex; align-items: center; }
         .menu-toggle {
             display: flex; flex-direction: column; justify-content: space-between;
             width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0;
-            margin-bottom: 10px;
         }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        .menu-dropdown { display: none; flex-direction: column; text-align: left; background: transparent; padding-top: 5px; }
-        .menu-dropdown.active { display: flex; }
-        .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* גריד הפרויקטים - 3 בשורה */
+        /* גריד הפרויקטים */
         .portfolio-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 30px; 
-            padding: 40px 5% 100px; 
-            max-width: 1600px; 
-            margin: 0 auto; 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; 
+            padding: 40px 5% 100px; max-width: 1600px; margin: 0 auto; 
         }
-
         .project-link { text-decoration: none; color: inherit; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
-        
         .project-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.94);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.94); display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: 0.4s; padding: 20px; text-align: center;
         }
-
-        .project-card:hover img { transform: scale(1.05); }
         .project-card:hover .project-overlay { opacity: 1; }
-        .project-title { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; }
+        .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
 
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
-            header { min-height: 100px; padding-top: 30px; }
+            header { min-height: 80px; padding-top: 30px; }
+            .nav-wrapper { top: 32px; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .logo { font-size: 20px; }
+            :root { --nav-width: 250px; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="nav-wrapper">
-            <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
-            <nav class="menu-dropdown" id="dropdown">
-                <a href="index.html">Projects</a>
-                <a href="about.html">About</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-        </div>
-        <div class="brand">
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <span class="sub-logo">Exhibition Architecture</span>
-        </div>
-    </header>
 
-    <main class="portfolio-grid" id="portfolio-grid"></main>
+    <nav class="side-nav">
+        <div class="nav-links">
+            <a href="index.html">Projects</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <h3>Project Index</h3>
+        <div class="project-list-nav" id="side-project-list">
+            </div>
+    </nav>
+
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            <div class="brand">
+                <a href="index.html" class="logo">ARIEL ARMONI</a>
+                <span class="sub-logo">Exhibition Architecture</span>
+            </div>
+        </header>
+
+        <main class="portfolio-grid" id="portfolio-grid"></main>
+    </div>
 
     <script>
         const projectsData = [
@@ -142,18 +155,35 @@
         ];
 
         const grid = document.getElementById('portfolio-grid');
+        const sideList = document.getElementById('side-project-list');
+
         projectsData.forEach(p => {
-            const link = `project.html?folder=${p.folder}&title=${encodeURIComponent(p.title)}&year=${p.year}&role=${encodeURIComponent(p.role)}&curator=${encodeURIComponent(p.curator)}&desc=${encodeURIComponent(p.description)}`;
-            grid.innerHTML += `<a href="${link}" class="project-link"><div class="project-card"><img src="images/${p.folder}/cover.jpg" alt="${p.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Cover+Missing'"><div class="project-overlay"><div class="project-title">${p.title}</div></div></div></a>`;
+            const linkUrl = `project.html?folder=${p.folder}&title=${encodeURIComponent(p.title)}&year=${p.year}&role=${encodeURIComponent(p.role)}&curator=${encodeURIComponent(p.curator)}&desc=${encodeURIComponent(p.description)}`;
+            
+            // הוספה לגריד הראשי
+            grid.innerHTML += `<a href="${linkUrl}" class="project-link"><div class="project-card"><img src="images/${p.folder}/cover.jpg" alt="${p.title}"><div class="project-overlay"><div class="project-title">${p.title}</div></div></div></a>`;
+            
+            // הוספה לרשימה בתפריט הצד
+            sideList.innerHTML += `<a href="${linkUrl}">${p.title}</a>`;
         });
 
-        const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
-        btn.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
-            const spans = btn.querySelectorAll('span');
-            if(dropdown.classList.contains('active')) {
+        // לוגיקה לפתיחת התפריט
+        const menuBtn = document.getElementById('menu-btn');
+        menuBtn.addEventListener('click', () => {
+            document.body.classList.toggle('nav-open');
+            const spans = menuBtn.querySelectorAll('span');
+            if(document.body.classList.contains('nav-open')) {
                 spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
             } else {
+                spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
+            }
+        });
+
+        // סגירת תפריט בלחיצה על התוכן
+        document.getElementById('site-wrapper').addEventListener('click', () => {
+            if(document.body.classList.contains('nav-open')) {
+                document.body.classList.remove('nav-open');
+                const spans = menuBtn.querySelectorAll('span');
                 spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
             }
         });
