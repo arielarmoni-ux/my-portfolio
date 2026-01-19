@@ -7,23 +7,23 @@
     <style>
         :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-
-        /* קונטיינר שעוטף את כל האתר ומאפשר הזזה שלו */
-        #site-wrapper {
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-            width: 100%;
-            min-height: 100vh;
-            background: var(--bg);
+        
+        /* מניעת גלילה אופקית כשהתפריט פתוח */
+        html, body { 
+            margin: 0; padding: 0; 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            overflow-x: hidden; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* תפריט צד (נמצא "מחוץ" למסך משמאל) */
-        .side-nav {
+        /* תפריט הצד - ממוקם מחוץ למסך משמאל */
+        #side-nav {
             position: fixed;
             top: 0;
-            left: calc(-1 * var(--nav-width)); /* חבוי משמאל */
+            left: calc(-1 * var(--nav-width));
             width: var(--nav-width);
-            height: 100%;
+            height: 100vh;
             background: var(--bg);
             z-index: 3000;
             padding: 40px 30px;
@@ -31,22 +31,32 @@
             transition: left 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             text-align: left;
             border-right: 1px solid rgba(0,0,0,0.05);
+            direction: ltr; /* שמות הפרויקטים באנגלית */
         }
 
-        /* מצב פתוח */
-        body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
-        body.nav-open .side-nav { left: 0; }
+        /* עטיפת האתר כולה */
+        #site-wrapper {
+            position: relative;
+            width: 100%;
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            background: var(--bg);
+            z-index: 1000;
+        }
 
-        /* עיצוב התפריט */
-        .side-nav h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; font-weight: 500; }
-        .nav-links { display: flex; flex-direction: column; gap: 10px; margin-bottom: 40px; }
-        .nav-links a { font-size: 13px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; }
+        /* כשהתפריט פתוח - האתר זז ימינה */
+        body.nav-open #side-nav { left: 0; }
+        body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
+
+        /* עיצוב רשימת הפרויקטים בתפריט */
+        .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
+        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         
-        .project-list-nav { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #eee; padding-top: 20px; }
-        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: 0.2s; }
+        .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
+        .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
+        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
         .project-list-nav a:hover { color: var(--main); }
 
-        /* Header - נשאר זהה בעיצובו */
+        /* Header קבוע */
         header {
             min-height: 100px; padding-top: 40px; padding-bottom: 8px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -54,18 +64,18 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
-
-        .nav-wrapper { position: absolute; left: 5%; top: 43px; display: flex; align-items: center; }
+        .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
         .menu-toggle {
             display: flex; flex-direction: column; justify-content: space-between;
             width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0;
         }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        /* גריד הפרויקטים */
+        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
+        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
+
+        /* גריד */
         .portfolio-grid { 
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; 
             padding: 40px 5% 100px; max-width: 1600px; margin: 0 auto; 
@@ -81,27 +91,25 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
 
-        @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
             .nav-wrapper { top: 32px; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .logo { font-size: 20px; }
-            :root { --nav-width: 250px; }
+            :root { --nav-width: 260px; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="side-nav">
+    <nav id="side-nav">
         <div class="nav-links">
             <a href="index.html">Projects</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </div>
-        <h3>Project Index</h3>
-        <div class="project-list-nav" id="side-project-list">
-            </div>
+        <div class="project-index-title">Project Index</div>
+        <div class="project-list-nav" id="side-project-list"></div>
     </nav>
 
     <div id="site-wrapper">
@@ -159,17 +167,13 @@
 
         projectsData.forEach(p => {
             const linkUrl = `project.html?folder=${p.folder}&title=${encodeURIComponent(p.title)}&year=${p.year}&role=${encodeURIComponent(p.role)}&curator=${encodeURIComponent(p.curator)}&desc=${encodeURIComponent(p.description)}`;
-            
-            // הוספה לגריד הראשי
             grid.innerHTML += `<a href="${linkUrl}" class="project-link"><div class="project-card"><img src="images/${p.folder}/cover.jpg" alt="${p.title}"><div class="project-overlay"><div class="project-title">${p.title}</div></div></div></a>`;
-            
-            // הוספה לרשימה בתפריט הצד
             sideList.innerHTML += `<a href="${linkUrl}">${p.title}</a>`;
         });
 
-        // לוגיקה לפתיחת התפריט
         const menuBtn = document.getElementById('menu-btn');
-        menuBtn.addEventListener('click', () => {
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             document.body.classList.toggle('nav-open');
             const spans = menuBtn.querySelectorAll('span');
             if(document.body.classList.contains('nav-open')) {
@@ -179,9 +183,9 @@
             }
         });
 
-        // סגירת תפריט בלחיצה על התוכן
-        document.getElementById('site-wrapper').addEventListener('click', () => {
-            if(document.body.classList.contains('nav-open')) {
+        // סגירה בלחיצה על כל מקום באתר
+        document.addEventListener('click', (e) => {
+            if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
                 document.body.classList.remove('nav-open');
                 const spans = menuBtn.querySelectorAll('span');
                 spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
