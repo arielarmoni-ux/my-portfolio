@@ -20,12 +20,10 @@
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        /* אזור המידע מה-info.txt */
         .project-meta { max-width: 900px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px; }
         .meta-item b { color: var(--main); text-transform: uppercase; font-weight: 600; margin-left: 6px; }
-        .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--main); line-height: 1.6; font-weight: 500; text-align: center; }
+        .project-description { max-width: 800px; margin: 0 auto 60 Hebrewpx; padding: 0 5%; font-size: 15px; color: var(--main); line-height: 1.6; font-weight: 500; text-align: center; }
 
-        /* גלריה */
         .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
         .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
 
@@ -37,7 +35,7 @@
 
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
-            .project-main-title { font-size: 18px; letter-spacing: 2px; }
+            .project-main-title { font-size: 18px; }
             body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
         }
     </style>
@@ -60,46 +58,49 @@
     </div>
 
     <script>
-        const projectFolders = ["Wonders-of-the-Deep", "The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words"];
-        const folder = new URLSearchParams(window.location.search).get('folder');
-
         async function init() {
             const sideList = document.getElementById('side-project-list');
-            for (const f of projectFolders) {
-                try {
-                    const res = await fetch(`images/${f}/info.txt`);
-                    const t = await res.text();
-                    sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
-                } catch(e) {}
-            }
+            const params = new URLSearchParams(window.location.search);
+            const folder = params.get('folder');
 
-            if (folder) {
-                try {
+            try {
+                const listRes = await fetch('list.txt');
+                const listText = await listRes.text();
+                const folders = listText.split('\n').filter(f => f.trim() !== "");
+
+                for (const f of folders) {
+                    const name = f.trim();
+                    try {
+                        const res = await fetch(`images/${name}/info.txt`);
+                        const t = await res.text();
+                        sideList.innerHTML += `<a href="project.html?folder=${name}">${t.split('\n')[0].trim()}</a>`;
+                    } catch(e) {}
+                }
+
+                if (folder) {
                     const res = await fetch(`images/${folder}/info.txt`);
-                    const text = await res.text();
-                    const lines = text.split('\n').filter(l => l.trim() !== "");
-                    
+                    const lines = (await res.text()).split('\n').filter(l => l.trim() !== "");
                     document.getElementById('project-title').innerText = lines[0];
-                    document.title = lines[0] + " | Ariel Armoni";
-
                     const meta = document.getElementById('project-meta');
+                    const desc = document.getElementById('project-desc');
+                    
                     for (let i = 1; i < lines.length; i++) {
                         const line = lines[i].trim();
-                        if (i === lines.length - 1) {
-                            document.getElementById('project-desc').innerText = line.replace(/Description:\s*/i, "");
-                        } else if (line.includes(":")) {
-                            const p = line.split(":");
-                            meta.innerHTML += `<div class="meta-item"><b>${p[0].trim()}</b> ${p.slice(1).join(":").trim()}</div>`;
+                        if (i === lines.length - 1) desc.innerText = line.replace(/Description:\s*/i, "");
+                        else if (line.includes(":")) {
+                            const [k, ...v] = line.split(":");
+                            meta.innerHTML += `<div class="meta-item"><b>${k.trim()}</b> ${v.join(":").trim()}</div>`;
                         }
                     }
 
                     const gal = document.getElementById('gallery');
-                    for (let i = 1; i <= 25; i++) {
-                        const img = new Image(); img.src = `images/${folder}/${i}.jpg`;
+                    for (let i = 1; i <= 30; i++) {
+                        const img = new Image();
+                        img.src = `images/${folder}/${i}.jpg`;
                         img.onload = () => gal.appendChild(img);
                     }
-                } catch(e) { console.error("Project load error"); }
-            }
+                }
+            } catch(e) { console.error("Init failed"); }
         }
         init();
 
