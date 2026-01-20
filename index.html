@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariel Armoni | Exhibition Architecture</title>
+    <title>Project | Ariel Armoni</title>
     <style>
         :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 320px; }
         * { box-sizing: border-box; }
@@ -15,84 +15,107 @@
         .clock-icon::after { content: ''; position: absolute; top: 50%; left: 50%; width: 1px; height: 7px; background: var(--main); transform-origin: bottom; animation: clock-spin 2s linear infinite; }
         @keyframes clock-spin { from { transform: translate(-50%, -100%) rotate(0deg); } to { transform: translate(-50%, -100%) rotate(360deg); } }
 
-        #site-wrapper { visibility: hidden; position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
+        /* Site Wrapper - אפקט כיווץ */
+        #site-wrapper { 
+            visibility: hidden; 
+            position: relative; 
+            width: 100%; 
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
+            z-index: 1000; 
+        }
+        body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
 
         /* Side Navigation */
         #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid #f0f0f0; direction: ltr; }
         body.nav-open #side-nav { left: 0; }
-        body.nav-open #site-wrapper { margin-left: var(--nav-width); }
 
-        /* Header & Logo */
-        header { min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid #f0f0f0; }
-        .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; line-height: 1; }
-        .sub-logo { font-size: 13px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; line-height: 1; }
+        /* Header */
+        header { position: relative; max-width: 1200px; margin: 0 auto; padding: 100px 5% 40px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .project-main-title { font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; color: var(--main); margin: 0; }
 
-        /* Hamburger to X - מיושר למרכז הלוגו בדף הבית */
-        .nav-wrapper { position: fixed; left: 5%; top: 62px; z-index: 4000; }
+        /* Menu Toggle - Absolute (נגלל עם הכותרת) */
+        .nav-wrapper { position: absolute; left: 5%; top: 103px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
-        
+        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
         body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
         body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* Grid */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px 5% 100px; max-width: 1600px; margin: 0 auto; }
-        .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
-        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
-        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 25px; text-align: center; }
-        .project-card:hover .project-overlay { opacity: 1; }
-        .project-title { font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
+        /* Arrows */
+        .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 24px; opacity: 0.3; transition: 0.3s; }
+        .nav-arrow:hover { opacity: 1; }
+        .nav-arrow.prev { left: 2%; }
+        .nav-arrow.next { right: 2%; }
+        .nav-arrow.hidden { display: none; }
 
-        /* Sidebar Typography */
+        /* Meta & Description */
+        .project-meta { max-width: 1200px; margin: 0 auto 30px; padding: 0 5%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 8px; font-size: 15px; color: var(--muted); direction: ltr; }
+        .meta-item { line-height: 1.4; }
+        .meta-item b { font-weight: 600; text-transform: none; color: var(--main); margin-right: 8px; }
+        .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
+        .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
+
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
-        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
-        .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
+        .nav-links a { font-size: 14px; text-decoration: none; color: #000; text-transform: uppercase; letter-spacing: 1.5px; }
         .project-list-nav { display: flex; flex-direction: column; gap: 14px; }
-        .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--muted); line-height: 1.4; }
-
-        @media (max-width: 768px) { body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; } .portfolio-grid { grid-template-columns: 1fr; } }
+        .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--muted); }
     </style>
 </head>
 <body>
     <div id="loader"><div class="clock-icon"></div></div>
+    <a href="#" id="prev-project" class="nav-arrow prev hidden">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow next hidden">&#8594;</a>
     <nav id="side-nav">
         <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-        <div class="project-index-title">Project Index</div>
         <div id="side-project-list" class="project-list-nav"></div>
     </nav>
     <div id="site-wrapper">
-        <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-        <header><a href="index.html" class="logo">ARIEL ARMONI</a><div class="sub-logo">Exhibition Architecture</div></header>
-        <main class="portfolio-grid" id="portfolio-grid"></main>
+        <header>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <h1 id="project-title" class="project-main-title"></h1>
+        </header>
+        <div id="project-meta" class="project-meta"></div>
+        <div id="project-desc" class="project-description"></div>
+        <main id="gallery" class="gallery"></main>
     </div>
     <script>
         const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-        async function loadContent() {
-            const grid = document.getElementById('portfolio-grid');
-            const sideList = document.getElementById('side-project-list');
-            try {
-                const response = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const text = await response.text();
-                const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-                for (const f of folders) {
-                    try {
-                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-                        if (!infoRes.ok) continue; 
-                        const it = await infoRes.text();
-                        const title = it.split('\n')[0].trim();
-                        sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
-                        grid.innerHTML += `<a href="project.html?folder=${f}"><div class="project-card"><img src="${baseURL}/images/${f}/cover.jpg" onerror="this.src='https://via.placeholder.com/800x600?text=${f}'"><div class="project-overlay"><div class="project-title">${title}</div></div></div></a>`;
-                    } catch(e) {}
-                }
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('site-wrapper').style.visibility = 'visible';
-            } catch(e) {}
+        async function init() {
+            const params = new URLSearchParams(window.location.search);
+            const folder = params.get('folder');
+            const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+            const folders = (await listRes.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+            const idx = folders.indexOf(folder);
+            if (idx > 0) { document.getElementById('prev-project').href = `project.html?folder=${folders[idx-1]}`; document.getElementById('prev-project').classList.remove('hidden'); }
+            if (idx < folders.length-1) { document.getElementById('next-project').href = `project.html?folder=${folders[idx+1]}`; document.getElementById('next-project').classList.remove('hidden'); }
+            
+            const side = document.getElementById('side-project-list');
+            for(const f of folders) {
+                const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                if(iR.ok) side.innerHTML += `<a href="project.html?folder=${f}">${(await iR.text()).split('\n')[0].trim()}</a>`;
+            }
+
+            const res = await fetch(`${baseURL}/images/${folder}/info.txt`);
+            const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
+            document.getElementById('project-title').innerText = lines[0];
+            const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc');
+            for(let i=1; i<lines.length; i++) {
+                if(lines[i].includes(":")) { 
+                    const [k, ...v] = lines[i].split(":"); 
+                    meta.innerHTML += `<div class="meta-item"><b>${k.trim()}</b> ${v.join(":").trim()}</div>`;
+                } else desc.innerText = lines[i];
+            }
+            const gal = document.getElementById('gallery');
+            for(let i=1; i<=30; i++) {
+                const img = new Image(); img.src = `${baseURL}/images/${folder}/${i}.jpg`;
+                img.onload = () => gal.appendChild(img);
+            }
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('site-wrapper').style.visibility = 'visible';
         }
-        loadContent();
-        const btn = document.getElementById('menu-btn');
-        btn.onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
-        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) document.body.classList.remove('nav-open'); };
+        init();
+        document.getElementById('menu-btn').onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
     </script>
 </body>
 </html>
