@@ -1,72 +1,68 @@
 <script>
-    async function init() {
+    async function initProject() {
         const sideList = document.getElementById('side-project-list');
         const params = new URLSearchParams(window.location.search);
-        const folder = params.get('folder');
+        const folder = params.get('folder'); // מקבל את שם התיקייה מהכתובת
 
         try {
-            // טעינת רשימת הפרויקטים לתפריט הצד
+            // 1. טעינת רשימת הפרויקטים מ-list.txt לבניית תפריט הצד
             const listRes = await fetch('list.txt');
             const listText = await listRes.text();
             const folders = listText.split('\n').filter(f => f.trim() !== "");
-
+            
             for (const f of folders) {
-                const name = f.trim();
+                const folderName = f.trim();
                 try {
-                    const res = await fetch(`images/${name}/info.txt`);
+                    // שואב את הכותרת היפה מתוך ה-info של כל פרויקט ברשימה
+                    const res = await fetch(`images/${folderName}/info.txt`);
                     const t = await res.text();
-                    sideList.innerHTML += `<a href="project.html?folder=${name}">${t.split('\n')[0].trim()}</a>`;
-                } catch(e) {}
+                    const title = t.split('\n')[0].trim();
+                    sideList.innerHTML += `<a href="project.html?folder=${folderName}">${title}</a>`;
+                } catch(e) {
+                    console.warn("Could not load menu item for:", folderName);
+                }
             }
 
-            // טעינת תוכן הפרויקט הנוכחי
+            // 2. טעינת תוכן הפרויקט הספציפי שבו אנו נמצאים
             if (folder) {
                 const res = await fetch(`images/${folder}/info.txt`);
+                if (!res.ok) throw new Error("Info file not found");
+                
                 const text = await res.text();
                 const lines = text.split('\n').filter(l => l.trim() !== "");
                 
-                // שורה 1 היא תמיד הכותרת
+                // כותרת הפרויקט (שורה 1)
                 document.getElementById('project-title').innerText = lines[0];
                 document.title = lines[0] + " | Ariel Armoni";
 
                 const metaContainer = document.getElementById('project-meta');
                 const descContainer = document.getElementById('project-desc');
                 
-                // רצים על שאר השורות
+                // עיבוד שאר השורות (מידע טכני מול תיאור)
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
-                    
                     if (line.includes(":")) {
-                        // אם יש נקודתיים - זה מידע טכני (Meta)
                         const [key, ...valueParts] = line.split(":");
                         const value = valueParts.join(":").trim();
                         metaContainer.innerHTML += `<div class="meta-item"><b>${key.trim()}</b> ${value}</div>`;
                     } else {
-                        // אם אין נקודתיים - זה התיאור (Description)
                         descContainer.innerText = line;
                     }
                 }
 
-                // טעינת תמונות
-                const gal = document.getElementById('gallery');
+                // 3. טעינת תמונות הפרויקט (1.jpg עד 30.jpg)
+                const gallery = document.getElementById('gallery');
                 for (let i = 1; i <= 30; i++) {
                     const img = new Image();
                     img.src = `images/${folder}/${i}.jpg`;
-                    img.onload = () => gal.appendChild(img);
+                    img.onload = () => gallery.appendChild(img);
+                    // אם התמונה לא קיימת, הדפדפן פשוט ידלג עליה
                 }
             }
-        } catch(e) { console.error("Error loading project"); }
+        } catch (e) {
+            console.error("Initialization failed:", e);
+        }
     }
-    init();
 
-    // לוגיקה לתפריט (נשארת ללא שינוי)
-    const btn = document.getElementById('menu-btn');
-    btn.onclick = (e) => {
-        e.stopPropagation(); document.body.classList.toggle('nav-open');
-        const s = btn.querySelectorAll('span');
-        if(document.body.classList.contains('nav-open')) {
-            s[0].style.transform = 'rotate(45deg) translate(4px, 4px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
-        } else { s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none'; }
-    };
-    document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click(); };
+    initProject();
 </script>
