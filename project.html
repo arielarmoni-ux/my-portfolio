@@ -10,33 +10,33 @@
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
         /* Loader */
-        #loader { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 5000; display: flex; justify-content: center; }
+        #loader { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 5000; }
         .clock-icon { width: 20px; height: 20px; border: 1px solid var(--main); border-radius: 50%; position: relative; }
         .clock-icon::after { content: ''; position: absolute; top: 50%; left: 50%; width: 1px; height: 7px; background: var(--main); transform-origin: bottom; animation: clock-spin 2s linear infinite; }
         @keyframes clock-spin { from { transform: translate(-50%, -100%) rotate(0deg); } to { transform: translate(-50%, -100%) rotate(360deg); } }
 
-        #project-content { visibility: hidden; }
+        /* Site Wrapper - אפקט דחיפה */
+        #site-wrapper { visibility: hidden; position: relative; width: 100%; transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
+        body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
 
         /* Side Navigation */
         #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid #f0f0f0; direction: ltr; }
         body.nav-open #side-nav { left: 0; }
-        #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
-        body.nav-open #site-wrapper { margin-left: var(--nav-width); }
 
         /* Header */
-        header { max-width: 1200px; margin: 0 auto; padding: 100px 5% 40px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        header { position: relative; max-width: 1200px; margin: 0 auto; padding: 100px 5% 40px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .project-main-title { font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; color: var(--main); margin: 0; }
-        
-        /* Menu Toggle */
-        .nav-wrapper { position: fixed; left: 5%; top: 53px; z-index: 4000; }
+
+        /* Menu Toggle - Absolute (לא יצוף על תמונות) */
+        .nav-wrapper { position: absolute; left: 5%; top: 103px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
+        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
         body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
         body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* Navigation Arrows - חצים קבועים בצדדים */
-        .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 24px; padding: 20px; transition: opacity 0.3s; opacity: 0.3; }
+        /* Arrows */
+        .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 24px; opacity: 0.3; transition: 0.3s; }
         .nav-arrow:hover { opacity: 1; }
         .nav-arrow.prev { left: 2%; }
         .nav-arrow.next { right: 2%; }
@@ -44,9 +44,9 @@
 
         /* Meta & Description */
         .project-meta { max-width: 1200px; margin: 0 auto 30px; padding: 0 5%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 8px; font-size: 15px; color: var(--muted); direction: ltr; }
-        .meta-item { width: 100%; line-height: 1.4; }
-        .meta-item b { color: var(--main); text-transform: none; font-weight: 600; font-size: 15px; margin-right: 8px; }
-        .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; color: var(--main); line-height: 1.8; text-align: left; direction: ltr; }
+        .meta-item { line-height: 1.4; }
+        .meta-item b { font-weight: 600; text-transform: none; color: var(--main); margin-right: 8px; }
+        .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
         
         .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
         .gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
@@ -57,108 +57,67 @@
         .project-list-nav { display: flex; flex-direction: column; gap: 14px; }
         .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--muted); line-height: 1.4; }
 
-        @media (max-width: 768px) { 
-            header, .project-meta, .project-description { align-items: center; text-align: center; } 
-            .nav-arrow { font-size: 18px; padding: 10px; }
-        }
+        @media (max-width: 768px) { header, .project-meta, .project-description { align-items: center; text-align: center; } }
     </style>
 </head>
 <body>
     <div id="loader"><div class="clock-icon"></div></div>
-
     <a href="#" id="prev-project" class="nav-arrow prev hidden">&#8592;</a>
     <a href="#" id="next-project" class="nav-arrow next hidden">&#8594;</a>
-
     <nav id="side-nav">
         <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div class="project-index-title">Project Index</div>
         <div id="side-project-list" class="project-list-nav"></div>
     </nav>
-
     <div id="site-wrapper">
-        <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-        <div id="project-content">
-            <header><h1 id="project-title" class="project-main-title"></h1></header>
-            <div id="project-meta" class="project-meta"></div>
-            <div id="project-desc" class="project-description"></div>
-            <main id="gallery" class="gallery"></main>
-        </div>
+        <header>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <h1 id="project-title" class="project-main-title"></h1>
+        </header>
+        <div id="project-meta" class="project-meta"></div>
+        <div id="project-desc" class="project-description"></div>
+        <main id="gallery" class="gallery"></main>
     </div>
-
     <script>
         const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-
         async function init() {
             const params = new URLSearchParams(window.location.search);
-            const currentFolder = params.get('folder');
-            if (!currentFolder) return;
-
-            try {
-                // 1. טעינת רשימת הפרויקטים לניווט ותפריט צד
-                const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const listText = await listRes.text();
-                const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-                
-                const sideList = document.getElementById('side-project-list');
-                const currentIndex = folders.indexOf(currentFolder);
-
-                // הגדרת חצים
-                if (currentIndex > 0) {
-                    const prevBtn = document.getElementById('prev-project');
-                    prevBtn.href = `project.html?folder=${folders[currentIndex - 1]}`;
-                    prevBtn.classList.remove('hidden');
-                }
-                if (currentIndex < folders.length - 1 && currentIndex !== -1) {
-                    const nextBtn = document.getElementById('next-project');
-                    nextBtn.href = `project.html?folder=${folders[currentIndex + 1]}`;
-                    nextBtn.classList.remove('hidden');
-                }
-
-                // בניית תפריט צד
-                for (const f of folders) {
-                    try {
-                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-                        if (infoRes.ok) {
-                            const it = await infoRes.text();
-                            sideList.innerHTML += `<a href="project.html?folder=${f}">${it.split('\n')[0].trim()}</a>`;
-                        }
-                    } catch(e) {}
-                }
-
-                // 2. טעינת הפרויקט הנוכחי
-                const res = await fetch(`${baseURL}/images/${currentFolder}/info.txt?v=${Date.now()}`);
-                const text = await res.text();
-                const lines = text.split('\n').map(l => l.trim()).filter(l => l !== "");
-                
-                document.getElementById('project-title').innerText = lines[0];
-                const meta = document.getElementById('project-meta');
-                const desc = document.getElementById('project-desc');
-                
-                for (let i = 1; i < lines.length; i++) {
-                    if (lines[i].includes(":")) {
-                        const [k, ...v] = lines[i].split(":");
-                        meta.innerHTML += `<div class="meta-item"><b>${k.trim()}</b> ${v.join(":").trim()}</div>`;
-                    } else { desc.innerText = lines[i]; }
-                }
-
-                const gal = document.getElementById('gallery');
-                for (let i = 1; i <= 30; i++) {
-                    const img = new Image();
-                    img.src = `${baseURL}/images/${currentFolder}/${i}.jpg`;
-                    img.onload = () => { gal.appendChild(img); };
-                }
-
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('project-content').style.visibility = 'visible';
-            } catch (e) {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('project-content').style.visibility = 'visible';
+            const folder = params.get('folder');
+            if(!folder) return;
+            const resL = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+            const folders = (await resL.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+            const idx = folders.indexOf(folder);
+            if(idx > 0) { document.getElementById('prev-project').href = `project.html?folder=${folders[idx-1]}`; document.getElementById('prev-project').classList.remove('hidden'); }
+            if(idx < folders.length - 1) { document.getElementById('next-project').href = `project.html?folder=${folders[idx+1]}`; document.getElementById('next-project').classList.remove('hidden'); }
+            
+            const side = document.getElementById('side-project-list');
+            for(const f of folders) {
+                const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+                if(iR.ok) side.innerHTML += `<a href="project.html?folder=${f}">${(await iR.text()).split('\n')[0].trim()}</a>`;
             }
+
+            const res = await fetch(`${baseURL}/images/${folder}/info.txt`);
+            const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
+            document.getElementById('project-title').innerText = lines[0];
+            const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc');
+            for(let i=1; i<lines.length; i++) {
+                if(lines[i].includes(":")) {
+                    const [k, ...v] = lines[i].split(":");
+                    meta.innerHTML += `<div class="meta-item"><b>${k.trim()}</b> ${v.join(":").trim()}</div>`;
+                } else desc.innerText = lines[i];
+            }
+            const gal = document.getElementById('gallery');
+            for(let i=1; i<=30; i++) {
+                const img = new Image(); img.src = `${baseURL}/images/${folder}/${i}.jpg`;
+                img.onload = () => gal.appendChild(img);
+            }
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('site-wrapper').style.visibility = 'visible';
         }
         init();
-
         const btn = document.getElementById('menu-btn');
         btn.onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
-        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) document.body.classList.remove('nav-open'); };
+        document.onclick = (e) => { if(document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) document.body.classList.remove('nav-open'); };
     </script>
 </body>
 </html>
