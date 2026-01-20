@@ -1,79 +1,48 @@
-<script>
-    async function loadContent() {
-        const grid = document.getElementById('portfolio-grid');
-        const sideList = document.getElementById('side-project-list');
-        
-        try {
-            // טעינת רשימת התיקיות עם נתיב יחסי מפורש
-            const response = await fetch('./list.txt');
-            if (!response.ok) throw new Error("Could not find list.txt");
-            
-            const text = await response.text();
-            // פיצול השורות וניקוי רווחים נסתרים (חשוב מאוד!)
-            const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Ariel Armoni | Portfolio Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 50px; text-align: center; }
+        .error-box { border: 1px solid red; padding: 20px; color: red; display: none; }
+        #debug-info { color: #888; font-size: 12px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div id="error-message" class="error-box"></div>
+    <div id="portfolio-grid">טוען נתונים...</div>
+    <div id="debug-info"></div>
 
-            console.log("Folders found:", folders); // בדיקה ב-Console
+    <script>
+        async function startCheck() {
+            const grid = document.getElementById('portfolio-grid');
+            const errorBox = document.getElementById('error-message');
+            const debug = document.getElementById('debug-info');
 
-            for (const f of folders) {
-                try {
-                    // נסיון טעינת ה-info.txt של הפרויקט
-                    const infoPath = `./images/${f}/info.txt`;
-                    const infoRes = await fetch(infoPath);
-                    
-                    if (!infoRes.ok) {
-                        console.error(`Failed to load: ${infoPath}`);
-                        continue;
-                    }
-
-                    const infoText = await infoRes.text();
-                    const title = infoText.split('\n')[0].trim();
-                    const link = `project.html?folder=${f}`;
-                    
-                    // הוספה לתפריט הצד
-                    sideList.innerHTML += `<a href="${link}">${title}</a>`;
-                    
-                    // הוספה לגריד
-                    grid.innerHTML += `
-                        <a href="${link}">
-                            <div class="project-card">
-                                <img src="./images/${f}/cover.jpg" alt="${title}" onerror="this.src='https://via.placeholder.com/600x400?text=${f}'">
-                                <div class="project-overlay">
-                                    <div class="project-title">${title}</div>
-                                </div>
-                            </div>
-                        </a>`;
-                } catch(e) {
-                    console.error("Error processing folder:", f, e);
+            try {
+                debug.innerText = "מנסה לקרוא את list.txt...";
+                const res = await fetch('./list.txt');
+                
+                if (!res.ok) {
+                    throw new Error("קובץ list.txt לא נמצא בכתובת: " + window.location.href + "list.txt");
                 }
-            }
-        } catch(e) {
-            console.error("Main load error:", e);
-            grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center;">Error loading projects. Please check if list.txt exists in the root folder.</p>`;
-        }
-    }
-    loadContent();
 
-    // לוגיקה לתפריט המבורגר
-    const btn = document.getElementById('menu-btn');
-    btn.onclick = (e) => {
-        e.stopPropagation();
-        document.body.classList.toggle('nav-open');
-        const s = btn.querySelectorAll('span');
-        if(document.body.classList.contains('nav-open')) {
-            s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            s[1].style.opacity = '0';
-            s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-        } else {
-            s[0].style.transform = 'none';
-            s[1].style.opacity = '1';
-            s[2].style.transform = 'none';
+                const text = await res.text();
+                debug.innerText = "קובץ list.txt נטען בהצלחה!";
+                
+                const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+                grid.innerHTML = "מצאתי " + folders.length + " פרויקטים ברשימה. בונה גריד...";
+                
+                // כאן יבוא המשך הקוד של הגריד שנתתי לך קודם...
+                
+            } catch (e) {
+                errorBox.style.display = "block";
+                errorBox.innerText = e.message;
+                grid.innerHTML = "";
+            }
         }
-    };
-    document.onclick = (e) => {
-        if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
-            document.body.classList.remove('nav-open');
-            const s = btn.querySelectorAll('span');
-            s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
-        }
-    };
-</script>
+        startCheck();
+    </script>
+</body>
+</html>
