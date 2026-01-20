@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Ariel Armoni</title>
     <style>
-        :root { --bg: #fff; --main: #000; --muted: #888; --text: #333; --nav-width: 280px; }
+        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
@@ -20,10 +20,14 @@
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
+        /* אזור המידע מה-info.txt */
         .project-meta { max-width: 900px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px; }
         .meta-item b { color: var(--main); text-transform: uppercase; font-weight: 600; margin-left: 6px; }
         .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--main); line-height: 1.6; font-weight: 500; text-align: center; }
-        .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; max-width: 1200px; margin-left: auto; margin-right: auto; }
+
+        /* גלריה */
+        .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
 
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
@@ -33,8 +37,7 @@
 
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
-            .nav-wrapper { top: 32px; }
-            .project-main-title { font-size: 18px; }
+            .project-main-title { font-size: 18px; letter-spacing: 2px; }
             body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
         }
     </style>
@@ -43,50 +46,63 @@
     <nav id="side-nav">
         <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
         <div class="project-index-title">Project Index</div>
-        <div class="project-list-nav" id="side-project-list"></div>
+        <div id="side-project-list" class="project-list-nav"></div>
     </nav>
+
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-            <div class="project-main-title" id="project-title">Loading...</div>
+            <div id="project-title" class="project-main-title">Loading...</div>
         </header>
-        <div class="project-meta" id="project-meta"></div>
-        <div class="project-description" id="project-desc"></div>
-        <main id="gallery"></main>
+        <div id="project-meta" class="project-meta"></div>
+        <div id="project-desc" class="project-description"></div>
+        <main id="gallery" class="gallery"></main>
     </div>
+
     <script>
-        const projectFolders = ["The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words", "Wonders-of-the-Deep"];
-        const sideList = document.getElementById('side-project-list');
+        const projectFolders = ["Wonders-of-the-Deep", "The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words"];
         const folder = new URLSearchParams(window.location.search).get('folder');
 
         async function init() {
+            const sideList = document.getElementById('side-project-list');
             for (const f of projectFolders) {
                 try {
                     const res = await fetch(`images/${f}/info.txt`);
                     const t = await res.text();
-                    sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0]}</a>`;
+                    sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
                 } catch(e) {}
             }
+
             if (folder) {
-                const res = await fetch(`images/${folder}/info.txt`);
-                const lines = (await res.text()).split('\n').filter(l => l.trim() !== "");
-                document.getElementById('project-title').innerText = lines[0];
-                const meta = document.getElementById('project-meta');
-                for (let i = 1; i < lines.length; i++) {
-                    if (i === lines.length - 1) document.getElementById('project-desc').innerText = lines[i].replace(/Description:\s*/i, "");
-                    else if (lines[i].includes(":")) {
-                        const parts = lines[i].split(":");
-                        meta.innerHTML += `<div class="meta-item"><b>${parts[0].trim()}</b> ${parts.slice(1).join(":").trim()}</div>`;
+                try {
+                    const res = await fetch(`images/${folder}/info.txt`);
+                    const text = await res.text();
+                    const lines = text.split('\n').filter(l => l.trim() !== "");
+                    
+                    document.getElementById('project-title').innerText = lines[0];
+                    document.title = lines[0] + " | Ariel Armoni";
+
+                    const meta = document.getElementById('project-meta');
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (i === lines.length - 1) {
+                            document.getElementById('project-desc').innerText = line.replace(/Description:\s*/i, "");
+                        } else if (line.includes(":")) {
+                            const p = line.split(":");
+                            meta.innerHTML += `<div class="meta-item"><b>${p[0].trim()}</b> ${p.slice(1).join(":").trim()}</div>`;
+                        }
                     }
-                }
-                const gal = document.getElementById('gallery');
-                for (let i = 1; i <= 25; i++) {
-                    const img = new Image(); img.src = `images/${folder}/${i}.jpg`;
-                    img.onload = () => gal.appendChild(img);
-                }
+
+                    const gal = document.getElementById('gallery');
+                    for (let i = 1; i <= 25; i++) {
+                        const img = new Image(); img.src = `images/${folder}/${i}.jpg`;
+                        img.onload = () => gal.appendChild(img);
+                    }
+                } catch(e) { console.error("Project load error"); }
             }
         }
         init();
+
         const btn = document.getElementById('menu-btn');
         btn.onclick = (e) => {
             e.stopPropagation(); document.body.classList.toggle('nav-open');
