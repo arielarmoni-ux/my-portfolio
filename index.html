@@ -9,21 +9,12 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* תפריט צד */
-        #side-nav {
-            position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh;
-            background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto;
-            transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid rgba(0,0,0,0.05); direction: ltr;
-        }
+        #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; }
         #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
         body.nav-open #side-nav { left: 0; }
         body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
 
-        /* Header */
-        header {
-            min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
+        header { min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); }
         .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
@@ -32,7 +23,6 @@
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
 
-        /* גריד פרויקטים */
         .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 40px 5% 100px; max-width: 1600px; margin: 0 auto; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -40,18 +30,15 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); }
 
-        /* קישורים בתפריט */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
         .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
         .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: 0.2s; }
-        .project-list-nav a:hover { color: var(--main); }
 
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
             .portfolio-grid { grid-template-columns: 1fr; gap: 20px; }
-            .logo { font-size: 20px; }
             body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
         }
     </style>
@@ -72,25 +59,30 @@
     </div>
 
     <script>
-        // רשימת התיקיות המדויקת כפי שהן ב-GitHub
-        const projectFolders = ["Wonders-of-the-Deep", "The-Shadow-of-Color", "We-The-People", "A-Treasury-of-Words"]; 
-
-        async function loadHome() {
+        async function loadContent() {
             const grid = document.getElementById('portfolio-grid');
             const sideList = document.getElementById('side-project-list');
-            for (const f of projectFolders) {
-                try {
-                    const res = await fetch(`images/${f}/info.txt`);
-                    const text = await res.text();
-                    const title = text.split('\n')[0].trim();
-                    const link = `project.html?folder=${f}`;
-                    
-                    sideList.innerHTML += `<a href="${link}">${title}</a>`;
-                    grid.innerHTML += `<a href="${link}"><div class="project-card"><img src="images/${f}/cover.jpg" alt="${title}"><div class="project-overlay"><div class="project-title">${title}</div></div></div></a>`;
-                } catch(e) { console.error("Error loading folder:", f); }
-            }
+            
+            try {
+                const response = await fetch('list.txt');
+                const text = await response.text();
+                const folders = text.split('\n').filter(f => f.trim() !== "");
+
+                for (const folderName of folders) {
+                    const f = folderName.trim();
+                    try {
+                        const infoRes = await fetch(`images/${f}/info.txt`);
+                        const infoText = await infoRes.text();
+                        const title = infoText.split('\n')[0].trim();
+                        const link = `project.html?folder=${f}`;
+                        
+                        sideList.innerHTML += `<a href="${link}">${title}</a>`;
+                        grid.innerHTML += `<a href="${link}"><div class="project-card"><img src="images/${f}/cover.jpg" alt="${title}"><div class="project-overlay"><div class="project-title">${title}</div></div></div></a>`;
+                    } catch(e) { console.error("Error loading info.txt for:", f); }
+                }
+            } catch(e) { console.error("Could not load list.txt"); }
         }
-        loadHome();
+        loadContent();
 
         const btn = document.getElementById('menu-btn');
         btn.onclick = (e) => {
