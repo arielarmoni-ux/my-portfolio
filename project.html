@@ -9,29 +9,43 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; }
+        /* Side Navigation */
+        #side-nav { 
+            position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; 
+            background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; 
+            transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; 
+            border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; 
+        }
         #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; text-align: center; }
         body.nav-open #side-nav { left: 0; }
         body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
 
-        header { min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .project-main-title { font-size: 24px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; }
+        /* Header */
+        header { 
+            min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; position: sticky; top: 0; 
+            background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); 
+        }
+        .project-main-title { font-size: 24px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; color: var(--main); }
         .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
+        /* Project Info & Meta */
         .project-meta { max-width: 900px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px; }
         .meta-item b { color: var(--main); text-transform: uppercase; font-weight: 600; margin-left: 6px; }
         .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--main); line-height: 1.6; font-weight: 500; text-align: center; }
 
+        /* Gallery */
         .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-        .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; background: #f9f9f9; }
 
+        /* Sidebar Links */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
         .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
-        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
+        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: 0.2s; }
 
         @media (max-width: 768px) {
             header { min-height: 80px; padding-top: 30px; }
@@ -50,7 +64,7 @@
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-            <div id="project-title" class="project-main-title">טוען...</div>
+            <div id="project-title" class="project-main-title">Loading...</div>
         </header>
         <div id="project-meta" class="project-meta"></div>
         <div id="project-desc" class="project-description"></div>
@@ -58,35 +72,40 @@
     </div>
 
     <script>
-        async function init() {
+        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
+
+        async function initProject() {
             const sideList = document.getElementById('side-project-list');
             const params = new URLSearchParams(window.location.search);
             const folder = params.get('folder');
 
             try {
-                // טעינת התפריט הצדדי לפי ה-list.txt
-                const listRes = await fetch('./list.txt');
+                // 1. טעינת התפריט הצדדי מ-list.txt
+                const listRes = await fetch(`${baseURL}/list.txt?v=${new Date().getTime()}`);
                 const listText = await listRes.text();
                 const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
 
                 for (const f of folders) {
                     try {
-                        const res = await fetch(`./images/${f}/info.txt`);
-                        if (!res.ok) continue;
-                        const t = await res.text();
-                        sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
+                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
+                        if (!infoRes.ok) continue;
+                        const t = await infoRes.text();
+                        const projectTitle = t.split('\n')[0].trim();
+                        sideList.innerHTML += `<a href="project.html?folder=${f}">${projectTitle}</a>`;
                     } catch(e) {}
                 }
 
-                // טעינת תוכן הפרויקט
+                // 2. טעינת תוכן הפרויקט הספציפי
                 if (folder) {
-                    const res = await fetch(`./images/${folder}/info.txt`);
-                    if (!res.ok) throw new Error("Info not found");
+                    const res = await fetch(`${baseURL}/images/${folder}/info.txt`);
+                    if (!res.ok) throw new Error("Project folder not found");
                     
                     const text = await res.text();
                     const lines = text.split('\n').filter(l => l.trim() !== "");
                     
                     document.getElementById('project-title').innerText = lines[0];
+                    document.title = lines[0] + " | Ariel Armoni";
+
                     const meta = document.getElementById('project-meta');
                     const desc = document.getElementById('project-desc');
                     
@@ -100,11 +119,17 @@
                         }
                     }
 
+                    // 3. טעינת הגלריה (1.jpg עד 30.jpg)
                     const gal = document.getElementById('gallery');
                     for (let i = 1; i <= 30; i++) {
                         const img = new Image();
-                        img.src = `./images/${folder}/${i}.jpg`;
-                        img.onload = () => gal.appendChild(img);
+                        img.src = `${baseURL}/images/${folder}/${i}.jpg`;
+                        img.onload = () => {
+                            img.style.display = 'block';
+                            gal.appendChild(img);
+                        };
+                        // הסתרת תמונות שלא קיימות
+                        img.onerror = () => img.style.display = 'none';
                     }
                 }
             } catch(e) { 
@@ -112,17 +137,25 @@
                 document.getElementById('project-title').innerText = "Project Not Found";
             }
         }
-        init();
+        initProject();
 
+        // תפריט המבורגר
         const btn = document.getElementById('menu-btn');
         btn.onclick = (e) => {
-            e.stopPropagation(); document.body.classList.toggle('nav-open');
+            e.stopPropagation();
+            document.body.classList.toggle('nav-open');
             const s = btn.querySelectorAll('span');
             if(document.body.classList.contains('nav-open')) {
-                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-            } else { s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none'; }
+                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                s[1].style.opacity = '0';
+                s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+            } else {
+                s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
+            }
         };
-        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click(); };
+        document.onclick = (e) => {
+            if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click();
+        };
     </script>
 </body>
 </html>
