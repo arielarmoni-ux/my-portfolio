@@ -4,19 +4,21 @@
         const sideList = document.getElementById('side-project-list');
         
         try {
+            // טעינת רשימת התיקיות
             const response = await fetch('./list.txt');
-            if (!response.ok) throw new Error("list.txt not found");
+            if (!response.ok) throw new Error("list.txt missing");
             
             const text = await response.text();
-            // פיצול שורות וניקוי רווחים/תווים נסתרים
             const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
 
             for (const f of folders) {
                 try {
-                    // בדיקה אם הקובץ info.txt קיים לפני שממשיכים
+                    // מנסה לטעון את ה-info.txt
                     const infoRes = await fetch(`./images/${f}/info.txt`);
+                    
+                    // אם התיקייה או הקובץ לא קיימים - מדלג לפרויקט הבא בלי לשבור את הדף
                     if (!infoRes.ok) {
-                        console.warn(`Missing info.txt in: ${f}`);
+                        console.warn(`Skipping ${f}: info.txt not found`);
                         continue; 
                     }
                     
@@ -28,15 +30,28 @@
                     grid.innerHTML += `
                         <a href="${link}">
                             <div class="project-card">
-                                <img src="./images/${f}/cover.jpg" alt="${title}" onerror="this.src='https://via.placeholder.com/600x400?text=Check+Image+Name'">
+                                <img src="./images/${f}/cover.jpg" alt="${title}" onerror="this.src='https://via.placeholder.com/600x450?text=Check+Folder+Name'">
                                 <div class="project-overlay">
                                     <div class="project-title">${title}</div>
                                 </div>
                             </div>
                         </a>`;
-                } catch(e) { console.error(`Error loading folder ${f}:`, e); }
+                } catch(e) {
+                    // שגיאה בפרויקט ספציפי לא תעצור את כל הלולאה
+                    console.error(`Error in folder ${f}:`, e);
+                }
             }
-        } catch(e) { console.error("Main load error:", e); }
+        } catch(e) {
+            console.error("Critical Error:", e);
+            grid.innerHTML = "<p>נראה שיש בעיה בטעינת הקבצים. וודא שקובץ list.txt נמצא בתיקייה הראשית.</p>";
+        }
     }
     loadContent();
+
+    // לוגיקה לתפריט המבורגר (חשוב להשאיר)
+    const btn = document.getElementById('menu-btn');
+    btn.onclick = (e) => {
+        e.stopPropagation();
+        document.body.classList.toggle('nav-open');
+    };
 </script>
