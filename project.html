@@ -9,15 +9,15 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* Site Wrapper - אפקט כיווץ (Shrink) זהה לדף הבית */
+        /* Site Wrapper - Shrink Effect */
         #site-wrapper { 
-            visibility: hidden; 
             position: relative; 
             width: 100%; 
             margin-left: 0;
             transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
             background: var(--bg); 
             z-index: 1000; 
+            min-height: 100vh;
         }
         body.nav-open #site-wrapper { 
             margin-left: var(--nav-width); 
@@ -28,37 +28,35 @@
         #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid #f0f0f0; direction: ltr; }
         body.nav-open #side-nav { left: 0; }
 
-        /* Header */
-        header { position: relative; max-width: 1200px; margin: 0 auto; padding: 100px 5% 40px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        /* Header - גובה זהה לאינדקס (120px) */
+        header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
         .project-main-title { font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; color: var(--main); margin: 0; }
 
-        /* Menu Toggle - Absolute (נגלל למעלה עם הכותרת) */
-        .nav-wrapper { position: absolute; left: 5%; top: 103px; z-index: 4000; }
+        /* Menu Toggle - מיושר בדיוק ל-62px כמו באינדקס */
+        .nav-wrapper { position: absolute; left: 5%; top: 62px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
         
-        /* אנימציית ה-X */
         body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
         body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* Arrows - צפים בצדדים */
+        /* Nav Arrows */
         .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 24px; opacity: 0.3; transition: 0.3s; }
         .nav-arrow:hover { opacity: 1; }
         .nav-arrow.prev { left: 2%; }
         .nav-arrow.next { right: 2%; }
         .nav-arrow.hidden { display: none; }
 
-        /* Project Info */
-        .project-meta { max-width: 1200px; margin: 0 auto 30px; padding: 0 5%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 8px; font-size: 15px; color: var(--muted); direction: ltr; }
+        /* Project Content */
+        .project-meta { max-width: 1200px; margin: 40px auto 30px; padding: 0 5%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 8px; font-size: 15px; color: var(--muted); direction: ltr; }
         .meta-item { line-height: 1.4; }
         .meta-item b { font-weight: 600; text-transform: none; color: var(--main); margin-right: 8px; }
         .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
-        
         .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
         .gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
 
-        /* Sidebar Links */
+        /* Sidebar Typography */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: #000; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
         .project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
@@ -103,12 +101,10 @@
                 const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await listRes.text()).split(/\r?\n/).filter(f => f.trim() !== "");
                 
-                // ניווט חצים
                 const idx = folders.indexOf(folder);
                 if(idx > 0) { document.getElementById('prev-project').href = `project.html?folder=${folders[idx-1]}`; document.getElementById('prev-project').classList.remove('hidden'); }
                 if(idx < folders.length - 1) { document.getElementById('next-project').href = `project.html?folder=${folders[idx+1]}`; document.getElementById('next-project').classList.remove('hidden'); }
                 
-                // רשימת צד
                 const side = document.getElementById('side-project-list');
                 for(const f of folders) {
                     try {
@@ -120,7 +116,6 @@
                     } catch(e) {}
                 }
 
-                // תוכן הפרויקט
                 const res = await fetch(`${baseURL}/images/${folder}/info.txt`);
                 const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
                 document.getElementById('project-title').innerText = lines[0];
@@ -138,11 +133,7 @@
                     const img = new Image(); img.src = `${baseURL}/images/${folder}/${i}.jpg`;
                     img.onload = () => gal.appendChild(img);
                 }
-
-                document.getElementById('site-wrapper').style.visibility = 'visible';
-            } catch(e) {
-                document.getElementById('site-wrapper').style.visibility = 'visible';
-            }
+            } catch(e) {}
         }
         init();
 
