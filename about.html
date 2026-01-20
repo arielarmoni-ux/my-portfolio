@@ -5,65 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Ariel Armoni</title>
     <style>
-        :root { --bg: #fff; --main: #000; --muted: #888; }
+        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--main); text-align: center; -webkit-font-smoothing: antialiased; }
+        html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        header {
-            height: 160px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.03);
+        /* Side Navigation (זהה לשאר האתר) */
+        #side-nav { 
+            position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; 
+            background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; 
+            transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; 
+            border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; 
         }
-        .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+        #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
+        body.nav-open #side-nav { left: 0; }
+        body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
 
-        .nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: flex-start; }
-        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; margin-bottom: 10px; }
+        /* Header */
+        header { 
+            min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; position: sticky; top: 0; 
+            background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); 
+        }
+        .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
+        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
-        .menu-dropdown { display: none; flex-direction: column; text-align: left; padding-top: 5px; }
-        .menu-dropdown.active { display: flex; }
-        .menu-dropdown a { font-size: 11px; text-decoration: none; color: var(--muted); margin: 4px 0; text-transform: uppercase; letter-spacing: 1px; }
-
-        .content { max-width: 700px; margin: 80px auto; padding: 0 10%; line-height: 1.8; font-size: 16px; color: #333; text-align: center; }
-        h2 { font-weight: 400; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
         
-        @media (max-width: 768px) { header { height: 120px; } .content { margin: 40px auto; } }
+        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: inherit; }
+        .logo { font-size: 24px; letter-spacing: 5px; text-transform: uppercase; line-height: 1; }
+        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
+
+        /* About Content */
+        .about-container { 
+            max-width: 1000px; margin: 80px auto; padding: 0 5%; 
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start;
+        }
+        .about-image img { width: 100%; height: auto; filter: grayscale(100%); transition: 0.5s; }
+        .about-image img:hover { filter: grayscale(0%); }
+        
+        .about-text { text-align: right; line-height: 1.8; font-size: 16px; color: var(--main); }
+        .about-text h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
+        .about-text p { margin-bottom: 20px; }
+
+        /* Sidebar Links */
+        .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
+        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
+        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
+
+        @media (max-width: 768px) {
+            .about-container { grid-template-columns: 1fr; gap: 40px; margin: 40px auto; }
+            header { min-height: 80px; padding-top: 30px; }
+            body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="nav-wrapper">
-            <button class="menu-toggle" id="btn"><span></span><span></span><span></span></button>
-            <nav class="menu-dropdown" id="dropdown">
-                <a href="index.html">Projects</a>
-                <a href="about.html">About</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-        </div>
-        <div class="brand">
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <span class="sub-logo">Exhibition Architecture</span>
-        </div>
-    </header>
+    <nav id="side-nav">
+        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div id="side-project-list" class="project-list-nav"></div>
+    </nav>
 
-    <main class="content">
-        <h2>About</h2>
-        <p>
-            אריאל ארמוני הוא אדריכל המתמחה בעיצוב תערוכות וחללי תצוגה. 
-            עבודתו מתמקדת בחיבור שבין המרחב הפיזי לבין הנרטיב האוצרותי, תוך יצירת חוויות מרחביות ייחודיות עבור מוזיאונים וגלריות מובילות.
-        </p>
-    </main>
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <a href="index.html" class="brand">
+                <div class="logo">ARIEL ARMONI</div>
+                <div class="sub-logo">Exhibition Architecture</div>
+            </a>
+        </header>
+
+        <main class="about-container">
+            <div class="about-image">
+                <img src="profile.jpg" alt="Ariel Armoni" onerror="this.style.display='none'">
+            </div>
+            <div class="about-text">
+                <h2>About</h2>
+                <p>
+                    אריאל ארמוני, אדריכל תערוכות הפועל בתפר שבין חלל, תוכן וחווית משתמש. 
+                    מתמחה בעיצוב ותכנון תערוכות עבור מוזיאונים, גלריות ומוסדות תרבות.
+                </p>
+                <p>
+                    העבודה שלי מתמקדת ביצירת נרטיב מרחבי שמאפשר למבקרים לתקשר עם המוצגים בצורה אינטואיטיבית ומעוררת מחשבה. 
+                    תהליך התכנון כולל שימוש בכלים דיגיטליים מתקדמים (Rhino, Python scripting) לצד הבנה עמוקה של חומרים ושיטות תצוגה מסורתיות.
+                </p>
+            </div>
+        </main>
+    </div>
 
     <script>
-        const btn = document.getElementById('btn'), dropdown = document.getElementById('dropdown');
-        btn.addEventListener('click', () => {
-            dropdown.classList.toggle('active');
-            const spans = btn.querySelectorAll('span');
-            if(dropdown.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
-            } else {
-                spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
-            }
-        });
+        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
+
+        async function initAbout() {
+            const sideList = document.getElementById('side-project-list');
+            try {
+                const listRes = await fetch(`${baseURL}/list.txt`);
+                const listText = await listRes.text();
+                const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+
+                for (const f of folders) {
+                    try {
+                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
+                        if (!infoRes.ok) continue;
+                        const t = await infoRes.text();
+                        sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
+                    } catch(e) {}
+                }
+            } catch(e) {}
+        }
+        initAbout();
+
+        const btn = document.getElementById('menu-btn');
+        btn.onclick = (e) => {
+            e.stopPropagation(); document.body.classList.toggle('nav-open');
+            const s = btn.querySelectorAll('span');
+            if(document.body.classList.contains('nav-open')) {
+                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+            } else { s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none'; }
+        };
+        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click(); };
     </script>
 </body>
 </html>
