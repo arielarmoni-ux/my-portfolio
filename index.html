@@ -9,7 +9,7 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* תפריט צד (Side Navigation) */
+        /* Side Navigation */
         #side-nav { 
             position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; 
             background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; 
@@ -20,7 +20,7 @@
         body.nav-open #side-nav { left: 0; }
         body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
 
-        /* כותרת האתר (Header) */
+        /* Header */
         header { 
             min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; position: sticky; top: 0; 
@@ -34,7 +34,7 @@
         .logo { font-size: 24px; letter-spacing: 5px; text-decoration: none; color: var(--main); text-transform: uppercase; line-height: 1; }
         .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
 
-        /* גריד הפורטפוליו */
+        /* Grid */
         .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 40px 5% 100px; max-width: 1600px; margin: 0 auto; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -46,7 +46,7 @@
         .project-card:hover .project-overlay { opacity: 1; }
         .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); }
 
-        /* ניווט בתפריט */
+        /* Nav Links */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
         .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
@@ -81,68 +81,56 @@
     </div>
 
     <script>
+        // שימוש בכתובת המלאה כדי למנוע טעויות נתיבים
+        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
+
         async function loadContent() {
             const grid = document.getElementById('portfolio-grid');
             const sideList = document.getElementById('side-project-list');
             
             try {
-                // טעינת רשימת התיקיות מה-list.txt
-                const response = await fetch('./list.txt');
+                // משיכת list.txt עם מנגנון למניעת Cache
+                const response = await fetch(`${baseURL}/list.txt?v=${new Date().getTime()}`);
                 if (!response.ok) throw new Error("list.txt missing");
                 
                 const text = await response.text();
-                // פיצול שורות וניקוי תווים נסתרים
                 const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
 
                 for (const f of folders) {
                     try {
-                        // מנסה למשוך את קובץ ה-info
-                        const infoRes = await fetch(`./images/${f}/info.txt`);
-                        
-                        // אם אין info.txt - מדלג על הפרויקט הזה
-                        if (!infoRes.ok) {
-                            console.warn(`Skipping folder ${f} - info.txt not found`);
-                            continue; 
-                        }
+                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
+                        if (!infoRes.ok) continue; 
                         
                         const infoText = await infoRes.text();
                         const title = infoText.split('\n')[0].trim();
                         const link = `project.html?folder=${f}`;
                         
-                        // הוספה לתפריט הצד
                         sideList.innerHTML += `<a href="${link}">${title}</a>`;
-                        
-                        // הוספה לגריד
                         grid.innerHTML += `
                             <a href="${link}">
                                 <div class="project-card">
-                                    <img src="./images/${f}/cover.jpg" alt="${title}" onerror="this.src='https://via.placeholder.com/600x450?text=${f}'">
+                                    <img src="${baseURL}/images/${f}/cover.jpg" alt="${title}" onerror="this.src='https://via.placeholder.com/600x450?text=${f}'">
                                     <div class="project-overlay">
                                         <div class="project-title">${title}</div>
                                     </div>
                                 </div>
                             </a>`;
-                    } catch(e) {
-                        console.error(`Error processing ${f}:`, e);
-                    }
+                    } catch(e) { console.warn(`Error with ${f}`, e); }
                 }
             } catch(e) {
                 console.error("Critical error:", e);
-                grid.innerHTML = "<p style='grid-column: 1/-1'>נראה שיש בעיה בטעינת הקבצים. בדוק שקובץ list.txt נמצא בתיקייה הראשית.</p>";
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>Error loading projects. Check list.txt.</p>";
             }
         }
         loadContent();
 
-        // לוגיקה לפתיחת תפריט הצד
         const btn = document.getElementById('menu-btn');
         btn.onclick = (e) => {
             e.stopPropagation();
             document.body.classList.toggle('nav-open');
             const s = btn.querySelectorAll('span');
             if(document.body.classList.contains('nav-open')) {
-                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                s[1].style.opacity = '0';
-                s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
             } else {
                 s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
             }
