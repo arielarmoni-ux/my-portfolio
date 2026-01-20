@@ -9,13 +9,13 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* Clock Loader */
-        #loader { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 5000; }
+        /* Loader - Clock */
+        #loader { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 5000; display: block; }
         .clock-icon { width: 20px; height: 20px; border: 1px solid var(--main); border-radius: 50%; position: relative; }
         .clock-icon::after { content: ''; position: absolute; top: 50%; left: 50%; width: 1px; height: 7px; background: var(--main); transform-origin: bottom; animation: clock-spin 2s linear infinite; }
         @keyframes clock-spin { from { transform: translate(-50%, -100%) rotate(0deg); } to { transform: translate(-50%, -100%) rotate(360deg); } }
 
-        /* Site Wrapper - אפקט דחיפה */
+        /* Site Wrapper - Push Effect */
         #site-wrapper { visibility: hidden; position: relative; width: 100%; transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
         body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
 
@@ -26,17 +26,18 @@
         /* Header */
         header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
         .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; line-height: 1; }
-        .sub-logo { font-size: 13px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; }
+        .sub-logo { font-size: 13px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; line-height: 1; }
 
-        /* Menu Toggle - Absolute (לא יצוף על תמונות) */
+        /* Menu Toggle - Absolute inside Header */
         .nav-wrapper { position: absolute; left: 5%; top: 62px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
+        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
+        
         body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
         body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
         body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* Grid */
+        /* Portfolio Grid */
         .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px 5% 100px; max-width: 1600px; margin: 0 auto; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; }
@@ -51,44 +52,102 @@
         .project-list-nav { display: flex; flex-direction: column; gap: 14px; }
         .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--muted); line-height: 1.4; }
 
+        @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div id="loader"><div class="clock-icon"></div></div>
+
     <nav id="side-nav">
-        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div class="nav-links">
+            <a href="index.html">Projects</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
         <div class="project-index-title">Project Index</div>
         <div id="side-project-list" class="project-list-nav"></div>
     </nav>
+
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
+            </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="sub-logo">Exhibition Architecture</div>
         </header>
         <main class="portfolio-grid" id="portfolio-grid"></main>
     </div>
+
     <script>
         const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-        async function load() {
+
+        async function loadContent() {
             const grid = document.getElementById('portfolio-grid');
-            const side = document.getElementById('side-project-list');
-            const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-            const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-            for (const f of folders) {
-                const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-                if (!infoRes.ok) continue;
-                const title = (await infoRes.text()).split('\n')[0].trim();
-                grid.innerHTML += `<a href="project.html?folder=${f}"><div class="project-card"><img src="${baseURL}/images/${f}/cover.jpg"><div class="project-overlay"><div class="project-title">${title}</div></div></div></a>`;
-                side.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
+            const sideList = document.getElementById('side-project-list');
+            const loader = document.getElementById('loader');
+            const siteWrapper = document.getElementById('site-wrapper');
+            
+            try {
+                const response = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+                if (!response.ok) throw new Error("List not found");
+                const text = await response.text();
+                const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+
+                // נשתמש ב-Promise.allSettled כדי לוודא שהטעינה ממשיכה גם אם פרויקט אחד נכשל
+                const projectPromises = folders.map(async (f) => {
+                    try {
+                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
+                        if (!infoRes.ok) return;
+                        
+                        const infoText = await infoRes.text();
+                        const title = infoText.split('\n')[0].trim();
+                        
+                        // הוספה לרשימת צד
+                        sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
+                        
+                        // הוספה לגריד
+                        grid.innerHTML += `
+                            <a href="project.html?folder=${f}">
+                                <div class="project-card">
+                                    <img src="${baseURL}/images/${f}/cover.jpg" onerror="this.src='https://via.placeholder.com/800x600?text=${f}'">
+                                    <div class="project-overlay">
+                                        <div class="project-title">${title}</div>
+                                    </div>
+                                </div>
+                            </a>`;
+                    } catch (err) {
+                        console.warn(`Error loading project ${f}:`, err);
+                    }
+                });
+
+                await Promise.allSettled(projectPromises);
+
+                // הצגת האתר
+                loader.style.display = 'none';
+                siteWrapper.style.visibility = 'visible';
+
+            } catch (e) {
+                console.error("Main load error:", e);
+                loader.style.display = 'none';
+                siteWrapper.style.visibility = 'visible';
             }
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('site-wrapper').style.visibility = 'visible';
         }
-        load();
-        document.getElementById('menu-btn').onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
-        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) document.body.classList.remove('nav-open'); };
+
+        loadContent();
+
+        // תפריט
+        const btn = document.getElementById('menu-btn');
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            document.body.classList.toggle('nav-open');
+        };
+        document.onclick = (e) => {
+            if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
+                document.body.classList.remove('nav-open');
+            }
+        };
     </script>
 </body>
 </html>
