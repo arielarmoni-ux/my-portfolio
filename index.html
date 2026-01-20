@@ -9,28 +9,15 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* Clock Loader - זהה לחלוטין לדף הפרויקטים */
-        #loader { 
-            position: fixed; top: 120px; left: 50%; transform: translateX(-50%); 
-            z-index: 5000; display: flex; justify-content: center; 
-        }
-        .clock-icon {
-            width: 20px; height: 20px; border: 1px solid var(--main); border-radius: 50%; position: relative;
-        }
-        .clock-icon::after {
-            content: ''; position: absolute; top: 50%; left: 50%; width: 1px; height: 7px; 
-            background: var(--main); transform-origin: bottom; 
-            animation: clock-spin 2s linear infinite;
-        }
-        @keyframes clock-spin { 
-            from { transform: translate(-50%, -100%) rotate(0deg); } 
-            to { transform: translate(-50%, -100%) rotate(360deg); } 
-        }
+        /* Loader - Clock Icon */
+        #loader { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 5000; display: flex; justify-content: center; }
+        .clock-icon { width: 20px; height: 20px; border: 1px solid var(--main); border-radius: 50%; position: relative; }
+        .clock-icon::after { content: ''; position: absolute; top: 50%; left: 50%; width: 1px; height: 7px; background: var(--main); transform-origin: bottom; animation: clock-spin 2s linear infinite; }
+        @keyframes clock-spin { from { transform: translate(-50%, -100%) rotate(0deg); } to { transform: translate(-50%, -100%) rotate(360deg); } }
 
-        /* Content Visibility */
         #site-wrapper { visibility: hidden; position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
 
-        /* Side Navigation - עיצוב סיידבר זהה */
+        /* Side Navigation */
         #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid #f0f0f0; direction: ltr; }
         body.nav-open #side-nav { left: 0; }
         body.nav-open #site-wrapper { margin-left: var(--nav-width); }
@@ -40,120 +27,17 @@
         .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; line-height: 1; }
         .sub-logo { font-size: 13px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; line-height: 1; }
 
-        /* כפתור המבורגר זהה */
-        .nav-wrapper { position: fixed; left: 5%; top: 40px; z-index: 4000; }
+        /* Hamburger to X - המבורגר מיושר למרכז (53px) */
+        .nav-wrapper { position: fixed; left: 5%; top: 53px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); }
+        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
+        
+        body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
+        body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
         /* Portfolio Grid */
         .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px 5% 100px; max-width: 1600px; margin: 0 auto; }
         .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
         .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
-        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 25px; text-align: center; }
-        .project-card:hover .project-overlay { opacity: 1; }
-        .project-title { font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
-
-        /* Sidebar Typography - היררכיה חדשה: טייטלים קטנים, פרויקטים גדולים */
-        .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
-        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; transition: opacity 0.3s; }
-        .nav-links a:hover { opacity: 0.5; }
-
-        .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
-        .project-list-nav { display: flex; flex-direction: column; gap: 14px; }
-        .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--muted); line-height: 1.4; transition: color 0.3s; }
-        .project-list-nav a:hover { color: var(--main); }
-
-        @media (max-width: 768px) {
-            header { min-height: 100px; }
-            .portfolio-grid { grid-template-columns: 1fr; }
-            body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; }
-        }
-    </style>
-</head>
-<body>
-    <div id="loader"><div class="clock-icon"></div></div>
-
-    <nav id="side-nav">
-        <div class="nav-links">
-            <a href="index.html">Projects</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </div>
-        <div class="project-index-title">Project Index</div>
-        <div id="side-project-list" class="project-list-nav"></div>
-    </nav>
-
-    <div id="site-wrapper">
-        <div class="nav-wrapper">
-            <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
-        </div>
-        <header>
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <div class="sub-logo">Exhibition Architecture</div>
-        </header>
-        <main class="portfolio-grid" id="portfolio-grid"></main>
-    </div>
-
-    <script>
-        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-
-        async function loadContent() {
-            const grid = document.getElementById('portfolio-grid');
-            const sideList = document.getElementById('side-project-list');
-            const loader = document.getElementById('loader');
-            const siteWrapper = document.getElementById('site-wrapper');
-            
-            try {
-                const response = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const text = await response.text();
-                const folders = text.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-
-                for (const f of folders) {
-                    try {
-                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-                        if (!infoRes.ok) continue; 
-                        
-                        const infoText = await infoRes.text();
-                        const title = infoText.split('\n')[0].trim();
-                        
-                        // עדכון תפריט הצד
-                        sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
-                        
-                        // עדכון הגריד
-                        grid.innerHTML += `
-                            <a href="project.html?folder=${f}">
-                                <div class="project-card">
-                                    <img src="${baseURL}/images/${f}/cover.jpg" onerror="this.src='https://via.placeholder.com/800x600?text=${f}'">
-                                    <div class="project-overlay">
-                                        <div class="project-title">${title}</div>
-                                    </div>
-                                </div>
-                            </a>`;
-                    } catch(e) {}
-                }
-
-                // סיום טעינה: העלמת השעון והצגת התוכן
-                loader.style.display = 'none';
-                siteWrapper.style.visibility = 'visible';
-
-            } catch(e) {
-                loader.style.display = 'none';
-                siteWrapper.style.visibility = 'visible';
-            }
-        }
-        loadContent();
-
-        // פונקציונליות תפריט
-        const btn = document.getElementById('menu-btn');
-        btn.onclick = (e) => {
-            e.stopPropagation();
-            document.body.classList.toggle('nav-open');
-        };
-        document.onclick = (e) => {
-            if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
-                document.body.classList.remove('nav-open');
-            }
-        };
-    </script>
-</body>
-</html>
+        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; opacity
