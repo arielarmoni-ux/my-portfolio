@@ -1,99 +1,128 @@
-<script>
-    async function initProject() {
-        const sideList = document.getElementById('side-project-list');
-        const params = new URLSearchParams(window.location.search);
-        const folder = params.get('folder'); // מקבל את שם התיקייה מהכתובת
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Ariel Armoni</title>
+    <style>
+        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        try {
-            // 1. טעינת רשימת הפרויקטים מ-list.txt
-            const listRes = await fetch('./list.txt');
-            if (!listRes.ok) throw new Error("Could not load list.txt");
-            
-            const listText = await listRes.text();
-            // ניקוי שורות ורווחים נסתרים
-            const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-            
-            for (const f of folders) {
-                try {
-                    const res = await fetch(`./images/${f}/info.txt`);
-                    if (!res.ok) continue;
-                    const t = await res.text();
-                    const title = t.split('\n')[0].trim();
-                    sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
-                } catch(e) {
-                    console.warn("Skipping menu item for:", f);
+        #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; }
+        #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; text-align: center; }
+        body.nav-open #side-nav { left: 0; }
+        body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
+
+        header { min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: sticky; top: 0; background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .project-main-title { font-size: 24px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; }
+        .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
+        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
+        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
+
+        .project-meta { max-width: 900px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; font-size: 12px; color: var(--muted); border-bottom: 1px solid #f9f9f9; padding-bottom: 25px; }
+        .meta-item b { color: var(--main); text-transform: uppercase; font-weight: 600; margin-left: 6px; }
+        .project-description { max-width: 800px; margin: 0 auto 60px; padding: 0 5%; font-size: 15px; color: var(--main); line-height: 1.6; font-weight: 500; text-align: center; }
+
+        .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 50px; display: block; }
+
+        .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
+        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        .project-index-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; }
+        .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
+        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
+
+        @media (max-width: 768px) {
+            header { min-height: 80px; padding-top: 30px; }
+            .project-main-title { font-size: 18px; }
+            body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="side-nav">
+        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div class="project-index-title">Project Index</div>
+        <div id="side-project-list" class="project-list-nav"></div>
+    </nav>
+
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div id="project-title" class="project-main-title">טוען...</div>
+        </header>
+        <div id="project-meta" class="project-meta"></div>
+        <div id="project-desc" class="project-description"></div>
+        <main id="gallery" class="gallery"></main>
+    </div>
+
+    <script>
+        async function init() {
+            const sideList = document.getElementById('side-project-list');
+            const params = new URLSearchParams(window.location.search);
+            const folder = params.get('folder');
+
+            try {
+                // טעינת התפריט הצדדי לפי ה-list.txt
+                const listRes = await fetch('./list.txt');
+                const listText = await listRes.text();
+                const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+
+                for (const f of folders) {
+                    try {
+                        const res = await fetch(`./images/${f}/info.txt`);
+                        if (!res.ok) continue;
+                        const t = await res.text();
+                        sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
+                    } catch(e) {}
                 }
-            }
 
-            // 2. טעינת תוכן הפרויקט הספציפי
-            if (folder) {
-                const res = await fetch(`./images/${folder}/info.txt`);
-                if (!res.ok) throw new Error("Info file not found for this project");
-                
-                const text = await res.text();
-                const lines = text.split('\n').filter(l => l.trim() !== "");
-                
-                // כותרת (שורה 1)
-                document.getElementById('project-title').innerText = lines[0];
-                document.title = lines[0] + " | Ariel Armoni";
+                // טעינת תוכן הפרויקט
+                if (folder) {
+                    const res = await fetch(`./images/${folder}/info.txt`);
+                    if (!res.ok) throw new Error("Info not found");
+                    
+                    const text = await res.text();
+                    const lines = text.split('\n').filter(l => l.trim() !== "");
+                    
+                    document.getElementById('project-title').innerText = lines[0];
+                    const meta = document.getElementById('project-meta');
+                    const desc = document.getElementById('project-desc');
+                    
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (line.includes(":")) {
+                            const [k, ...v] = line.split(":");
+                            meta.innerHTML += `<div class="meta-item"><b>${k.trim()}</b> ${v.join(":").trim()}</div>`;
+                        } else {
+                            desc.innerText = line;
+                        }
+                    }
 
-                const metaContainer = document.getElementById('project-meta');
-                const descContainer = document.getElementById('project-desc');
-                
-                // מיון שורות למידע טכני מול תיאור
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (line.includes(":")) {
-                        const [key, ...valueParts] = line.split(":");
-                        const value = valueParts.join(":").trim();
-                        metaContainer.innerHTML += `<div class="meta-item"><b>${key.trim()}</b> ${value}</div>`;
-                    } else {
-                        // אם אין נקודתיים, זה התיאור
-                        descContainer.innerText = line;
+                    const gal = document.getElementById('gallery');
+                    for (let i = 1; i <= 30; i++) {
+                        const img = new Image();
+                        img.src = `./images/${folder}/${i}.jpg`;
+                        img.onload = () => gal.appendChild(img);
                     }
                 }
-
-                // 3. טעינת תמונות אוטומטית (1.jpg עד 30.jpg)
-                const gallery = document.getElementById('gallery');
-                for (let i = 1; i <= 30; i++) {
-                    const img = new Image();
-                    img.src = `./images/${folder}/${i}.jpg`;
-                    img.style.display = 'none'; // נחביא עד שיטען
-                    
-                    img.onload = () => {
-                        img.style.display = 'block';
-                        gallery.appendChild(img);
-                    };
-                    // אם התמונה לא קיימת, הדפדפן פשוט יתעלם
-                }
-            }
-        } catch (e) {
-            console.error("Initialization failed:", e);
-            if (folder) {
+            } catch(e) { 
+                console.error("Init failed", e); 
                 document.getElementById('project-title').innerText = "Project Not Found";
             }
         }
-    }
+        init();
 
-    initProject();
-
-    // לוגיקה לתפריט המבורגר (זהה לאינדקס)
-    const btn = document.getElementById('menu-btn');
-    btn.onclick = (e) => {
-        e.stopPropagation();
-        document.body.classList.toggle('nav-open');
-        const s = btn.querySelectorAll('span');
-        if(document.body.classList.contains('nav-open')) {
-            s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            s[1].style.opacity = '0';
-            s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-        } else {
-            s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
-        }
-    };
-    document.onclick = (e) => {
-        if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
-            btn.click();
-        }
-    };
-</script>
+        const btn = document.getElementById('menu-btn');
+        btn.onclick = (e) => {
+            e.stopPropagation(); document.body.classList.toggle('nav-open');
+            const s = btn.querySelectorAll('span');
+            if(document.body.classList.contains('nav-open')) {
+                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+            } else { s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none'; }
+        };
+        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click(); };
+    </script>
+</body>
+</html>
