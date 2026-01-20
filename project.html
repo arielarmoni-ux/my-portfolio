@@ -5,40 +5,42 @@
         const folder = params.get('folder'); // מקבל את שם התיקייה מהכתובת
 
         try {
-            // 1. טעינת רשימת הפרויקטים מ-list.txt לבניית תפריט הצד
-            const listRes = await fetch('list.txt');
+            // 1. טעינת רשימת הפרויקטים מ-list.txt
+            const listRes = await fetch('./list.txt');
+            if (!listRes.ok) throw new Error("Could not load list.txt");
+            
             const listText = await listRes.text();
-            const folders = listText.split('\n').filter(f => f.trim() !== "");
+            // ניקוי שורות ורווחים נסתרים
+            const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
             
             for (const f of folders) {
-                const folderName = f.trim();
                 try {
-                    // שואב את הכותרת היפה מתוך ה-info של כל פרויקט ברשימה
-                    const res = await fetch(`images/${folderName}/info.txt`);
+                    const res = await fetch(`./images/${f}/info.txt`);
+                    if (!res.ok) continue;
                     const t = await res.text();
                     const title = t.split('\n')[0].trim();
-                    sideList.innerHTML += `<a href="project.html?folder=${folderName}">${title}</a>`;
+                    sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
                 } catch(e) {
-                    console.warn("Could not load menu item for:", folderName);
+                    console.warn("Skipping menu item for:", f);
                 }
             }
 
-            // 2. טעינת תוכן הפרויקט הספציפי שבו אנו נמצאים
+            // 2. טעינת תוכן הפרויקט הספציפי
             if (folder) {
-                const res = await fetch(`images/${folder}/info.txt`);
-                if (!res.ok) throw new Error("Info file not found");
+                const res = await fetch(`./images/${folder}/info.txt`);
+                if (!res.ok) throw new Error("Info file not found for this project");
                 
                 const text = await res.text();
                 const lines = text.split('\n').filter(l => l.trim() !== "");
                 
-                // כותרת הפרויקט (שורה 1)
+                // כותרת (שורה 1)
                 document.getElementById('project-title').innerText = lines[0];
                 document.title = lines[0] + " | Ariel Armoni";
 
                 const metaContainer = document.getElementById('project-meta');
                 const descContainer = document.getElementById('project-desc');
                 
-                // עיבוד שאר השורות (מידע טכני מול תיאור)
+                // מיון שורות למידע טכני מול תיאור
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (line.includes(":")) {
@@ -46,23 +48,52 @@
                         const value = valueParts.join(":").trim();
                         metaContainer.innerHTML += `<div class="meta-item"><b>${key.trim()}</b> ${value}</div>`;
                     } else {
+                        // אם אין נקודתיים, זה התיאור
                         descContainer.innerText = line;
                     }
                 }
 
-                // 3. טעינת תמונות הפרויקט (1.jpg עד 30.jpg)
+                // 3. טעינת תמונות אוטומטית (1.jpg עד 30.jpg)
                 const gallery = document.getElementById('gallery');
                 for (let i = 1; i <= 30; i++) {
                     const img = new Image();
-                    img.src = `images/${folder}/${i}.jpg`;
-                    img.onload = () => gallery.appendChild(img);
-                    // אם התמונה לא קיימת, הדפדפן פשוט ידלג עליה
+                    img.src = `./images/${folder}/${i}.jpg`;
+                    img.style.display = 'none'; // נחביא עד שיטען
+                    
+                    img.onload = () => {
+                        img.style.display = 'block';
+                        gallery.appendChild(img);
+                    };
+                    // אם התמונה לא קיימת, הדפדפן פשוט יתעלם
                 }
             }
         } catch (e) {
             console.error("Initialization failed:", e);
+            if (folder) {
+                document.getElementById('project-title').innerText = "Project Not Found";
+            }
         }
     }
 
     initProject();
+
+    // לוגיקה לתפריט המבורגר (זהה לאינדקס)
+    const btn = document.getElementById('menu-btn');
+    btn.onclick = (e) => {
+        e.stopPropagation();
+        document.body.classList.toggle('nav-open');
+        const s = btn.querySelectorAll('span');
+        if(document.body.classList.contains('nav-open')) {
+            s[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            s[1].style.opacity = '0';
+            s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+        } else {
+            s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none';
+        }
+    };
+    document.onclick = (e) => {
+        if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
+            btn.click();
+        }
+    };
 </script>
