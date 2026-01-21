@@ -22,11 +22,9 @@ html, body {
 /* --- Loader --- */
 #loader {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 24px; height: 24px; border: 1px solid #eee; border-top: 1px solid var(--main);
+    width: 20px; height: 20px; border: 1px solid #eee; border-top: 1px solid var(--main);
     border-radius: 50%; animation: spin 1s linear infinite; z-index: 9999;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-#loader.hidden { opacity: 0; visibility: hidden; }
 @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
 /* --- Layout --- */
@@ -48,34 +46,33 @@ body.nav-open #site-wrapper {
 }
 body.nav-open #side-nav { left: 0; }
 .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 15px; }
-.project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 25px 0 20px; border-top: 1px solid #eee; padding-top: 25px; letter-spacing: 2px; }
 .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 14px; font-weight: 400; transition: 0.3s; }
 
 /* --- Header --- */
 header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* --- כפתור המבורגר בעיצוב החצים --- */
+/* --- כפתור המבורגר קטן ומעודכן --- */
 .nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4000; }
 
 .menu-toggle { 
-    width: 50px; height: 50px;
+    width: 40px; height: 40px; /* הקטנה מ-50 ל-40 */
     background: var(--bg); border: 1px solid #eee;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px; /* צמצום המרווח */
     cursor: pointer; border-radius: 50%; opacity: 0.3;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.menu-toggle span { display: block; width: 18px; height: 1px; background: var(--main); transition: 0.3s; }
+.menu-toggle span { display: block; width: 14px; height: 1px; background: var(--main); transition: 0.3s; }
 
 .menu-toggle:hover { 
-    opacity: 1; border-color: var(--main); transform: scale(1.1);
+    opacity: 1; border-color: var(--main); transform: scale(1.05);
 }
 
-/* אנימציית ה-X בזמן שהתפריט פתוח */
-body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+/* אנימציית ה-X (איקס קטן יותר) */
+body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
-body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
 
 /* --- גריד דף הבית --- */
 .portfolio-grid {
@@ -111,12 +108,15 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotat
 .project-meta { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
 .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
-/* --- פקדים צפים (חצים וחזרה למעלה) --- */
+/* --- פקדים צפים קטנים (חצים וחזרה למעלה) --- */
 .nav-arrow, #back-to-top {
-    position: fixed; z-index: 2500; width: 50px; height: 50px;
+    position: fixed; z-index: 2500; 
+    width: 40px; height: 40px; /* הקטנה ל-40 */
     background: var(--bg); border: 1px solid #eee; color: var(--main);
     display: flex; align-items: center; justify-content: center;
-    text-decoration: none; font-size: 24px; font-weight: 200;
+    text-decoration: none; 
+    font-size: 18px; /* הקטנת גודל החץ עצמו */
+    font-weight: 200;
     border-radius: 50%; opacity: 0.3; cursor: pointer;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -125,9 +125,10 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotat
 #next-project { right: 2%; }
 #back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; }
 #back-to-top.visible { opacity: 0.3; visibility: visible; }
+
 .nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: var(--main); }
-.nav-arrow:hover { transform: translateY(-50%) scale(1.1); }
-#back-to-top:hover { transform: translateY(-5px) scale(1.1); }
+.nav-arrow:hover { transform: translateY(-50%) scale(1.05); }
+#back-to-top:hover { transform: translateY(-3px) scale(1.05); }
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
@@ -135,6 +136,6 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotat
     .project-card:hover { transform: none; }
     .project-info { opacity: 1; }
     .nav-arrow { display: none; }
-    #back-to-top { bottom: 20px; right: 20px; width: 45px; height: 45px; }
+    #back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
 }
