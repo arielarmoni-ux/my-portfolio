@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ariel Armoni | Project</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="project-page">
     <div id="loader"></div>
+
+    <div id="side-nav">
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="project-index-title">Projects Index</div>
+        <div class="project-list-nav" id="sidebar-list"></div>
+    </div>
+
     <a id="back-to-top">&#8593;</a>
     <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
     <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
@@ -19,6 +30,7 @@
             </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
         </header>
+
         <div id="project-meta" class="project-meta"></div>
         <div id="project-desc" class="project-description"></div>
         <main id="gallery" class="gallery"></main>
@@ -31,31 +43,42 @@
             if (!folder) return;
 
             try {
-                // 1. Navigation
+                // 1. Sidebar & Navigation
                 const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
                 const folders = list.split(/\r?\n/).filter(f => f.trim());
+                
+                const sidebarList = document.getElementById('sidebar-list');
+                folders.forEach(f => {
+                    sidebarList.innerHTML += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`;
+                });
+
                 const idx = folders.indexOf(folder);
                 if (idx !== -1) {
                     document.getElementById('prev-project').href = `project.html?folder=${folders[(idx-1+folders.length)%folders.length]}`;
                     document.getElementById('next-project').href = `project.html?folder=${folders[(idx+1)%folders.length]}`;
                 }
 
-                // 2. Info Text
-                const info = await fetch(`images/${folder}/info.txt`).then(r => r.text());
-                const lines = info.split('\n').filter(l => l.trim());
-                lines.forEach(line => {
-                    if (line.includes(":")) {
+                // 2. Info Logic (Line 1 = Title)
+                const info = await fetch(`images/${folder}/info.txt?v=${Date.now()}`).then(r => r.text());
+                const lines = info.split('\n').map(l => l.trim()).filter(l => l !== "");
+                
+                const metaDiv = document.getElementById('project-meta');
+                const descDiv = document.getElementById('project-desc');
+
+                lines.forEach((line, i) => {
+                    if (i === 0) {
+                        metaDiv.innerHTML += `<h1 class="project-main-title">${line}</h1>`;
+                    } else if (line.includes(":")) {
                         const [l, ...v] = line.split(":");
-                        document.getElementById('project-meta').innerHTML += `
-                            <div class="meta-item"><span class="label">${l.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
+                        metaDiv.innerHTML += `<div class="meta-item"><span class="label">${l.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
                     } else {
-                        document.getElementById('project-desc').innerHTML += `<p>${line.trim()}</p>`;
+                        descDiv.innerHTML += `<p>${line}</p>`;
                     }
                 });
 
-                // 3. Images
+                // 3. Gallery
                 const gal = document.getElementById('gallery');
-                for (let i = 1; i <= 15; i++) {
+                for (let i = 1; i <= 20; i++) {
                     const img = new Image();
                     img.src = `images/${folder}/${i}.jpg`;
                     img.onload = () => { img.style.order = i; gal.appendChild(img); };
@@ -65,9 +88,8 @@
         }
         window.onload = init;
 
-        // Back to top logic
         const btt = document.getElementById("back-to-top");
-        window.onscroll = () => { btt.classList.toggle("visible", window.scrollY > 400); };
+        window.onscroll = () => btt.classList.toggle("visible", window.scrollY > 400);
         btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
     </script>
 </body>
