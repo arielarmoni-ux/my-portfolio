@@ -144,7 +144,7 @@ header {
 
 /* כאן בוצע העידון: הורדת משקל הבולד ל-500 */
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 500; color: var(--main); }
+.meta-item .value { font-weight: 450; color: var(--main); }
 
 .project-description { 
     max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; 
