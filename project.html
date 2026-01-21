@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="project-page"> <div id="loader"></div>
+<body class="project-page">
+    <div id="loader"></div>
     <a id="back-to-top" title="Back to Top">&#8593;</a>
     <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
     <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
@@ -17,7 +18,7 @@
             <div class="nav-wrapper">
                 <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
             </div>
-            <h1 id="project-title" class="logo" style="font-size: 20px; border:none;"></h1>
+            <a href="index.html" class="logo" style="font-size: 20px; text-decoration:none; border:none;">ARIEL ARMONI</a>
         </header>
         <div id="project-meta" class="project-meta"></div>
         <div id="project-desc" class="project-description"></div>
@@ -27,14 +28,60 @@
     <script src="sidebar.js"></script>
     <script>
         async function initProject() {
+            const params = new URLSearchParams(window.location.search);
+            const folder = params.get('folder');
             const loader = document.getElementById('loader');
-            // לוגיקת טעינת פרויקט...
-            // בסוף הטעינה:
+            
+            if (!folder) { window.location.href = 'index.html'; return; }
+
+            try {
+                // טעינת רשימת פרויקטים לניווט
+                const listRes = await fetch(`list.txt?v=${Date.now()}`);
+                const folders = (await listRes.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+                const idx = folders.indexOf(folder);
+                
+                if (idx !== -1) {
+                    const prevIdx = (idx - 1 + folders.length) % folders.length;
+                    const nextIdx = (idx + 1) % folders.length;
+                    document.getElementById('prev-project').href = `project.html?folder=${folders[prevIdx]}`;
+                    document.getElementById('next-project').href = `project.html?folder=${folders[nextIdx]}`;
+                }
+
+                // טעינת מידע (info.txt)
+                const infoRes = await fetch(`images/${folder}/info.txt?v=${Date.now()}`);
+                if (infoRes.ok) {
+                    const text = await infoRes.text();
+                    const lines = text.split('\n').filter(l => l.trim() !== "");
+                    lines.forEach(line => {
+                        if (line.includes(":")) {
+                            const [l, ...v] = line.split(":");
+                            document.getElementById('project-meta').innerHTML += `
+                                <div class="meta-item"><span class="label">${l.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
+                        } else {
+                            document.getElementById('project-desc').innerHTML += `<p>${line.trim()}</p>`;
+                        }
+                    });
+                }
+
+                // טעינת תמונות גלריה
+                const gallery = document.getElementById('gallery');
+                for (let i = 1; i <= 20; i++) {
+                    const img = new Image();
+                    img.src = `images/${folder}/${i}.jpg`;
+                    img.onload = () => { img.style.order = i; gallery.appendChild(img); };
+                }
+            } catch (e) { console.error(e); }
             loader.classList.add('hidden');
         }
-        initProject();
-        // גיבוי למקרה שהטעינה נתקעת
-        setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000);
+
+        window.addEventListener('load', initProject);
+
+        window.onscroll = function() {
+            const btn = document.getElementById("back-to-top");
+            if (document.documentElement.scrollTop > 300) btn.classList.add("visible");
+            else btn.classList.remove("visible");
+        };
+        document.getElementById("back-to-top").onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
     </script>
 </body>
 </html>
