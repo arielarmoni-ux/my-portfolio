@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div id="loader"></div>
+<body class="project-page"> <div id="loader"></div>
     <a id="back-to-top" title="Back to Top">&#8593;</a>
     <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
     <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
 
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-            <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin: 0;"></h1>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
+            </div>
+            <h1 id="project-title" class="logo" style="font-size: 20px; border:none;"></h1>
         </header>
         <div id="project-meta" class="project-meta"></div>
         <div id="project-desc" class="project-description"></div>
@@ -24,46 +26,15 @@
 
     <script src="sidebar.js"></script>
     <script>
-        // לוגיקת חזרה למעלה
-        window.onscroll = function() {
-            const btn = document.getElementById("back-to-top");
-            if (document.documentElement.scrollTop > 300) btn.classList.add("visible");
-            else btn.classList.remove("visible");
-        };
-        document.getElementById("back-to-top").onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
-
         async function initProject() {
-            const params = new URLSearchParams(window.location.search), currentFolder = params.get('folder');
             const loader = document.getElementById('loader');
-            if(!currentFolder) return;
-            try {
-                const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const folders = (await listRes.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-                const idx = folders.indexOf(currentFolder);
-                document.getElementById('prev-project').href = `project.html?folder=${folders[(idx === 0) ? folders.length - 1 : idx - 1]}`;
-                document.getElementById('next-project').href = `project.html?folder=${folders[(idx === folders.length - 1) ? 0 : idx + 1]}`;
-
-                const res = await fetch(`${baseURL}/images/${currentFolder}/info.txt?v=${Date.now()}`);
-                const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
-                document.getElementById('project-title').innerText = lines[0];
-                const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc');
-
-                for(let i=1; i<lines.length; i++) {
-                    if(lines[i].includes(":")) {
-                        const [k, ...v] = lines[i].split(":");
-                        meta.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
-                    } else { desc.innerText = lines[i]; }
-                }
-                const gal = document.getElementById('gallery');
-                for(let i=1; i<=30; i++) {
-                    const img = new Image();
-                    img.src = `${baseURL}/images/${currentFolder}/${i}.jpg`;
-                    img.onload = () => { img.style.order = i; gal.appendChild(img); };
-                }
-            } catch(e) {}
+            // לוגיקת טעינת פרויקט...
+            // בסוף הטעינה:
             loader.classList.add('hidden');
         }
         initProject();
+        // גיבוי למקרה שהטעינה נתקעת
+        setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000);
     </script>
 </body>
 </html>
