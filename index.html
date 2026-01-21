@@ -33,24 +33,23 @@
             padding: 80px 5% 100px; 
             max-width: 1600px; 
             margin: 0 auto;
-            transition: all 0.5s ease;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .project-card { 
             display: flex;
             flex-direction: column;
             text-decoration: none;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
             position: relative;
-            z-index: 1;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            padding: 0; /* מצב התחלתי */
         }
 
-        /* אפקט הגדילה הספציפי שדוחף את השכנים */
+        /* אפקט הגדילה שדוחף את האחרים */
         .project-card:hover { 
-            transform: scale(1.15); /* גדילה ב-15% */
+            /* במקום scale, אנחנו מגדילים את האלמנט דרך ה-margin השלילי */
+            margin: -20px -20px -40px -20px; 
             z-index: 10;
-            /* הוספת מרווח וירטואלי שדוחף את האלמנטים מסביב */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         .img-container {
@@ -58,6 +57,7 @@
             aspect-ratio: 4 / 3;
             overflow: hidden;
             background: #f7f7f7;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .project-card img { 
@@ -79,16 +79,10 @@
         .project-card:hover .project-info { opacity: 1; }
         .project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-        /* מניעת קפיצות של הגריד */
-        .portfolio-grid:has(.project-card:hover) .project-card:not(:hover) {
-            opacity: 0.7;
-            filter: grayscale(0.2);
-        }
-
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { 
             .portfolio-grid { grid-template-columns: 1fr; } 
-            .project-card:hover { transform: none; } /* מבטל גדילה במובייל למניעת שבירת layout */
+            .project-card:hover { margin: 0; }
         }
     </style>
 </head>
@@ -109,43 +103,28 @@
 
     <script>
         const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-
         async function loadContent() {
             const grid = document.getElementById('portfolio-grid');
             const side = document.getElementById('side-project-list');
-            
             try {
                 const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-                
                 for (let i = 0; i < folders.length; i++) {
                     const f = folders[i];
                     const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
                     if (!iR.ok) continue;
                     const title = (await iR.text()).split('\n')[0].trim();
-                    
-                    const sideLink = document.createElement('a');
-                    sideLink.href = `project.html?folder=${f}`;
-                    sideLink.textContent = title;
-                    side.appendChild(sideLink);
-                    
-                    const card = document.createElement('a');
-                    card.className = 'project-card';
-                    card.href = `project.html?folder=${f}`;
-                    card.innerHTML = `
-                        <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
-                        <div class="project-info"><div class="project-title">${title}</div></div>
-                    `;
-                    grid.appendChild(card);
+                    side.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
+                    grid.innerHTML += `
+                        <a href="project.html?folder=${f}" class="project-card">
+                            <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
+                            <div class="project-info"><div class="project-title">${title}</div></div>
+                        </a>`;
                 }
             } catch(e) {}
         }
         loadContent();
-
-        document.getElementById('menu-btn').onclick = (e) => {
-            e.stopPropagation();
-            document.body.classList.toggle('nav-open');
-        };
+        document.getElementById('menu-btn').onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
     </script>
 </body>
 </html>
