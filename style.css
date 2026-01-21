@@ -16,7 +16,7 @@ html, body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* --- Loader (השעון הקטן) --- */
+/* --- Loader (השעון) --- */
 #loader {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 24px; height: 24px; border: 1px solid #eee; border-top: 1px solid var(--main);
@@ -47,7 +47,6 @@ body.nav-open #side-nav { left: 0; }
 .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 15px; }
 .project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin: 25px 0 20px; border-top: 1px solid #eee; padding-top: 25px; letter-spacing: 2px; }
 .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 14px; font-weight: 400; transition: 0.3s; }
-.project-list-nav a:hover { transform: translateX(8px); text-decoration: underline; }
 
 /* --- Header --- */
 header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
@@ -73,9 +72,17 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 }
 .project-card:hover { transform: scale(1.2); z-index: 10; }
 .portfolio-grid:has(.project-card:hover) .project-card:not(:hover) { opacity: 0.5; transform: scale(0.95); }
+
 .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
 .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.project-info { padding: 12px 0; text-align: left; direction: ltr; }
+
+/* השם מופיע רק בהובר */
+.project-info { 
+    padding: 12px 0; text-align: left; direction: ltr; 
+    opacity: 0; transform: translateY(5px);
+    transition: opacity 0.4s ease, transform 0.4s var(--transition-smooth);
+}
+.project-card:hover .project-info { opacity: 1; transform: translateY(0); }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
 /* --- Project Page Elements --- */
@@ -85,11 +92,11 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 .meta-item .label { font-weight: 600; color: var(--main); margin-right: 8px; }
 .meta-item .value { font-weight: 400; color: var(--muted); }
 .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
-.nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 30px; opacity: 0.1; transition: 0.3s; padding: 20px; }
 
-@media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 768px) {
-    .portfolio-grid { grid-template-columns: 1fr; gap: 40px; }
-    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); }
+/* חצי ניווט מודגשים */
+.nav-arrow { 
+    position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; 
+    text-decoration: none; color: var(--main); font-size: 40px; font-weight: 200;
+    opacity: 0.3; transition: all 0.4s ease; padding: 40px 20px; 
 }
+.nav-arrow:hover { opacity: 1; transform: translateY(-50%) scale(1.1); background: rgba(255, 25
