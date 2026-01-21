@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // סגירה בלחיצה על האתר עצמו
     document.addEventListener('click', (e) => {
         if (body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
             body.classList.remove('nav-open');
