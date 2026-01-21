@@ -4,120 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact | Ariel Armoni</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-        /* Side Navigation */
-        #side-nav { 
-            position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; 
-            background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; 
-            transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; 
-            border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; 
+        .contact-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 5% 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            direction: ltr; /* יישור תוכן לשמאל */
         }
-        #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
-        body.nav-open #side-nav { left: 0; }
-        body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
 
-        /* Header */
-        header { 
-            min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; position: sticky; top: 0; 
-            background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); 
+        .contact-header {
+            margin-bottom: 60px;
         }
-        .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
-        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
-        
-        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: inherit; }
-        .logo { font-size: 24px; letter-spacing: 5px; text-transform: uppercase; line-height: 1; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
 
-        /* Contact Content */
-        .contact-container { 
-            max-width: 600px; margin: 120px auto; padding: 0 5%; text-align: center;
+        .contact-header h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--main);
         }
-        .contact-container h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 40px; }
-        
-        .email-link { font-size: 28px; color: var(--main); text-decoration: none; border-bottom: 1px solid #eee; padding-bottom: 10px; transition: 0.3s; display: inline-block; margin-bottom: 50px; }
-        .email-link:hover { border-bottom-color: var(--main); }
 
-        .social-links { display: flex; justify-content: center; gap: 30px; }
-        .social-links a { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); text-decoration: none; transition: 0.3s; }
-        .social-links a:hover { color: var(--main); }
+        .contact-header p {
+            font-size: 16px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-        /* Sidebar Links */
-        .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
-        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-        .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
-        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .contact-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .contact-item a {
+            font-size: 20px;
+            text-decoration: none;
+            color: var(--main);
+            font-weight: 400;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            opacity: 0.5;
+            text-decoration: underline;
+            text-underline-offset: 5px;
+        }
 
         @media (max-width: 768px) {
-            .email-link { font-size: 20px; }
-            header { min-height: 80px; padding-top: 30px; }
-            body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
+            .contact-content {
+                padding-top: 80px;
+                align-items: center;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <nav id="side-nav">
-        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-        <div id="side-project-list" class="project-list-nav"></div>
-    </nav>
 
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-            <a href="index.html" class="brand">
-                <div class="logo">ARIEL ARMONI</div>
-                <div class="sub-logo">Exhibition Architecture</div>
-            </a>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
 
-        <main class="contact-container">
-            <h2>Get in Touch</h2>
-            <a href="mailto:arielarmoni@gmail.com" class="email-link">arielarmoni@gmail.com</a>
-            
-            <div class="social-links">
-                <a href="https://instagram.com/arielarmoni" target="_blank">Instagram</a>
-                <a href="https://linkedin.com/in/arielarmoni" target="_blank">LinkedIn</a>
-                <a href="https://arielarmoni.com" target="_blank">Website</a>
+        <main class="contact-content">
+            <div class="contact-header">
+                <h2>Contact</h2>
+                <p>Ariel Armoni | Architect & Exhibition Designer</p>
+            </div>
+
+            <div class="contact-details">
+                <div class="contact-item">
+                    <span class="label">Email</span>
+                    <a href="mailto:arielarmoni@gmail.com">arielarmoni@gmail.com</a>
+                </div>
+
+                <div class="contact-item">
+                    <span class="label">Phone</span>
+                    <a href="tel:+972528924624">+972 52 8924624</a>
+                </div>
             </div>
         </main>
     </div>
 
-    <script>
-        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
+    <script src="sidebar.js"></script>
 
-        async function initContact() {
-            const sideList = document.getElementById('side-project-list');
-            try {
-                const listRes = await fetch(`${baseURL}/list.txt`);
-                const listText = await listRes.text();
-                const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-
-                for (const f of folders) {
-                    try {
-                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-                        if (!infoRes.ok) continue;
-                        const t = await infoRes.text();
-                        sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
-                    } catch(e) {}
-                }
-            } catch(e) {}
-        }
-        initContact();
-
-        const btn = document.getElementById('menu-btn');
-        btn.onclick = (e) => {
-            e.stopPropagation(); document.body.classList.toggle('nav-open');
-            const s = btn.querySelectorAll('span');
-            if(document.body.classList.contains('nav-open')) {
-                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-            } else { s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none'; }
-        };
-        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click(); };
-    </script>
 </body>
 </html>
