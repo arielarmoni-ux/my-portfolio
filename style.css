@@ -19,7 +19,7 @@ html, body {
     scroll-behavior: smooth;
 }
 
-/* --- Loader (השעון) --- */
+/* --- Loader --- */
 #loader {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 20px; height: 20px; border: 1px solid #eee; border-top: 1px solid var(--main);
@@ -36,7 +36,7 @@ body.nav-open #site-wrapper {
     margin-left: var(--nav-width); width: calc(100% - var(--nav-width));
 }
 
-/* --- Sidebar (החזרת העיצוב המקורי + הפרדה ויזואלית) --- */
+/* --- Sidebar --- */
 #side-nav {
     position: fixed; top: 0; left: calc(-1 * var(--nav-width));
     width: var(--nav-width); height: 100vh; background: var(--bg);
@@ -72,7 +72,6 @@ header {
 }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* כפתור המבורגר (עיגול 40px) */
 .nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4000; }
 .menu-toggle { 
     width: 40px; height: 40px; background: var(--bg); border: 1px solid #eee;
@@ -109,7 +108,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-/* --- Project Page (החזרת יישור לשמאל וגלריה טורית) --- */
+/* --- Project Page (יישור לשמאל וגלריה טורית) --- */
 .gallery { display: grid; grid-template-columns: 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; }
 
@@ -117,7 +116,11 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
     max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; 
     display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; 
 }
-.meta-item .label { font-weight: 600; color: var(--main); margin-right: 8px; }
+
+/* כאן בוצע השינוי - החלפת הבולד */
+.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
+.meta-item .value { font-weight: 600; color: var(--main); }
+
 .project-description { 
     max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; 
     font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; 
@@ -143,12 +146,4 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
 #back-to-top:hover { transform: translateY(-3px) scale(1.05); }
 
 @media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 768px) {
-    .portfolio-grid { grid-template-columns: 1fr; row-gap: 30px; }
-    .project-card:hover { transform: none; }
-    .project-info { opacity: 1; }
-    .nav-arrow { display: none; }
-    #back-to-top { bottom: 20px; right: 20px; }
-    .project-meta, .project-description { text-align: center; }
-    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
-}
+@media (max-width:
