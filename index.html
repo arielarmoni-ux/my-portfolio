@@ -9,8 +9,8 @@
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* Site Wrapper */
-        #site-wrapper { position: relative; width: 100%; margin-left: 0; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); min-height: 100vh; }
+        /* Site Wrapper - Shrink Effect */
+        #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); min-height: 100vh; }
         body.nav-open #site-wrapper { margin-left: var(--nav-width); width: calc(100% - var(--nav-width)); }
 
         /* Side Navigation */
@@ -25,7 +25,7 @@
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        /* Portfolio Grid */
+        /* Portfolio Grid - One Open Grid */
         .portfolio-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -33,23 +33,27 @@
             padding: 80px 5% 100px; 
             max-width: 1600px; 
             margin: 0 auto;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 0.5s ease-in-out;
         }
 
         .project-card { 
             display: flex;
             flex-direction: column;
             text-decoration: none;
-            position: relative;
             transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            padding: 0; /* מצב התחלתי */
+            z-index: 1;
         }
 
-        /* אפקט הגדילה שדוחף את האחרים */
+        /* האפקט: גדילה שדוחפת את הסביבה */
         .project-card:hover { 
-            /* במקום scale, אנחנו מגדילים את האלמנט דרך ה-margin השלילי */
-            margin: -20px -20px -40px -20px; 
+            transform: scale(1.15); /* גדילה ב-15% */
             z-index: 10;
+        }
+
+        /* הזזת השכנים: כשאחד עובר הובר, האחרים זזים מעט */
+        .portfolio-grid:has(.project-card:hover) .project-card:not(:hover) {
+            opacity: 0.8;
+            transform: scale(0.96); /* כיווץ קל של האחרים יוצר מקום לגדילה */
         }
 
         .img-container {
@@ -57,7 +61,6 @@
             aspect-ratio: 4 / 3;
             overflow: hidden;
             background: #f7f7f7;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .project-card img { 
@@ -69,20 +72,23 @@
 
         /* טקסט מיושר לשמאל מתחת לתמונה */
         .project-info {
-            padding: 12px 0;
+            padding: 15px 0;
             text-align: left; 
             direction: ltr;
-            opacity: 0.5;
-            transition: 0.3s;
         }
 
-        .project-card:hover .project-info { opacity: 1; }
-        .project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
+        .project-title { 
+            font-size: 12px; 
+            letter-spacing: 1.2px; 
+            text-transform: uppercase; 
+            color: var(--main); 
+            font-weight: 500;
+        }
 
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { 
             .portfolio-grid { grid-template-columns: 1fr; } 
-            .project-card:hover { margin: 0; }
+            .project-card:hover { transform: none; }
         }
     </style>
 </head>
@@ -109,17 +115,20 @@
             try {
                 const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-                for (let i = 0; i < folders.length; i++) {
-                    const f = folders[i];
+                for (const f of folders) {
                     const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
                     if (!iR.ok) continue;
                     const title = (await iR.text()).split('\n')[0].trim();
                     side.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
-                    grid.innerHTML += `
-                        <a href="project.html?folder=${f}" class="project-card">
-                            <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
-                            <div class="project-info"><div class="project-title">${title}</div></div>
-                        </a>`;
+                    
+                    const card = document.createElement('a');
+                    card.className = 'project-card';
+                    card.href = `project.html?folder=${f}`;
+                    card.innerHTML = `
+                        <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
+                        <div class="project-info"><div class="project-title">${title}</div></div>
+                    `;
+                    grid.appendChild(card);
                 }
             } catch(e) {}
         }
