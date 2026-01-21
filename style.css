@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Fixed UI & Right-Side X CSS --- */
+/* --- Ariel Armoni Portfolio | Clean Architecture Grid (No Opacity) --- */
 
 :root {
     --bg: #fff;           
@@ -26,34 +26,16 @@ html, body {
 @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
 /* UI Elements & Hamburger */
-.nav-wrapper { 
-    position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 8000; 
-    transition: all var(--transition-smooth);
-}
+.nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 8000; transition: all var(--transition-smooth); }
 body.project-page .nav-wrapper { position: fixed; top: 47px; transform: none; }
 
-/* מיקום ה-X בצד ימין בסמוך לסקרולר כשהתפריט פתוח */
-body.nav-open .nav-wrapper { 
-    left: auto;
-    right: 2%; 
-    transform: translateY(-50%);
-}
-body.project-page.nav-open .nav-wrapper { 
-    left: auto;
-    right: 2%;
-    top: 47px;
-    transform: none;
-}
+body.nav-open .nav-wrapper { left: auto; right: 2%; transform: translateY(-50%); }
+body.project-page.nav-open .nav-wrapper { left: auto; right: 2%; top: 47px; transform: none; }
 
-.menu-toggle, .nav-arrow, #back-to-top { 
-    width: var(--ui-size); height: var(--ui-size); background: var(--bg); border: 1px solid #eee;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    cursor: pointer; border-radius: 50%; opacity: 0.3; transition: opacity 0.4s, border-color 0.4s; text-decoration: none; color: #000;
-}
+.menu-toggle, .nav-arrow, #back-to-top { width: var(--ui-size); height: var(--ui-size); background: var(--bg); border: 1px solid #eee; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; border-radius: 50%; opacity: 0.3; transition: opacity 0.4s, border-color 0.4s; text-decoration: none; color: #000; }
 .menu-toggle span { display: block; width: 16px; height: 1px; background: #000; margin: 2px 0; transition: 0.3s; }
 .menu-toggle:hover, .nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: #000; }
 
-/* Hamburger to X */
 body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
@@ -65,7 +47,6 @@ body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); width: 10
 
 #site-wrapper { position: relative; width: 100%; transition: transform var(--transition-smooth); min-height: 100vh; z-index: 1000; }
 
-/* Sidebar Nav Links */
 .nav-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 50px; }
 .nav-links a { text-decoration: none; color: var(--main); font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
 .nav-links a:hover { color: var(--muted); }
@@ -75,16 +56,20 @@ body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); width: 10
 .project-list-nav a { text-decoration: none; color: var(--muted); font-size: 14px; transition: 0.3s; }
 .project-list-nav a:hover { color: #000; }
 
-/* Header & Home Grid */
+/* Header Branding */
 header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
 .logo, .project-header-title { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; font-weight: 400; margin: 0; text-align: center; }
 .logo-subtitle { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
 
+/* --- Home Grid (Equal Gaps, Dynamic Scaling, NO OPACITY) --- */
 .portfolio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto; transition: gap var(--transition-smooth); }
 .portfolio-grid:hover { gap: 40px; }
-.project-card { display: flex; flex-direction: column; text-decoration: none; position: relative; z-index: 1; transition: transform var(--transition-smooth), opacity var(--transition-smooth); }
+
+.project-card { display: flex; flex-direction: column; text-decoration: none; position: relative; z-index: 1; transition: transform var(--transition-smooth); }
 .project-card:hover { transform: scale(1.2); z-index: 100; }
-.portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); opacity: 0.6; }
+
+/* כאן הורדנו את ה-Opacity - התמונות האחרות רק קטנות ב-Scale */
+.portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); }
 
 .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
 .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -108,7 +93,6 @@ header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: 
 #back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; font-size: 20px; }
 #back-to-top.visible { opacity: 0.3; visibility: visible; }
 
-/* מניעת תזוזה בהובר לכפתורי ניווט */
 .nav-arrow:hover, #back-to-top:hover { transform: translateY(-50%); opacity: 1; border-color: #000; }
 #back-to-top:hover { transform: none; }
 
