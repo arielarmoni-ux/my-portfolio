@@ -1,16 +1,67 @@
-/* גלריית פרויקט - גריד מסודר עם מרווח שווה */
-.gallery { 
-    display: grid; 
-    grid-template-columns: 1fr; /* תמונה אחת בכל שורה (או 2 אם תרצה) */
-    gap: 60px; /* המרווח הקבוע בין התמונות */
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 0 5% 100px; 
+/* --- תיקון רעידות סופי ל-Grid --- */
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 80px 8% 100px;
+    max-width: 1600px;
+    margin: 0 auto;
+    /* הגריד עצמו נשאר קפוא ולא משנה את ה-GAP כדי למנוע רעידות */
+    transition: none; 
 }
 
-.gallery img { 
-    width: 100%; 
-    height: auto; 
-    display: block; 
-    margin: 0; /* ביטול ה-margin הישן לטובת ה-gap */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    /* התיבה הזו היא ה"עוגן" - היא לעולם לא זזה או גדלה */
+    background: transparent;
+}
+
+.img-container {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: visible; /* מאפשר לתמונה לגלוש החוצה בלי להזיז את השכנים */
+    background: #f7f7f7;
+    position: relative;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* האנימציה עוברת רק לתמונה עצמה */
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.7s ease;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* רק כשעוברים על ה-Card הקבוע, התמונה שבפנים גדלה */
+.project-card:hover {
+    z-index: 100;
+}
+
+.project-card:hover img {
+    transform: scale(1.25); /* הגדלה ל-25% */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* אפקט ריכוך על השכנים - רק שקיפות, ללא שינוי גודל (כדי למנוע תזוזות) */
+.portfolio-grid:hover .project-card:not(:hover) {
+    opacity: 0.4;
+    filter: grayscale(0.3);
+    transition: 0.5s ease;
+}
+
+.project-info {
+    padding: 15px 0;
+    text-align: left;
+    direction: ltr;
+    /* מונע מהטקסט לרעוד כשהתמונה שמעליו גדלה */
+    position: relative;
+    z-index: 1;
 }
