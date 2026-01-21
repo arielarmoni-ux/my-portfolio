@@ -61,7 +61,7 @@ body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rota
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* --- גריד דף הבית - תנועה דוחפת ויציבה --- */
+/* --- גריד דף הבית - ללא פייד בהופעה --- */
 .portfolio-grid {
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -69,11 +69,9 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     padding: 80px 4% 100px; 
     max-width: 1800px; 
     margin: 0 auto;
-    /* ה-transition כאן גורם לשכנים "לזוז" בצורה חלקה כשנוצר רווח */
     transition: gap var(--transition-smooth);
 }
 
-/* הגדלת הרווח בזמן הובר - זה מה ש"דוחף" את השכנים */
 .portfolio-grid:has(.project-card:hover) { 
     gap: 40px; 
 }
@@ -84,8 +82,8 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     text-decoration: none;
     position: relative; 
     z-index: 1;
-    transition: all var(--transition-smooth);
-    /* שומר שהעכבר לא "יברח" מהתמונה כשהיא זזה */
+    /* הוסר הפייד (opacity transition) מהכרטיס */
+    transition: transform var(--transition-smooth);
     outline: 30px solid transparent;
     outline-offset: -30px;
 }
@@ -95,7 +93,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     z-index: 100; 
 }
 
-/* השכנים קטנים וזזים הצידה */
+/* השכנים עדיין מקבלים שקיפות בזמן הובר כדי להדגיש את הנבחר */
 .portfolio-grid:hover .project-card:not(:hover) { 
     opacity: 0.4; 
     transform: scale(0.9);
