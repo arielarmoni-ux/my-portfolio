@@ -1,74 +1,74 @@
-async function initProject() {
-    const params = new URLSearchParams(window.location.search);
-    const folder = params.get('folder');
-    if (!folder) return;
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ariel Armoni | Project</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="project-page">
+    <div id="loader"></div>
+    <a id="back-to-top">&#8593;</a>
+    <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
 
-    try {
-        // 1. טעינת רשימת פרויקטים לניווט (חצים)
-        const listRes = await fetch(`list.txt?v=${Date.now()}`);
-        const folders = (await listRes.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-        const idx = folders.indexOf(folder);
-        if (idx !== -1) {
-            document.getElementById('prev-project').href = `project.html?folder=${folders[(idx - 1 + folders.length) % folders.length]}`;
-            document.getElementById('next-project').href = `project.html?folder=${folders[(idx + 1) % folders.length]}`;
-        }
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+        </header>
+        <div id="project-meta" class="project-meta"></div>
+        <div id="project-desc" class="project-description"></div>
+        <main id="gallery" class="gallery"></main>
+    </div>
 
-        // 2. טעינת info.txt וטיפול בטייטלים
-        const infoRes = await fetch(`images/${folder}/info.txt?v=${Date.now()}`);
-        if (infoRes.ok) {
-            const text = await infoRes.text();
-            const lines = text.split('\n');
-            const metaDiv = document.getElementById('project-meta');
-            const descDiv = document.getElementById('project-desc');
-            
-            metaDiv.innerHTML = ""; // ניקוי לפני טעינה
-            descDiv.innerHTML = "";
+    <script src="sidebar.js"></script>
+    <script>
+        async function init() {
+            const folder = new URLSearchParams(window.location.search).get('folder');
+            if (!folder) return;
 
-            lines.forEach(line => {
-                const trimmedLine = line.trim();
-                if (trimmedLine.includes(":")) {
-                    const [label, ...valueParts] = trimmedLine.split(":");
-                    const value = valueParts.join(":").trim();
-                    
-                    // אם זה השורה של הכותרת/שם הפרויקט, נדאג שהיא תהיה בולטת
-                    if (label.toLowerCase().includes("title") || label.includes("שם") || label.includes("Project")) {
-                        metaDiv.innerHTML += `
-                            <div class="meta-item" style="margin-bottom: 15px;">
-                                <span class="value" style="font-size: 24px; font-weight: 600; letter-spacing: 0;">${value}</span>
-                            </div>`;
-                    } else {
-                        metaDiv.innerHTML += `
-                            <div class="meta-item">
-                                <span class="label">${label.trim()}:</span>
-                                <span class="value">${value}</span>
-                            </div>`;
-                    }
-                } else if (trimmedLine !== "") {
-                    descDiv.innerHTML += `<p>${trimmedLine}</p>`;
+            try {
+                // 1. Navigation
+                const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
+                const folders = list.split(/\r?\n/).filter(f => f.trim());
+                const idx = folders.indexOf(folder);
+                if (idx !== -1) {
+                    document.getElementById('prev-project').href = `project.html?folder=${folders[(idx-1+folders.length)%folders.length]}`;
+                    document.getElementById('next-project').href = `project.html?folder=${folders[(idx+1)%folders.length]}`;
                 }
-            });
-        }
 
-        // 3. טעינת תמונות ושמירה על מיקום קבוע (Order)
-        const gallery = document.getElementById('gallery');
-        gallery.innerHTML = ""; // ניקוי
-        
-        // ננסה לטעון עד 20 תמונות בצורה מסודרת
-        for (let i = 1; i <= 20; i++) {
-            const imgPath = `images/${folder}/${i}.jpg`;
-            const img = new Image();
-            img.src = imgPath;
-            
-            img.onload = () => {
-                const container = document.createElement('div');
-                container.style.order = i; // מבטיח שהתמונה הראשונה תהיה ראשונה בלי קשר לזמן הטעינה
-                container.style.width = "100%";
-                container.appendChild(img);
-                gallery.appendChild(container);
-            };
-            // אם התמונה לא קיימת, הדפדפן פשוט ידלג עליה
+                // 2. Info Text
+                const info = await fetch(`images/${folder}/info.txt`).then(r => r.text());
+                const lines = info.split('\n').filter(l => l.trim());
+                lines.forEach(line => {
+                    if (line.includes(":")) {
+                        const [l, ...v] = line.split(":");
+                        document.getElementById('project-meta').innerHTML += `
+                            <div class="meta-item"><span class="label">${l.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
+                    } else {
+                        document.getElementById('project-desc').innerHTML += `<p>${line.trim()}</p>`;
+                    }
+                });
+
+                // 3. Images
+                const gal = document.getElementById('gallery');
+                for (let i = 1; i <= 15; i++) {
+                    const img = new Image();
+                    img.src = `images/${folder}/${i}.jpg`;
+                    img.onload = () => { img.style.order = i; gal.appendChild(img); };
+                }
+            } catch (e) { console.error(e); }
+            document.getElementById('loader').classList.add('hidden');
         }
-    } catch (e) { console.error("Error loading project data:", e); }
-    
-    setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 800);
-}
+        window.onload = init;
+
+        // Back to top logic
+        const btt = document.getElementById("back-to-top");
+        window.onscroll = () => { btt.classList.toggle("visible", window.scrollY > 400); };
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+    </script>
+</body>
+</html>
