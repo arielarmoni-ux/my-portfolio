@@ -34,7 +34,7 @@
         .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; line-height: 1; }
         .sub-logo { font-size: 13px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 8px; line-height: 1; }
 
-        /* Hamburger to X - מיושר למרכז הלוגו (62px) */
+        /* Hamburger to X */
         .nav-wrapper { position: absolute; left: 5%; top: 62px; z-index: 4000; }
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s cubic-bezier(0.19, 1, 0.22, 1); }
@@ -43,13 +43,63 @@
         body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
         body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-        /* Portfolio Grid */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding: 60px 5% 100px; max-width: 1600px; margin: 0 auto; }
-        .project-card { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #fcfcfc; }
-        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s ease; }
-        .project-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; padding: 25px; text-align: center; }
+        /* Portfolio Grid - אפקט גדילה (Hover Scale) */
+        .portfolio-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 60px; /* הגדלנו מעט את המרווח כדי לתת מקום לגדילה */
+            padding: 80px 8% 100px; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+        }
+
+        .project-card { 
+            position: relative; 
+            aspect-ratio: 4 / 3; 
+            overflow: visible; /* מאפשר לתמונה לגדול מעבר למסגרת */
+            z-index: 1;
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), z-index 0s;
+        }
+
+        .project-card img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s ease;
+            display: block;
+        }
+
+        /* אפקט הובר: גדילה וצל */
+        .project-card:hover { 
+            z-index: 10; 
+            transform: scale(1.2); 
+        }
+
+        .project-card:hover img {
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
+        }
+
+        /* Overlay - טקסט בלבד ללא רקע לבן */
+        .project-overlay { 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,255,255,0); 
+            display: flex; align-items: center; justify-content: center; 
+            opacity: 0; transition: 0.3s; pointer-events: none;
+        }
+
         .project-card:hover .project-overlay { opacity: 1; }
-        .project-title { font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
+
+        .project-title { 
+            font-size: 13px; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+            color: var(--main); 
+            font-weight: 600;
+            background: rgba(255,255,255,0.9); /* רקע קטן לטקסט לקריאות */
+            padding: 8px 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
 
         /* Sidebar Typography */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
@@ -60,7 +110,7 @@
 
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { 
-            .portfolio-grid { grid-template-columns: 1fr; } 
+            .portfolio-grid { grid-template-columns: 1fr; gap: 40px; } 
             body.nav-open #site-wrapper { width: 100%; margin-left: 0; transform: translateX(var(--nav-width)); }
         }
     </style>
