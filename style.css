@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Final Master CSS --- */
+/* --- Ariel Armoni Portfolio | Final 5-Column Grid CSS --- */
 
 :root {
     --bg: #fff;           
@@ -48,48 +48,18 @@ body.nav-open #site-wrapper {
     text-align: left; border-right: 1px solid #f0f0f0; direction: ltr;
 }
 body.nav-open #side-nav { left: 0; }
+.nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 20px; }
+.project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-top: 60px; margin-bottom: 25px; padding-top: 30px; border-top: 1px solid #eee; letter-spacing: 2px; display: block; }
+.project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 12px; font-weight: 400; transition: 0.3s; }
 
-.nav-links a { 
-    font-size: 14px; text-decoration: none; color: var(--main); 
-    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; 
-    display: block; margin-bottom: 20px; 
-}
-
-.project-index-title { 
-    font-size: 11px; text-transform: uppercase; color: var(--muted); 
-    margin-top: 60px; margin-bottom: 25px; padding-top: 30px;
-    border-top: 1px solid #eee; letter-spacing: 2px; display: block;
-}
-
-.project-list-nav a { 
-    font-size: 15px; text-decoration: none; color: var(--main); 
-    display: block; margin-bottom: 12px; font-weight: 400; transition: 0.3s; 
-}
-.project-list-nav a:hover { color: var(--muted); }
-
-/* --- Navigation Button Logic (Fixed vs Absolute) --- */
+/* --- Navigation Button (Fixed vs Absolute) --- */
 .nav-wrapper { 
-    position: absolute; /* דף הבית */
-    left: 5%; 
-    top: 50%; 
-    transform: translateY(-50%);
-    z-index: 4500; 
+    position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4500; 
     transition: transform var(--transition-smooth), top 0.3s ease;
 }
-
-/* קיבוע להמבורגר רק בדפי פרויקט */
-body.project-page .nav-wrapper {
-    position: fixed;
-    top: 47px;
-    transform: none;
-}
-
-body.nav-open .nav-wrapper {
-    transform: translateX(var(--nav-width)) translateY(-50%);
-}
-body.project-page.nav-open .nav-wrapper {
-    transform: translateX(var(--nav-width));
-}
+body.project-page .nav-wrapper { position: fixed; top: 47px; transform: none; }
+body.nav-open .nav-wrapper { transform: translateX(var(--nav-width)) translateY(-50%); }
+body.project-page.nav-open .nav-wrapper { transform: translateX(var(--nav-width)); }
 
 .menu-toggle { 
     width: 46px; height: 46px; background: var(--bg); border: 1px solid #eee;
@@ -98,7 +68,6 @@ body.project-page.nav-open .nav-wrapper {
 }
 .menu-toggle span { display: block; width: 16px; height: 1px; background: var(--main); transition: 0.3s; }
 .menu-toggle:hover { opacity: 1; border-color: var(--main); transform: scale(1.05); }
-
 body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
@@ -111,13 +80,21 @@ header {
 }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* --- Home Grid (6 Columns) --- */
+/* --- Home Grid (5 עמודות עם מרווחים שווים) --- */
 .portfolio-grid {
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
-    padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto;
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); /* 5 עמודות */
+    gap: 20px; /* מרווח שווה בכול הכיוונים */
+    padding: 80px 4% 100px; 
+    max-width: 1800px; 
+    margin: 0 auto;
     transition: gap var(--transition-smooth);
 }
-.portfolio-grid:has(.project-card:hover) { gap: 40px; }
+
+/* הגדלת המרווחים באופן אחיד בזמן הובר */
+.portfolio-grid:has(.project-card:hover) { 
+    gap: 40px; 
+}
 
 .project-card {
     display: flex; flex-direction: column; text-decoration: none;
@@ -137,18 +114,10 @@ header {
 /* --- Project Page Layout --- */
 .gallery { display: grid; grid-template-columns: 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; }
-
-.project-meta { 
-    max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; 
-    display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; 
-}
+.project-meta { max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 450; color: var(--main); } /* בולד מעודן */
-
-.project-description { 
-    max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; 
-    font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; 
-}
+.meta-item .value { font-weight: 450; color: var(--main); }
+.project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
 /* --- Unified Controls (46px) --- */
 .nav-arrow, #back-to-top {
@@ -169,7 +138,7 @@ header {
 .nav-arrow:hover { transform: translateY(-50%) scale(1.05); }
 #back-to-top:hover { transform: translateY(-3px) scale(1.05); }
 
-@media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) {
     .nav-wrapper { top: 30px; }
     .portfolio-grid { grid-template-columns: 1fr; row-gap: 30px; }
@@ -179,5 +148,4 @@ header {
     #back-to-top { bottom: 20px; right: 20px; }
     .project-meta, .project-description { text-align: center; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
-    body.nav-open .nav-wrapper { transform: none; left: calc(var(--nav-width) + 5%); }
 }
