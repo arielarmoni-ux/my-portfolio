@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Clean Architecture Master CSS --- */
+/* --- Ariel Armoni Portfolio | Final Fixed Navigation CSS --- */
 
 :root {
     --bg: #fff;           
@@ -43,7 +43,8 @@ body.nav-open #site-wrapper {
 #side-nav {
     position: fixed; top: 0; left: calc(-1 * var(--nav-width));
     width: var(--nav-width); height: 100vh; background: var(--bg);
-    z-index: 3000; padding: 60px 40px; overflow-y: auto;
+    z-index: 5000; /* מעל הכל */
+    padding: 60px 40px; overflow-y: auto;
     transition: left var(--transition-smooth);
     text-align: left; border-right: 1px solid #f0f0f0; direction: ltr;
 }
@@ -67,16 +68,20 @@ body.nav-open #side-nav { left: 0; }
 }
 .project-list-nav a:hover { color: var(--muted); }
 
-/* --- Header --- */
-header { 
-    position: relative; min-height: 140px; padding: 60px 5% 20px; 
-    display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    border-bottom: 1px solid #f0f0f0; 
+/* --- Fixed Navigation Button (ההמבורגר הקבוע) --- */
+.nav-wrapper { 
+    position: fixed; /* שינוי ל-fixed כדי שיישאר על המסך */
+    left: 5%; 
+    top: 47px; /* מיקום שמתיישר עם הלוגו בטעינה הראשונית */
+    z-index: 4500; 
+    transition: transform var(--transition-smooth);
 }
-.logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* כפתור המבורגר מוגדל מעט (46px) */
-.nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4000; }
+/* הזזת הכפתור יחד עם האתר כשהתפריט נפתח */
+body.nav-open .nav-wrapper {
+    transform: translateX(var(--nav-width));
+}
+
 .menu-toggle { 
     width: 46px; height: 46px; background: var(--bg); border: 1px solid #eee;
     display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
@@ -85,10 +90,17 @@ header {
 .menu-toggle span { display: block; width: 16px; height: 1px; background: var(--main); transition: 0.3s; }
 .menu-toggle:hover { opacity: 1; border-color: var(--main); transform: scale(1.05); }
 
-/* אנימציית X מותאמת לגודל החדש */
 body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+/* --- Header --- */
+header { 
+    position: relative; min-height: 140px; padding: 60px 5% 20px; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+.logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
 /* --- Home Grid (6 Columns) --- */
 .portfolio-grid {
@@ -129,7 +141,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotat
     font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; 
 }
 
-/* --- Unified Controls (46px) --- */
+/* --- Unified Controls (Fixed) --- */
 .nav-arrow, #back-to-top {
     position: fixed; z-index: 2500; width: 46px; height: 46px;
     background: var(--bg); border: 1px solid #eee; color: var(--main);
@@ -150,6 +162,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotat
 
 @media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 768px) {
+    .nav-wrapper { top: 30px; } /* התאמת גובה במובייל */
     .portfolio-grid { grid-template-columns: 1fr; row-gap: 30px; }
     .project-card:hover { transform: none; }
     .project-info { opacity: 1; }
@@ -157,4 +170,5 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotat
     #back-to-top { bottom: 20px; right: 20px; }
     .project-meta, .project-description { text-align: center; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+    body.nav-open .nav-wrapper { transform: none; left: calc(var(--nav-width) + 5%); }
 }
