@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Final Master Stable CSS --- */
+/* --- Ariel Armoni Portfolio | Master Unified Design --- */
 
 :root {
     --bg: #fff;
@@ -75,11 +75,9 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 }
 .project-card:hover { transform: scale(1.2); z-index: 10; }
 .portfolio-grid:has(.project-card:hover) .project-card:not(:hover) { opacity: 0.5; transform: scale(0.95); }
-
 .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
 .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* טקסט ב-Fade In ללא תזוזה */
 .project-info { padding: 12px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
@@ -90,23 +88,37 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 .project-meta { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
 .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
-/* חצים וחזרה למעלה */
-.nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 40px; font-weight: 200; opacity: 0.3; transition: all 0.4s ease; padding: 40px 20px; }
-.nav-arrow:hover { opacity: 1; background: rgba(255, 255, 255, 0.5); border-radius: 50%; }
-
-#back-to-top {
-    position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px;
+/* --- Unified Circular Controls (Arrows & Top) --- */
+.nav-arrow, #back-to-top {
+    position: fixed; z-index: 2500; width: 50px; height: 50px;
     background: var(--bg); border: 1px solid #eee; color: var(--main);
     display: flex; align-items: center; justify-content: center;
-    text-decoration: none; font-size: 20px; border-radius: 50%;
-    z-index: 2000; opacity: 0; visibility: hidden; transition: 0.4s; cursor: pointer;
+    text-decoration: none; font-size: 24px; font-weight: 200;
+    border-radius: 50%; opacity: 0.3; cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
-#back-to-top.visible { opacity: 0.6; visibility: visible; }
-#back-to-top:hover { opacity: 1; transform: translateY(-5px); border-color: var(--main); }
 
+.nav-arrow { top: 50%; transform: translateY(-50%); }
+#prev-project { left: 2%; }
+#next-project { right: 2%; }
+
+#back-to-top {
+    bottom: 40px; right: 2%; /* מיושר עם החץ הימני */
+    opacity: 0; visibility: hidden;
+}
+
+#back-to-top.visible { opacity: 0.3; visibility: visible; }
+
+.nav-arrow:hover, #back-to-top:hover {
+    opacity: 1; border-color: var(--main); background: var(--bg);
+}
+.nav-arrow:hover { transform: translateY(-50%) scale(1.1); }
+#back-to-top:hover { transform: translateY(-5px) scale(1.1); }
+
+@media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 768px) {
     .portfolio-grid { grid-template-columns: 1fr; gap: 40px; }
     .project-info { opacity: 1; }
     .nav-arrow { display: none; }
-    #back-to-top { bottom: 20px; right: 20px; }
+    #back-to-top { bottom: 20px; right: 20px; width: 45px; height: 45px; }
 }
