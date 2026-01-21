@@ -28,7 +28,7 @@
             <div class="nav-wrapper">
                 <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
             </div>
-            <div id="header-branding" class="project-header-title">LOADING...</div>
+            <h1 id="header-branding" class="project-header-title">...</h1>
         </header>
 
         <div id="project-meta" class="project-meta"></div>
@@ -43,9 +43,8 @@
             if (!folder) return;
 
             try {
-                // 1. Sidebar & Navigation
-                const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
-                const folders = list.split(/\r?\n/).filter(f => f.trim());
+                const listText = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
+                const folders = listText.split(/\r?\n/).filter(f => f.trim());
                 
                 const sidebarList = document.getElementById('sidebar-list');
                 folders.forEach(f => {
@@ -58,7 +57,6 @@
                     document.getElementById('next-project').href = `project.html?folder=${folders[(idx+1)%folders.length]}`;
                 }
 
-                // 2. Info Logic (Line 1 = Title in Header)
                 const info = await fetch(`images/${folder}/info.txt?v=${Date.now()}`).then(r => r.text());
                 const lines = info.split('\n').map(l => l.trim()).filter(l => l !== "");
                 
@@ -68,7 +66,6 @@
 
                 lines.forEach((line, i) => {
                     if (i === 0) {
-                        // השורה הראשונה נכנסת ל-Header במקום "אריאל ערמוני"
                         headerBranding.innerText = line.toUpperCase();
                     } else if (line.includes(":")) {
                         const [l, ...v] = line.split(":");
@@ -78,7 +75,6 @@
                     }
                 });
 
-                // 3. Gallery
                 const gal = document.getElementById('gallery');
                 for (let i = 1; i <= 20; i++) {
                     const img = new Image();
