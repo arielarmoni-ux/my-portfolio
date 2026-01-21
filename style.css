@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Final Header Branding CSS --- */
+/* --- Ariel Armoni Portfolio | Large Project Headers CSS --- */
 
 :root {
     --bg: #fff;           
@@ -42,29 +42,26 @@ body.project-page.nav-open .nav-wrapper { transform: translateX(var(--nav-width)
 
 #site-wrapper { position: relative; width: 100%; transition: transform var(--transition-smooth); min-height: 100vh; z-index: 1000; }
 
-/* Header & Logo Section */
-header { 
-    position: relative; 
-    min-height: 140px; 
-    padding: 60px 5% 20px; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
-    border-bottom: 1px solid #f0f0f0; 
+/* Header Branding */
+header { position: relative; min-height: 160px; padding: 60px 5% 40px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
+
+.logo { 
+    font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; font-weight: 400; margin: 0; text-align: center; 
 }
 
-/* הלוגו והכותרת של הפרויקט מקבלים אותו עיצוב בדיוק */
-.logo, .project-header-title { 
-    font-size: 29px; 
-    letter-spacing: 5px; 
+/* כותרת הפרויקט המוגדלת */
+.project-header-title { 
+    font-size: 42px; /* הגדלה משמעותית */
+    letter-spacing: 2px; 
     text-transform: uppercase; 
-    text-decoration: none; 
     color: #000; 
-    font-weight: 400;
-    margin: 0;
+    font-weight: 600; 
+    margin: 0; 
     text-align: center;
+    line-height: 1.1;
 }
+
+.logo-subtitle { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
 
 /* Home Grid (5 Columns) */
 .portfolio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto; }
@@ -76,7 +73,7 @@ header {
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #000; }
 
-/* Project Meta Data */
+/* Project Page Details */
 .project-meta { max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; text-align: left; direction: ltr; }
 .meta-item .label { color: var(--muted); margin-right: 8px; font-size: 14px; }
 .meta-item .value { font-weight: 500; color: #000; font-size: 14px; }
@@ -93,5 +90,5 @@ header {
 #back-to-top { position: fixed; bottom: 40px; right: 2%; opacity: 0; visibility: hidden; font-size: 20px; }
 #back-to-top.visible { opacity: 0.3; visibility: visible; }
 
-@media (max-width: 1200px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; } .nav-arrow { display: none; } }
+@media (max-width: 1200px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } .project-header-title { font-size: 32px; } }
+@media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; } .nav-arrow { display: none; } .project-header-title { font-size: 24px; } }
