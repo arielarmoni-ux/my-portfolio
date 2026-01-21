@@ -25,11 +25,11 @@
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        /* Portfolio Grid */
+        /* Portfolio Grid - שימוש ב-Flexbox לאפקט כיווץ/גדילה */
         .portfolio-grid { 
             display: flex; 
-            flex-direction: column; 
-            gap: 50px; 
+            flex-direction: column; /* שורות אחת מתחת לשנייה */
+            gap: 60px; 
             padding: 80px 5% 100px; 
             max-width: 1600px; 
             margin: 0 auto; 
@@ -38,22 +38,22 @@
         .row {
             display: flex;
             width: 100%;
-            gap: 30px;
+            gap: 40px;
             height: auto;
         }
 
         .project-card { 
-            flex: 1; 
+            flex: 1; /* כל תמונה תופסת חלק שווה */
             display: flex;
             flex-direction: column;
             text-decoration: none;
             transition: flex 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-            min-width: 0; 
+            min-width: 0; /* קריטי למניעת חריגת טקסט */
         }
 
-        /* גדילה של 15% (1.15) שדוחפת את האחרים */
+        /* אפקט הובר: התמונה הנבחרת גדלה, האחרות בשורה מצטמצמות */
         .project-card:hover { 
-            flex: 1.15; 
+            flex: 1.2; /* גדלה ביחס לאחרות */
         }
 
         .img-container {
@@ -72,10 +72,10 @@
 
         /* טקסט מיושר לשמאל מתחת לתמונה */
         .project-info {
-            padding: 12px 0;
-            text-align: left; 
+            padding: 15px 0;
+            text-align: left; /* יישור לשמאל */
             direction: ltr;
-            opacity: 0.5;
+            opacity: 0.6;
             transition: 0.3s;
         }
 
@@ -84,7 +84,7 @@
         }
 
         .project-title { 
-            font-size: 12px; 
+            font-size: 13px; 
             letter-spacing: 1.2px; 
             text-transform: uppercase; 
             color: var(--main); 
@@ -129,6 +129,7 @@
                 let currentRow;
                 for (let i = 0; i < folders.length; i++) {
                     const f = folders[i];
+                    // יצירת שורה חדשה כל 3 פרויקטים
                     if (i % 3 === 0) {
                         currentRow = document.createElement('div');
                         currentRow.className = 'row';
@@ -141,4 +142,19 @@
                     side.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
                     
                     currentRow.innerHTML += `
-                        <a href="
+                        <a href="project.html?folder=${f}" class="project-card">
+                            <div class="img-container">
+                                <img src="${baseURL}/images/${f}/cover.jpg">
+                            </div>
+                            <div class="project-info">
+                                <div class="project-title">${title}</div>
+                            </div>
+                        </a>`;
+                }
+            } catch(e) {}
+        }
+        loadContent();
+        document.getElementById('menu-btn').onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
+    </script>
+</body>
+</html>
