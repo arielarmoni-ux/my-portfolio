@@ -40,16 +40,10 @@
             try {
                 const res = await fetch(`list.txt?v=${Date.now()}`);
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim());
-                
                 let gridHtml = "";
                 let sidebarHtml = "";
-
                 for (const f of folders) {
-                    gridHtml += `
-                    <a href="project.html?folder=${f}" class="project-card">
-                        <div class="img-container"><img src="images/${f}/cover.jpg"></div>
-                        <div class="project-info"><div class="project-title">${f.replace(/-/g, ' ')}</div></div>
-                    </a>`;
+                    gridHtml += `<a href="project.html?folder=${f}" class="project-card"><div class="img-container"><img src="images/${f}/cover.jpg"></div><div class="project-info"><div class="project-title">${f.replace(/-/g, ' ')}</div></div></a>`;
                     sidebarHtml += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`;
                 }
                 grid.innerHTML = gridHtml;
