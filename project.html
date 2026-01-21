@@ -8,9 +8,9 @@
 </head>
 <body>
     <div id="loader"></div>
-    <a id="back-to-top">&#8593;</a>
-    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
-    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
+    <a id="back-to-top" title="Back to Top">&#8593;</a>
+    <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
 
     <div id="site-wrapper">
         <header>
@@ -46,15 +46,14 @@
                 const res = await fetch(`${baseURL}/images/${currentFolder}/info.txt?v=${Date.now()}`);
                 const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
                 document.getElementById('project-title').innerText = lines[0];
-                
                 const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc');
+
                 for(let i=1; i<lines.length; i++) {
                     if(lines[i].includes(":")) {
                         const [k, ...v] = lines[i].split(":");
                         meta.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
                     } else { desc.innerText = lines[i]; }
                 }
-
                 const gal = document.getElementById('gallery');
                 for(let i=1; i<=30; i++) {
                     const img = new Image();
