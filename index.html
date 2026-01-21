@@ -15,6 +15,7 @@
         </header>
         <main class="portfolio-grid" id="portfolio-grid"></main>
     </div>
+
     <script src="sidebar.js"></script>
     <script>
         async function loadGrid() {
@@ -26,10 +27,14 @@
                 for (const f of folders) {
                     const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
                     const title = infoRes.ok ? (await infoRes.text()).split('\n')[0].trim() : f;
-                    html += `<a href="project.html?folder=${f}" class="project-card"><div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div><div class="project-info"><div class="project-title">${title}</div></div></a>`;
+                    html += `
+                        <a href="project.html?folder=${f}" class="project-card">
+                            <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
+                            <div class="project-info"><div class="project-title">${title}</div></div>
+                        </a>`;
                 }
                 grid.innerHTML = html;
-            } catch(e) {}
+            } catch(e) { console.error("Grid load failed", e); }
         }
         loadGrid();
     </script>
