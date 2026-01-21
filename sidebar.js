@@ -1,7 +1,6 @@
 const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
 
-function injectSidebar() {
-    // מונע הזרקה כפולה
+async function injectSidebar() {
     if (document.getElementById('side-nav')) return;
 
     const navHTML = `
@@ -16,44 +15,33 @@ function injectSidebar() {
     </nav>`;
 
     document.body.insertAdjacentHTML('afterbegin', navHTML);
-    loadProjectIndex();
-    setupMenuToggle();
-}
 
-async function loadProjectIndex() {
-    const sideList = document.getElementById('side-project-list');
-    if (!sideList) return;
-    try {
-        const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-        const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-        let html = "";
-        for (const f of folders) {
-            const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-            const title = infoRes.ok ? (await infoRes.text()).split('\n')[0].trim() : f;
-            html += `<a href="project.html?folder=${f}">${title}</a>`;
-        }
-        sideList.innerHTML = html;
-    } catch (e) { console.error("Sidebar load failed", e); }
-}
-
-function setupMenuToggle() {
-    const btn = document.getElementById('menu-btn');
-    if (btn) {
-        btn.onclick = (e) => {
+    const menuBtn = document.getElementById('menu-btn');
+    if (menuBtn) {
+        menuBtn.onclick = (e) => {
             e.stopPropagation();
             document.body.classList.toggle('nav-open');
         };
     }
+
     document.onclick = (e) => {
         if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
             document.body.classList.remove('nav-open');
         }
     };
+
+    try {
+        const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+        const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+        const sideList = document.getElementById('side-project-list');
+        for (const f of folders) {
+            const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+            if (iR.ok) {
+                const title = (await iR.text()).split('\n')[0].trim();
+                sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
+            }
+        }
+    } catch (e) { console.error("Sidebar load failed", e); }
 }
 
-// הפעלה ברגע שהדף נטען
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectSidebar);
-} else {
-    injectSidebar();
-}
+injectSidebar();
