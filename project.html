@@ -4,50 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Ariel Armoni</title>
-    <style>
-        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 320px; }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-        #site-wrapper { position: relative; width: 100%; margin: 0; transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1); background: var(--bg); min-height: 100vh; z-index: 1000; }
-        body.nav-open #site-wrapper { margin-left: var(--nav-width); width: calc(100% - var(--nav-width)); }
-
-        #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; transition: left 0.7s cubic-bezier(0.23, 1, 0.32, 1); text-align: left; border-right: 1px solid #f0f0f0; direction: ltr; }
-        body.nav-open #side-nav { left: 0; }
-        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 15px; }
-        .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 14px; font-weight: 400; }
-
-        header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
-        .nav-wrapper { position: absolute; left: 5%; top: 62px; z-index: 4000; }
-        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
-        body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-        body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
-        body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-        .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 30px; opacity: 0.2; padding: 20px; transition: 0.3s; }
-        .nav-arrow:hover { opacity: 1; }
-
-        .project-meta { max-width: 1200px; margin: 40px auto 30px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
-        .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-        .meta-item .value { font-weight: 600; color: var(--main); }
-        
-        .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; white-space: pre-wrap; }
-        
-        .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-        .gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
-
-        @media (max-width: 768px) { body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; } }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav id="side-nav">
-        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-        <div id="side-project-list" class="project-list-nav"></div>
-    </nav>
     <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
     <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
-
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
@@ -57,48 +18,32 @@
         <div id="project-desc" class="project-description"></div>
         <main id="gallery" class="gallery"></main>
     </div>
-
+    <script src="sidebar.js"></script>
     <script>
-        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-        async function init() {
-            const params = new URLSearchParams(window.location.search);
-            const folder = params.get('folder');
+        async function initProject() {
+            const folder = new URLSearchParams(window.location.search).get('folder');
             if(!folder) return;
-
-            const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-            const folders = (await listRes.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+            const resList = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+            const folders = (await resList.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
             const idx = folders.indexOf(folder);
             document.getElementById('prev-project').href = `project.html?folder=${folders[idx <= 0 ? folders.length-1 : idx-1]}`;
             document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length-1 ? 0 : idx+1]}`;
-
-            const side = document.getElementById('side-project-list');
-            for(const f of folders) {
-                const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
-                if(iR.ok) side.innerHTML += `<a href="project.html?folder=${f}">${(await iR.text()).split('\n')[0].trim()}</a>`;
-            }
-
             const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${Date.now()}`);
             const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
             document.getElementById('project-title').innerText = lines[0];
-
             lines.slice(1).forEach(line => {
                 if(line.includes(":")) {
                     const [k, ...v] = line.split(":");
                     document.getElementById('project-meta').innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
-                } else {
-                    document.getElementById('project-desc').innerText += (document.getElementById('project-desc').innerText ? "\n\n" : "") + line;
-                }
+                } else { document.getElementById('project-desc').innerText += (document.getElementById('project-desc').innerText ? "\n\n" : "") + line; }
             });
-
             for(let i=1; i<=30; i++) {
                 const img = new Image();
                 img.src = `${baseURL}/images/${folder}/${i.toString().padStart(2, '0')}.jpg`;
                 img.onload = () => { img.style.display="block"; document.getElementById('gallery').appendChild(img); };
             }
         }
-        init();
-        document.getElementById('menu-btn').onclick = (e) => { e.stopPropagation(); document.body.classList.toggle('nav-open'); };
-        document.onclick = (e) => { if(document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) document.body.classList.remove('nav-open'); };
+        initProject();
     </script>
 </body>
 </html>
