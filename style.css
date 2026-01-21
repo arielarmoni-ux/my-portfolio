@@ -52,32 +52,23 @@ body.nav-open #side-nav { left: 0; }
 header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* --- כפתור המבורגר קטן ומעודכן --- */
+/* --- כפתור המבורגר קטן (40px) --- */
 .nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4000; }
-
 .menu-toggle { 
-    width: 40px; height: 40px; /* הקטנה מ-50 ל-40 */
-    background: var(--bg); border: 1px solid #eee;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px; /* צמצום המרווח */
-    cursor: pointer; border-radius: 50%; opacity: 0.3;
-    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    width: 40px; height: 40px; background: var(--bg); border: 1px solid #eee;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px;
+    cursor: pointer; border-radius: 50%; opacity: 0.3; transition: all 0.4s ease;
 }
-
 .menu-toggle span { display: block; width: 14px; height: 1px; background: var(--main); transition: 0.3s; }
-
-.menu-toggle:hover { 
-    opacity: 1; border-color: var(--main); transform: scale(1.05);
-}
-
-/* אנימציית ה-X (איקס קטן יותר) */
+.menu-toggle:hover { opacity: 1; border-color: var(--main); transform: scale(1.05); }
 body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
 
-/* --- גריד דף הבית --- */
+/* --- גריד דף הבית (6 עמודות קבועות) --- */
 .portfolio-grid {
     display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    grid-template-columns: repeat(6, 1fr); 
     gap: 20px; 
     padding: 80px 4% 100px; 
     max-width: 1800px; 
@@ -93,30 +84,33 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
     outline: 30px solid transparent; outline-offset: -30px;
 }
 .project-card:hover { transform: scale(1.25); z-index: 100; }
-.portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); opacity: 1; }
+
+/* השכנים קטנים ונדחפים ללא שינוי שקיפות */
+.portfolio-grid:hover .project-card:not(:hover) { 
+    transform: scale(0.9);
+    opacity: 1; 
+}
 
 .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
 .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* טקסט פרויקט - מופיע רק בהובר */
 .project-info { padding: 12px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-/* --- דף פרויקט --- */
+/* --- דף פרויקט (גלריה טורית) --- */
 .gallery { display: grid; grid-template-columns: 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; }
 .project-meta { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
 .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
-/* --- פקדים צפים קטנים (חצים וחזרה למעלה) --- */
+/* --- פקדים צפים קטנים (40px) --- */
 .nav-arrow, #back-to-top {
-    position: fixed; z-index: 2500; 
-    width: 40px; height: 40px; /* הקטנה ל-40 */
+    position: fixed; z-index: 2500; width: 40px; height: 40px;
     background: var(--bg); border: 1px solid #eee; color: var(--main);
     display: flex; align-items: center; justify-content: center;
-    text-decoration: none; 
-    font-size: 18px; /* הקטנת גודל החץ עצמו */
-    font-weight: 200;
+    text-decoration: none; font-size: 18px; font-weight: 200;
     border-radius: 50%; opacity: 0.3; cursor: pointer;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -125,14 +119,15 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
 #next-project { right: 2%; }
 #back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; }
 #back-to-top.visible { opacity: 0.3; visibility: visible; }
-
 .nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: var(--main); }
 .nav-arrow:hover { transform: translateY(-50%) scale(1.05); }
 #back-to-top:hover { transform: translateY(-3px) scale(1.05); }
 
 /* --- Responsive --- */
+@media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) {
-    .portfolio-grid { grid-template-columns: 1fr !important; row-gap: 30px; }
+    .portfolio-grid { grid-template-columns: 1fr; row-gap: 30px; }
     .project-card:hover { transform: none; }
     .project-info { opacity: 1; }
     .nav-arrow { display: none; }
