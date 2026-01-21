@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariel Armoni | Project</title>
+    <title>Project | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -12,10 +12,11 @@
 
     <div id="side-nav">
         <div class="nav-links">
-            <a href="index.html">Home</a>
+            <a href="index.html">Projects</a>
+            <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </div>
-        <div class="project-index-title">Projects Index</div>
+        <div class="project-index-title">Index</div>
         <div id="sidebar-list" class="project-list-nav"></div>
     </div>
 
@@ -41,15 +42,12 @@
         async function init() {
             const folder = new URLSearchParams(window.location.search).get('folder');
             if (!folder) return;
-
             try {
                 const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
                 const folders = list.split(/\r?\n/).filter(f => f.trim());
                 
                 const sidebarList = document.getElementById('sidebar-list');
-                folders.forEach(f => {
-                    sidebarList.innerHTML += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`;
-                });
+                folders.forEach(f => { sidebarList.innerHTML += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`; });
 
                 const idx = folders.indexOf(folder);
                 if (idx !== -1) {
@@ -81,10 +79,13 @@
                     img.src = `images/${folder}/${i}.jpg`;
                     img.onload = () => { img.style.order = i; gal.appendChild(img); };
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {}
             document.getElementById('loader').classList.add('hidden');
         }
         window.onload = init;
+        const btt = document.getElementById("back-to-top");
+        window.onscroll = () => btt.classList.toggle("visible", window.scrollY > 400);
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
     </script>
 </body>
 </html>
