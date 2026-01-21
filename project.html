@@ -1,15 +1,69 @@
-// לוגיקת כפתור חזרה למעלה - וודא שזה קיים בתוך פונקציית ה-init או תחתיה
-const btt = document.getElementById("back-to-top");
-
-window.onscroll = () => { 
-    if (window.scrollY > 400) {
-        btt.classList.add("visible");
-    } else {
-        btt.classList.remove("visible");
-    }
-};
-
-btt.onclick = (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project | Ariel Armoni</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="project-page">
+    <div id="loader"></div>
+    <div id="side-nav">
+        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+        <div class="project-index-title">Index</div>
+        <div id="sidebar-list" class="project-list-nav"></div>
+    </div>
+    <a id="back-to-top">&#8593;</a>
+    <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div id="header-branding" class="project-header-title">...</div>
+        </header>
+        <div id="project-meta" class="project-meta"></div>
+        <div id="project-desc" class="project-description"></div>
+        <main id="gallery" class="gallery"></main>
+    </div>
+    <script src="sidebar.js"></script>
+    <script>
+        async function init() {
+            const folder = new URLSearchParams(window.location.search).get('folder');
+            if (!folder) return;
+            try {
+                const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
+                const folders = list.split(/\r?\n/).filter(f => f.trim());
+                const sidebarList = document.getElementById('sidebar-list');
+                folders.forEach(f => { sidebarList.innerHTML += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`; });
+                const idx = folders.indexOf(folder);
+                if (idx !== -1) {
+                    document.getElementById('prev-project').href = `project.html?folder=${folders[(idx-1+folders.length)%folders.length]}`;
+                    document.getElementById('next-project').href = `project.html?folder=${folders[(idx+1)%folders.length]}`;
+                }
+                const info = await fetch(`images/${folder}/info.txt?v=${Date.now()}`).then(r => r.text());
+                const lines = info.split('\n').map(l => l.trim()).filter(l => l !== "");
+                const headerBranding = document.getElementById('header-branding');
+                const metaDiv = document.getElementById('project-meta');
+                const descDiv = document.getElementById('project-desc');
+                lines.forEach((line, i) => {
+                    if (i === 0) { headerBranding.innerText = line.toUpperCase(); }
+                    else if (line.includes(":")) { const [l, ...v] = line.split(":"); metaDiv.innerHTML += `<div class="meta-item"><span class="label">${l.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`; }
+                    else { descDiv.innerHTML += `<p>${line}</p>`; }
+                });
+                const gal = document.getElementById('gallery');
+                for (let i = 1; i <= 20; i++) {
+                    const img = new Image();
+                    img.src = `images/${folder}/${i}.jpg`;
+                    img.onload = () => { img.style.order = i; gal.appendChild(img); };
+                }
+            } catch (e) {}
+            document.getElementById('loader').classList.add('hidden');
+        }
+        window.onload = init;
+        const btt = document.getElementById("back-to-top");
+        window.onscroll = () => btt.classList.toggle("visible", window.scrollY > 400);
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+    </script>
+</body>
+</html>
