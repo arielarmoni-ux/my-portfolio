@@ -3,3 +3,4 @@ Role: Exhibition design
 For: Israel Museum Jerusalem
 Date: 2022
 Curator: Orly Rabi
+Photography: Elie Posner

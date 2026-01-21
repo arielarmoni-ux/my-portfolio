@@ -3,3 +3,4 @@ Role: Exhibition  design
 For: Herzliya Museum of Contemporary Art
 Date: 2025
 Curator: Zeela Kotler Hadari
+Photography: Daniel Hanoch

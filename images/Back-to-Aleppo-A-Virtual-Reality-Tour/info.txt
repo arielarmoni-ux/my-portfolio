@@ -3,3 +3,4 @@ Role: Exhibition Design
 For: Israel Museum Jerusalem
 Date: 2022
 Curator: Revital Hovav
+Photography: Elie Posner
