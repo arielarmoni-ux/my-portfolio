@@ -4,140 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About | Ariel Armoni</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root { --bg: #fff; --main: #000; --muted: #888; --nav-width: 280px; }
-        * { box-sizing: border-box; }
-        html, body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-
-        /* Side Navigation (זהה לשאר האתר) */
-        #side-nav { 
-            position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; 
-            background: var(--bg); z-index: 3000; padding: 40px 30px; overflow-y: auto; 
-            transition: left 0.5s cubic-bezier(0.19, 1, 0.22, 1); text-align: left; 
-            border-right: 1px solid rgba(0,0,0,0.05); direction: ltr; 
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 5% 100px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* חלוקה מאוזנת בין תמונה לטקסט */
+            gap: 80px;
+            align-items: start;
+            direction: ltr; /* יישור תוכן לשמאל כפי שביקשת */
         }
-        #site-wrapper { position: relative; width: 100%; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); background: var(--bg); z-index: 1000; }
-        body.nav-open #side-nav { left: 0; }
-        body.nav-open #site-wrapper { width: calc(100% - var(--nav-width)); margin-left: var(--nav-width); }
 
-        /* Header */
-        header { 
-            min-height: 100px; padding-top: 40px; padding-bottom: 8px; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; position: sticky; top: 0; 
-            background: rgba(255, 255, 255, 0.98); z-index: 2000; border-bottom: 1px solid rgba(0,0,0,0.05); 
+        .about-image img {
+            width: 100%;
+            height: auto;
+            filter: grayscale(100%); /* מראה מינימליסטי בשחור-לבן */
+            transition: filter 0.5s ease;
         }
-        .nav-wrapper { position: absolute; left: 5%; top: 43px; z-index: 4000; }
-        .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 22px; height: 12px; cursor: pointer; border: none; background: none; padding: 0; }
-        .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
         
-        .brand { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: inherit; }
-        .logo { font-size: 24px; letter-spacing: 5px; text-transform: uppercase; line-height: 1; }
-        .sub-logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-top: 6px; line-height: 1; }
-
-        /* About Content */
-        .about-container { 
-            max-width: 1000px; margin: 80px auto; padding: 0 5%; 
-            display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; align-items: start;
+        .about-image img:hover {
+            filter: grayscale(0%);
         }
-        .about-image img { width: 100%; height: auto; filter: grayscale(100%); transition: 0.5s; }
-        .about-image img:hover { filter: grayscale(0%); }
-        
-        .about-text { text-align: right; line-height: 1.8; font-size: 16px; color: var(--main); }
-        .about-text h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-bottom: 20px; }
-        .about-text p { margin-bottom: 20px; }
 
-        /* Sidebar Links */
-        .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 50px; }
-        .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-        .project-list-nav { display: flex; flex-direction: column; gap: 10px; }
-        .project-list-nav a { font-size: 11px; text-decoration: none; color: var(--muted); line-height: 1.4; }
+        .about-text {
+            text-align: left;
+        }
 
-        @media (max-width: 768px) {
-            .about-container { grid-template-columns: 1fr; gap: 40px; margin: 40px auto; }
-            header { min-height: 80px; padding-top: 30px; }
-            body.nav-open #site-wrapper { width: 100%; transform: translateX(var(--nav-width)); margin-left: 0; }
+        .about-text h2 {
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            color: var(--main);
+        }
+
+        .about-text p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--main);
+            max-width: 600px;
+        }
+
+        /* רשימת הלקוחות */
+        .clients-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .clients-section h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--muted);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .clients-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* חלוקה לשתי עמודות של לקוחות */
+            gap: 10px 40px;
+        }
+
+        .clients-list li {
+            font-size: 15px;
+            color: var(--main);
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .about-text { text-align: left; }
+            .clients-list { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <nav id="side-nav">
-        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-        <div id="side-project-list" class="project-list-nav"></div>
-    </nav>
 
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
-            <a href="index.html" class="brand">
-                <div class="logo">ARIEL ARMONI</div>
-                <div class="sub-logo">Exhibition Architecture</div>
-            </a>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
 
-        <main class="about-container">
+        <main class="about-content">
             <div class="about-image">
-                <img src="profile.jpg" alt="Ariel Armoni" onerror="this.style.display='none'">
+                <img src="images/profile.jpg" alt="Ariel Armoni" onerror="this.src='https://via.placeholder.com/800x1000?text=Ariel+Armoni'">
             </div>
+
             <div class="about-text">
-                <h2>About</h2>
-                <p>Ariel Armoni | Exhibition Design & Architecture
-I am an architect and exhibition designer specializing in translating curatorial visions into design concepts that are inherently tied to an exhibition’s narrative. My process bridges the gap between abstract ideas and physical space, ensuring that content and form resonate as a single, cohesive entity.
-
-To achieve this, I utilize advanced digital tools and high-fidelity 3D visualizations, providing a profound understanding of the exhibition's atmosphere and flow long before it is built. Beyond spatial design, I collaborate closely with artists to develop and realize their works, bringing a meticulous architectural perspective to the creative process.
-
-My practice spans a diverse range of environments, from contemporary art and archaeology to interactive exhibitions for children.
-
-Selected Clients:
-
-The National Library of Israel
-
-Haifa Museum of Art
-
-Tel Aviv Museum of Art
-
-The Israel Museum, Jerusalem
-
-Museum Villa Stuck, Munich
-
-Eretz Israel Museum (MUZA)
-
-Akevot Institute
+                <h2>Ariel Armoni | Exhibition Design & Architecture</h2>
+                <p>
+                    I am an architect and exhibition designer specializing in translating curatorial visions into design concepts that are inherently tied to an exhibition’s narrative. My process bridges the gap between abstract ideas and physical space, ensuring that content and form resonate as a single, cohesive entity.
                 </p>
+                <p>
+                    To achieve this, I utilize advanced digital tools and high-fidelity 3D visualizations, providing a profound understanding of the exhibition's atmosphere and flow long before it is built. Beyond spatial design, I collaborate closely with artists to develop and realize their works, bringing a meticulous architectural perspective to the creative process.
+                </p>
+                <p>
+                    My practice spans a diverse range of environments, from contemporary art and archaeology to interactive exhibitions for children.
+                </p>
+
+                <div class="clients-section">
+                    <h3>Selected Clients</h3>
+                    <ul class="clients-list">
+                        <li>The Israel Museum, Jerusalem</li>
+                        <li>Tel Aviv Museum of Art</li>
+                        <li>Haifa Museum of Art</li>
+                        <li>Herzliya Museum of Contemporary Art
+                        <li>Hecht Museum Haifa</li>
+                        <li>Design Museum Holon<li>
+                        <li>Nahum Gutman Museum Tel Aviv <li>
+                        <li>Agam Museum Rishon Lezion<li>
+                            
+                       
+                    </ul>
+                </div>
             </div>
         </main>
     </div>
 
-    <script>
-        const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
+    <script src="sidebar.js"></script>
 
-        async function initAbout() {
-            const sideList = document.getElementById('side-project-list');
-            try {
-                const listRes = await fetch(`${baseURL}/list.txt`);
-                const listText = await listRes.text();
-                const folders = listText.split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-
-                for (const f of folders) {
-                    try {
-                        const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-                        if (!infoRes.ok) continue;
-                        const t = await infoRes.text();
-                        sideList.innerHTML += `<a href="project.html?folder=${f}">${t.split('\n')[0].trim()}</a>`;
-                    } catch(e) {}
-                }
-            } catch(e) {}
-        }
-        initAbout();
-
-        const btn = document.getElementById('menu-btn');
-        btn.onclick = (e) => {
-            e.stopPropagation(); document.body.classList.toggle('nav-open');
-            const s = btn.querySelectorAll('span');
-            if(document.body.classList.contains('nav-open')) {
-                s[0].style.transform = 'rotate(45deg) translate(5px, 5px)'; s[1].style.opacity = '0'; s[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-            } else { s[0].style.transform = 'none'; s[1].style.opacity = '1'; s[2].style.transform = 'none'; }
-        };
-        document.onclick = (e) => { if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) btn.click(); };
-    </script>
 </body>
 </html>
