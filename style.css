@@ -16,7 +16,7 @@ html, body {
     -webkit-font-smoothing: antialiased; 
 }
 
-/* Site Wrapper & Side Nav Logic */
+/* מבנה כללי ותנועת סיידבר */
 #site-wrapper { 
     position: relative; 
     width: 100%; 
@@ -48,11 +48,9 @@ body.nav-open #site-wrapper {
     direction: ltr; 
 }
 
-body.nav-open #side-nav { 
-    left: 0; 
-}
+body.nav-open #side-nav { left: 0; }
 
-/* Sidebar Typography */
+/* טיפוגרפיה סיידבר */
 .nav-links a { 
     font-size: 14px; 
     text-decoration: none; 
@@ -82,11 +80,6 @@ body.nav-open #side-nav {
     margin-bottom: 14px; 
     font-weight: 400; 
     transition: 0.3s; 
-}
-
-.project-list-nav a:hover { 
-    transform: translateX(5px); 
-    opacity: 0.7; 
 }
 
 /* Header & Logo */
@@ -140,7 +133,7 @@ body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rota
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* Home Grid - 5 Items & Refined Movement */
+/* דף הבית - גריד 5 פרויקטים ותנועה רכה */
 .portfolio-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
@@ -151,9 +144,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     transition: gap 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
 }
 
-.portfolio-grid:has(.project-card:hover) {
-    gap: 45px; 
-}
+.portfolio-grid:has(.project-card:hover) { gap: 45px; }
 
 .project-card { 
     display: flex; 
@@ -164,121 +155,38 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     z-index: 1; 
 }
 
-.project-card:hover { 
-    transform: scale(1.15); 
-    z-index: 10; 
-}
+.project-card:hover { transform: scale(1.15); z-index: 10; }
 
-.portfolio-grid:has(.project-card:hover) .project-card:not(:hover) {
-    transform: scale(0.96);
-    opacity: 1; /* ללא פייד - נשאר ברור */
-}
-
-.img-container { 
-    width: 100%; 
-    aspect-ratio: 4/3; 
-    overflow: hidden; 
-    background: #f7f7f7; 
-}
-
-.img-container img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    display: block; 
-}
-
-.project-info { 
-    padding: 15px 0; 
-    text-align: left; 
-    direction: ltr; 
-    opacity: 0; 
-    transition: opacity 0.5s ease; 
-}
-
-.project-card:hover .project-info { 
+.portfolio-grid:has(.project-card:hover) .project-card:not(:hover) { 
+    transform: scale(0.96); 
     opacity: 1; 
 }
 
-.project-title { 
-    font-size: 11px; 
-    letter-spacing: 1.2px; 
-    text-transform: uppercase; 
-    color: var(--main); 
-    font-weight: 500; 
-}
+.img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
+.img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* Project Page Details - BOLD VALUES */
-.project-meta { 
-    max-width: 1200px; 
-    margin: 40px auto 30px; 
-    padding: 0 5%; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 8px; 
-    direction: ltr; 
-    text-align: left; 
-}
+.project-info { padding: 15px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.5s ease; }
+.project-card:hover .project-info { opacity: 1; }
+.project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-.meta-item .label { 
-    font-weight: 400; 
-    color: var(--muted); 
-    margin-right: 8px; 
-}
+/* דף פרויקט - בולד הפוך */
+.project-meta { max-width: 1200px; margin: 40px auto 30px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
+.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
+.meta-item .value { font-weight: 600; color: var(--main); }
+.project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; white-space: pre-wrap; }
+.gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+.gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
 
-.meta-item .value { 
-    font-weight: 600; 
-    color: var(--main); 
-}
+.nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 30px; opacity: 0.2; padding: 20px; transition: 0.3s; }
+.nav-arrow:hover { opacity: 1; }
 
-.project-description { 
-    max-width: 1200px; 
-    margin: 0 auto 60px; 
-    padding: 0 5%; 
-    font-size: 19px; 
-    line-height: 1.8; 
-    text-align: left; 
-    direction: ltr; 
-    white-space: pre-wrap; 
-}
-
-.gallery { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 0 5%; 
-}
-
-.gallery img { 
-    width: 100%; 
-    height: auto; 
-    margin-bottom: 60px; 
-    display: block; 
-}
-
-/* Nav Arrows */
-.nav-arrow { 
-    position: fixed; 
-    top: 50%; 
-    transform: translateY(-50%); 
-    z-index: 2500; 
-    text-decoration: none; 
-    color: var(--main); 
-    font-size: 30px; 
-    opacity: 0.2; 
-    padding: 20px; 
-    transition: 0.3s; 
-}
-
-.nav-arrow:hover { 
-    opacity: 1; 
-}
-
-@media (max-width: 768px) { 
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); } 
-    body.nav-open #site-wrapper { 
-        transform: translateX(var(--nav-width)); 
-        margin-left: 0; 
-        width: 100%; 
-    } 
+/* התאמות מובייל */
+@media (max-width: 768px) {
+    header { padding-top: 85px; min-height: 140px; }
+    .logo { font-size: 22px; letter-spacing: 3px; }
+    .nav-wrapper { position: fixed; left: 20px; top: 25px; z-index: 5000; }
+    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .portfolio-grid:has(.project-card:hover) { gap: 20px; }
     .nav-arrow { display: none; }
+    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
 }
