@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Final Fixed Navigation CSS --- */
+/* --- Ariel Armoni Portfolio | Navigation Logic Update --- */
 
 :root {
     --bg: #fff;           
@@ -43,42 +43,37 @@ body.nav-open #site-wrapper {
 #side-nav {
     position: fixed; top: 0; left: calc(-1 * var(--nav-width));
     width: var(--nav-width); height: 100vh; background: var(--bg);
-    z-index: 5000; /* מעל הכל */
-    padding: 60px 40px; overflow-y: auto;
+    z-index: 5000; padding: 60px 40px; overflow-y: auto;
     transition: left var(--transition-smooth);
     text-align: left; border-right: 1px solid #f0f0f0; direction: ltr;
 }
 body.nav-open #side-nav { left: 0; }
+.nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 20px; }
+.project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-top: 60px; margin-bottom: 25px; padding-top: 30px; border-top: 1px solid #eee; letter-spacing: 2px; display: block; }
+.project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 12px; font-weight: 400; transition: 0.3s; }
 
-.nav-links a { 
-    font-size: 14px; text-decoration: none; color: var(--main); 
-    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; 
-    display: block; margin-bottom: 20px; 
-}
-
-.project-index-title { 
-    font-size: 11px; text-transform: uppercase; color: var(--muted); 
-    margin-top: 60px; margin-bottom: 25px; padding-top: 30px;
-    border-top: 1px solid #eee; letter-spacing: 2px; display: block;
-}
-
-.project-list-nav a { 
-    font-size: 15px; text-decoration: none; color: var(--main); 
-    display: block; margin-bottom: 12px; font-weight: 400; transition: 0.3s; 
-}
-.project-list-nav a:hover { color: var(--muted); }
-
-/* --- Fixed Navigation Button (ההמבורגר הקבוע) --- */
+/* --- Navigation Button Logic --- */
 .nav-wrapper { 
-    position: fixed; /* שינוי ל-fixed כדי שיישאר על המסך */
+    position: absolute; /* ברירת מחדל לדף הבית - זז עם הדף */
     left: 5%; 
-    top: 47px; /* מיקום שמתיישר עם הלוגו בטעינה הראשונית */
+    top: 50%; 
+    transform: translateY(-50%);
     z-index: 4500; 
-    transition: transform var(--transition-smooth);
+    transition: transform var(--transition-smooth), top 0.3s ease;
 }
 
-/* הזזת הכפתור יחד עם האתר כשהתפריט נפתח */
+/* הגדרה ספציפית לדפי פרויקט - כאן הוא הופך לקבוע */
+body.project-page .nav-wrapper {
+    position: fixed;
+    top: 47px;
+    transform: none; /* ביטול ה-translateY של ה-header */
+}
+
+/* הזזה בזמן שהתפריט פתוח */
 body.nav-open .nav-wrapper {
+    transform: translateX(var(--nav-width)) translateY(-50%);
+}
+body.project-page.nav-open .nav-wrapper {
     transform: translateX(var(--nav-width));
 }
 
@@ -102,14 +97,13 @@ header {
 }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
-/* --- Home Grid (6 Columns) --- */
+/* --- Home Grid --- */
 .portfolio-grid {
     display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px;
     padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto;
     transition: gap var(--transition-smooth);
 }
 .portfolio-grid:has(.project-card:hover) { gap: 40px; }
-
 .project-card {
     display: flex; flex-direction: column; text-decoration: none;
     position: relative; z-index: 1; transition: transform var(--transition-smooth);
@@ -117,10 +111,8 @@ header {
 }
 .project-card:hover { transform: scale(1.25); z-index: 100; }
 .portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); opacity: 1; }
-
 .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
 .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
 .project-info { padding: 12px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
@@ -128,20 +120,12 @@ header {
 /* --- Project Page --- */
 .gallery { display: grid; grid-template-columns: 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; }
-
-.project-meta { 
-    max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; 
-    display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; 
-}
+.project-meta { max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
 .meta-item .value { font-weight: 600; color: var(--main); }
+.project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
-.project-description { 
-    max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; 
-    font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; 
-}
-
-/* --- Unified Controls (Fixed) --- */
+/* --- Unified Controls --- */
 .nav-arrow, #back-to-top {
     position: fixed; z-index: 2500; width: 46px; height: 46px;
     background: var(--bg); border: 1px solid #eee; color: var(--main);
@@ -156,13 +140,8 @@ header {
 #back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; }
 #back-to-top.visible { opacity: 0.3; visibility: visible; }
 
-.nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: var(--main); }
-.nav-arrow:hover { transform: translateY(-50%) scale(1.05); }
-#back-to-top:hover { transform: translateY(-3px) scale(1.05); }
-
-@media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
 @media (max-width: 768px) {
-    .nav-wrapper { top: 30px; } /* התאמת גובה במובייל */
+    .nav-wrapper { top: 30px; }
     .portfolio-grid { grid-template-columns: 1fr; row-gap: 30px; }
     .project-card:hover { transform: none; }
     .project-info { opacity: 1; }
@@ -170,5 +149,4 @@ header {
     #back-to-top { bottom: 20px; right: 20px; }
     .project-meta, .project-description { text-align: center; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
-    body.nav-open .nav-wrapper { transform: none; left: calc(var(--nav-width) + 5%); }
 }
