@@ -25,23 +25,32 @@
         .menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
         .menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
 
-        /* Portfolio Grid - Interactive CSS Grid */
+        /* Portfolio Grid */
         .portfolio-grid { 
             display: grid; 
-            grid-template-columns: 1fr 1fr 1fr; /* מצב התחלתי */
+            grid-template-columns: repeat(3, 1fr); 
             gap: 40px; 
             padding: 80px 5% 100px; 
             max-width: 1600px; 
-            margin: 0 auto; 
-            transition: grid-template-columns 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            margin: 0 auto;
+            transition: all 0.5s ease;
         }
 
         .project-card { 
             display: flex;
             flex-direction: column;
             text-decoration: none;
-            min-width: 0;
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* אפקט הגדילה הספציפי שדוחף את השכנים */
+        .project-card:hover { 
+            transform: scale(1.15); /* גדילה ב-15% */
+            z-index: 10;
+            /* הוספת מרווח וירטואלי שדוחף את האלמנטים מסביב */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         .img-container {
@@ -55,7 +64,7 @@
             width: 100%; 
             height: 100%; 
             object-fit: cover; 
-            transition: transform 0.6s ease;
+            display: block;
         }
 
         /* טקסט מיושר לשמאל מתחת לתמונה */
@@ -68,10 +77,18 @@
         }
 
         .project-card:hover .project-info { opacity: 1; }
-        .project-title { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
+        .project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
+        /* מניעת קפיצות של הגריד */
+        .portfolio-grid:has(.project-card:hover) .project-card:not(:hover) {
+            opacity: 0.7;
+            filter: grayscale(0.2);
+        }
+
+        @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { 
-            .portfolio-grid { grid-template-columns: 1fr !important; }
+            .portfolio-grid { grid-template-columns: 1fr; } 
+            .project-card:hover { transform: none; } /* מבטל גדילה במובייל למניעת שבירת layout */
         }
     </style>
 </head>
@@ -115,29 +132,14 @@
                     const card = document.createElement('a');
                     card.className = 'project-card';
                     card.href = `project.html?folder=${f}`;
-                    card.dataset.index = i;
                     card.innerHTML = `
                         <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
                         <div class="project-info"><div class="project-title">${title}</div></div>
                     `;
-
-                    // אירועי הובר לשינוי כל הגריד
-                    card.onmouseenter = () => {
-                        const colIndex = i % 3; // מוצא באיזו עמודה התמונה נמצאת
-                        let cols = ["1fr", "1fr", "1fr"];
-                        cols[colIndex] = "1.2fr"; // מגדיל את כל העמודה ב-20%
-                        grid.style.gridTemplateColumns = cols.join(" ");
-                    };
-                    
-                    card.onmouseleave = () => {
-                        grid.style.gridTemplateColumns = "1fr 1fr 1fr"; // מחזיר למצב רגיל
-                    };
-
                     grid.appendChild(card);
                 }
             } catch(e) {}
         }
-
         loadContent();
 
         document.getElementById('menu-btn').onclick = (e) => {
