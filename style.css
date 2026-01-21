@@ -61,7 +61,7 @@ body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rota
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* --- גריד דף הבית - ללא פייד בהופעה --- */
+/* --- גריד דף הבית - ללא פייד לשכנים --- */
 .portfolio-grid {
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -72,6 +72,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     transition: gap var(--transition-smooth);
 }
 
+/* הגדלת המרווחים בזמן הובר - "דחיפת" השכנים */
 .portfolio-grid:has(.project-card:hover) { 
     gap: 40px; 
 }
@@ -82,7 +83,6 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     text-decoration: none;
     position: relative; 
     z-index: 1;
-    /* הוסר הפייד (opacity transition) מהכרטיס */
     transition: transform var(--transition-smooth);
     outline: 30px solid transparent;
     outline-offset: -30px;
@@ -93,10 +93,10 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     z-index: 100; 
 }
 
-/* השכנים עדיין מקבלים שקיפות בזמן הובר כדי להדגיש את הנבחר */
+/* השכנים - קטנים וזזים, אבל ללא שום שינוי בשקיפות (Opacity) */
 .portfolio-grid:hover .project-card:not(:hover) { 
-    opacity: 0.4; 
     transform: scale(0.9);
+    opacity: 1; /* מוודא שהם נשארים בבהירות מלאה */
 }
 
 .img-container { 
