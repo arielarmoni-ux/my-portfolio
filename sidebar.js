@@ -1,6 +1,7 @@
 const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
 
 function injectSidebar() {
+    if (document.getElementById('side-nav')) return; // מונע הזרקה כפולה
     const navHTML = `
     <nav id="side-nav">
         <div class="nav-links">
@@ -11,7 +12,6 @@ function injectSidebar() {
         <div class="project-index-title">Project Index</div>
         <div id="side-project-list" class="project-list-nav"></div>
     </nav>`;
-
     document.body.insertAdjacentHTML('afterbegin', navHTML);
     loadProjectIndex();
     setupMenuToggle();
@@ -23,11 +23,13 @@ async function loadProjectIndex() {
     try {
         const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
         const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+        let html = "";
         for (const f of folders) {
             const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
             const title = infoRes.ok ? (await infoRes.text()).split('\n')[0].trim() : f;
-            sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
+            html += `<a href="project.html?folder=${f}">${title}</a>`;
         }
+        sideList.innerHTML = html;
     } catch (e) {}
 }
 
@@ -42,5 +44,4 @@ function setupMenuToggle() {
         }
     };
 }
-
 injectSidebar();
