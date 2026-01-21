@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Clean Architecture Grid (No Opacity) --- */
+/* --- Ariel Armoni Portfolio | Fixed UI & Visible X --- */
 
 :root {
     --bg: #fff;           
@@ -25,23 +25,46 @@ html, body {
 #loader.hidden { opacity: 0; visibility: hidden; }
 @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
-/* UI Elements & Hamburger */
-.nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 8000; transition: all var(--transition-smooth); }
+/* --- UI & Navigation Wrapper --- */
+.nav-wrapper { 
+    position: absolute; 
+    left: 5%; 
+    top: 70px; /* מיקום קבוע מלמעלה */
+    transform: translateY(-50%); 
+    z-index: 9000; /* הכי גבוה באתר כדי שלא ייעלם */
+    transition: all var(--transition-smooth);
+}
 body.project-page .nav-wrapper { position: fixed; top: 47px; transform: none; }
 
-body.nav-open .nav-wrapper { left: auto; right: 2%; transform: translateY(-50%); }
-body.project-page.nav-open .nav-wrapper { left: auto; right: 2%; top: 47px; transform: none; }
+/* התיקון למיקום ה-X כשהסיידבר פתוח */
+body.nav-open .nav-wrapper { 
+    left: calc(var(--nav-width) + 20px); /* מצמיד אותו לצד הסיידבר מבחוץ, או: */
+    left: auto;
+    right: 20px; /* מצמיד לימין המסך בסמוך לסקרולר */
+    transform: translateY(-50%);
+}
+body.project-page.nav-open .nav-wrapper { 
+    left: auto;
+    right: 20px;
+    top: 47px;
+    transform: none;
+}
 
-.menu-toggle, .nav-arrow, #back-to-top { width: var(--ui-size); height: var(--ui-size); background: var(--bg); border: 1px solid #eee; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; border-radius: 50%; opacity: 0.3; transition: opacity 0.4s, border-color 0.4s; text-decoration: none; color: #000; }
+.menu-toggle, .nav-arrow, #back-to-top { 
+    width: var(--ui-size); height: var(--ui-size); background: var(--bg); border: 1px solid #eee;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    cursor: pointer; border-radius: 50%; opacity: 0.3; transition: opacity 0.4s, border-color 0.4s; text-decoration: none; color: #000;
+}
 .menu-toggle span { display: block; width: 16px; height: 1px; background: #000; margin: 2px 0; transition: 0.3s; }
 .menu-toggle:hover, .nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: #000; }
 
+/* Hamburger to X */
 body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
 
-/* Sidebar Logic */
-#side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: #fff; z-index: 7000; padding: 80px 40px; border-right: 1px solid #f0f0f0; transition: left var(--transition-smooth); text-align: left; direction: ltr; overflow-y: auto; }
+/* --- Sidebar Design --- */
+#side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: #fff; z-index: 8500; padding: 80px 40px; border-right: 1px solid #f0f0f0; transition: left var(--transition-smooth); text-align: left; direction: ltr; overflow-y: auto; }
 body.nav-open #side-nav { left: 0; }
 body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); width: 100%; }
 
@@ -56,19 +79,16 @@ body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); width: 10
 .project-list-nav a { text-decoration: none; color: var(--muted); font-size: 14px; transition: 0.3s; }
 .project-list-nav a:hover { color: #000; }
 
-/* Header Branding */
+/* Header & Grid */
 header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
 .logo, .project-header-title { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; font-weight: 400; margin: 0; text-align: center; }
 .logo-subtitle { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 10px; }
 
-/* --- Home Grid (Equal Gaps, Dynamic Scaling, NO OPACITY) --- */
 .portfolio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto; transition: gap var(--transition-smooth); }
 .portfolio-grid:hover { gap: 40px; }
 
 .project-card { display: flex; flex-direction: column; text-decoration: none; position: relative; z-index: 1; transition: transform var(--transition-smooth); }
 .project-card:hover { transform: scale(1.2); z-index: 100; }
-
-/* כאן הורדנו את ה-Opacity - התמונות האחרות רק קטנות ב-Scale */
 .portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); }
 
 .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
@@ -77,7 +97,7 @@ header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: 
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #000; }
 
-/* Project Page Details & Gallery */
+/* Project Meta & Gallery */
 .project-meta { max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; text-align: left; direction: ltr; }
 .meta-item .label { color: var(--muted); margin-right: 8px; font-size: 14px; }
 .meta-item .value { font-weight: 500; color: #000; font-size: 14px; }
@@ -85,16 +105,13 @@ header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: 
 .gallery { display: flex; flex-direction: column; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; margin-bottom: 80px; }
 
-/* Static Arrows & Back to Top */
-.nav-arrow, #back-to-top { position: fixed; z-index: 2000; }
-.nav-arrow { top: 50%; transform: translateY(-50%); }
+/* Arrows & Back to Top (Static) */
+.nav-arrow, #back-to-top { position: fixed; z-index: 2000; top: 50%; transform: translateY(-50%); }
 #prev-project { left: 2%; }
 #next-project { right: 2%; }
-#back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; font-size: 20px; }
+#back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; font-size: 20px; transform: none; top: auto; }
 #back-to-top.visible { opacity: 0.3; visibility: visible; }
-
-.nav-arrow:hover, #back-to-top:hover { transform: translateY(-50%); opacity: 1; border-color: #000; }
-#back-to-top:hover { transform: none; }
+.nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: #000; }
 
 @media (max-width: 1200px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr; } .nav-arrow { display: none; } }
