@@ -1,72 +1,134 @@
-/* --- תיקון רעידות Hover Loop בתוך style.css --- */
+/* --- Ariel Armoni Portfolio | Final Anti-Shake CSS --- */
 
-.portfolio-grid { 
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 40px; 
-    padding: 80px 8% 100px; 
-    max-width: 1600px; 
-    margin: 0 auto;
-    transition: gap var(--transition-smooth);
-    /* חשוב: מונע מהגריד כולו לרעוד כשהתוכן שלו משתנה */
-    align-items: start; 
+:root {
+    --bg: #fff;
+    --main: #000;
+    --muted: #888;
+    --nav-width: 320px;
+    --transition-smooth: 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* הגדלת המרווח הכללי בהובר */
-.portfolio-grid:has(.project-card:hover) { 
-    gap: 75px; 
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0; padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-.project-card { 
-    display: flex; 
-    flex-direction: column; 
-    text-decoration: none; 
+/* --- Layout --- */
+#site-wrapper {
     position: relative;
-    z-index: 1;
-    /* הוספת שטח פנים קבוע שלא משתנה - זה המפתח למניעת רעידות */
-    padding: 10px;
-    margin: -10px;
+    width: 100%;
+    transition: all var(--transition-smooth);
+    min-height: 100vh;
 }
 
-/* אנחנו מפעילים את השינוי על המיכל הפנימי ולא על ה-Card עצמו */
-.project-card .img-container, 
-.project-card .project-info {
-    transition: transform var(--transition-smooth), opacity 0.5s ease;
-    will-change: transform, opacity;
-    pointer-events: none; /* העכבר "מתעלם" מהם ומתייחס רק ל-card הקבוע */
+body.nav-open #site-wrapper {
+    margin-left: var(--nav-width);
+    width: calc(100% - var(--nav-width));
 }
 
-/* כשהעכבר על הקארד (שלא זז), התוכן הפנימי גדל */
-.project-card:hover .img-container { 
-    transform: scale(1.25) translateZ(0); 
-    z-index: 10;
+/* --- Sidebar (Unchanged) --- */
+#side-nav {
+    position: fixed; top: 0; left: calc(-1 * var(--nav-width));
+    width: var(--nav-width); height: 100vh; background: var(--bg);
+    z-index: 3000; padding: 40px 30px; overflow-y: auto;
+    transition: left var(--transition-smooth);
+    text-align: left; border-right: 1px solid #f0f0f0; direction: ltr;
+}
+body.nav-open #side-nav { left: 0; }
+
+.nav-links a, .project-list-nav a {
+    text-decoration: none; color: var(--main); display: block;
+    transition: 0.3s; width: fit-content;
 }
 
-.project-card:hover .project-info {
-    transform: scale(1.1) translateY(10px) translateZ(0);
-    opacity: 1;
+/* --- Portfolio Grid - The Anti-Shake Fix --- */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 80px 8% 100px;
+    max-width: 1600px;
+    margin: 0 auto;
+    /* הגריד עצמו לא משנה את המרווחים שלו כדי למנוע קפיצות */
 }
 
-/* כיווץ השכנים בצורה יציבה */
-.portfolio-grid:has(.project-card:hover) .project-card:not(:hover) { 
-    opacity: 0.5; 
-}
-.portfolio-grid:has(.project-card:hover) .project-card:not(:hover) .img-container {
-    transform: scale(0.92) translateZ(0);
-}
-
-.img-container { 
-    width: 100%; 
-    aspect-ratio: 4/3; 
-    overflow: hidden; 
-    background: #f7f7f7;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-}
-
-.img-container img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+.project-card {
     display: block;
+    text-decoration: none;
+    position: relative;
+    /* הקופסה החיצונית נשארת קבועה ב-100% ולא זזה */
+    overflow: visible; 
+}
+
+.img-container {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: #f7f7f7;
+    /* האנימציה עוברת לכאן */
+    transition: transform var(--transition-smooth), filter 0.5s ease;
+    will-change: transform;
+    transform: translateZ(0); /* האצת חומרה */
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* כשעוברים על ה-Card הקבוע, התמונה שבתוכו גדלה */
+.project-card:hover {
+    z-index: 100; /* דואג שהתמונה הגדולה תהיה מעל השאר */
+}
+
+.project-card:hover .img-container {
+    transform: scale(1.25); /* הגדלה ל-25% */
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* מוסיף עומק */
+}
+
+/* אפקט הריכוך על השכנים ללא הזזת הגריד */
+.portfolio-grid:hover .project-card:not(:hover) {
+    opacity: 0.4;
+    filter: grayscale(0.5);
+}
+
+.project-info {
+    padding: 15px 0;
+    text-align: left;
+    direction: ltr;
+    transition: opacity 0.3s ease;
+}
+
+.project-title {
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--main);
+    font-weight: 500;
+}
+
+/* --- Project Page (Meta & Gallery) --- */
+.project-meta {
+    max-width: 1200px; margin: 40px auto; padding: 0 5%;
+    display: flex; flex-direction: column; gap: 8px; direction: ltr;
+}
+
+.meta-item .label { font-weight: 600; color: var(--main); margin-right: 8px; }
+.meta-item .value { font-weight: 400; color: var(--muted); }
+
+.gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+.gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
+
+/* Responsive */
+@media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .project-card:hover .img-container { transform: none; }
 }
