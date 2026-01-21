@@ -5,57 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* כותרת הפרויקט במרכז */
+        header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
+        .project-main-title { font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; color: var(--main); margin: 0; }
+
+        /* כפתור המבורגר במיקום קבוע */
+        .nav-wrapper { position: absolute; left: 5%; top: 62px; z-index: 4000; }
+
+        /* חצי ניווט אינסופיים */
+        .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 30px; opacity: 0.2; transition: 0.3s; padding: 20px; }
+        .nav-arrow:hover { opacity: 1; }
+        .nav-arrow.prev { left: 2%; }
+        .nav-arrow.next { right: 2%; }
+
+        /* החזרת עיצוב הטקסטים למקור: כותרת מודגשת, תוכן רגיל */
+        .project-meta { max-width: 1200px; margin: 40px auto 30px; padding: 0 5%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 8px; font-size: 15px; direction: ltr; }
+        .meta-item .label { font-weight: 600; color: var(--main); margin-right: 8px; } /* מודגש */
+        .meta-item .value { font-weight: 400; color: var(--muted); } /* רגיל */
+
+        .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
+        
+        /* גלריה */
+        .gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
+        .photo-credit { max-width: 1200px; margin: 20px auto 100px; padding: 0 5%; font-size: 14px; color: var(--muted); text-align: left; direction: ltr; letter-spacing: 0.5px; text-transform: none; }
+
+        @media (max-width: 768px) { 
+            header, .project-meta, .project-description, .photo-credit { align-items: center; text-align: center; } 
+        }
+    </style>
 </head>
 <body>
-    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
-    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
+
+    <a href="#" id="prev-project" class="nav-arrow prev">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow next">&#8594;</a>
 
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
             <h1 id="project-title" class="project-main-title"></h1>
         </header>
+
         <div id="project-meta" class="project-meta"></div>
         <div id="project-desc" class="project-description"></div>
+        
         <main id="gallery" class="gallery"></main>
+        
         <div id="photo-credit" class="photo-credit"></div> 
     </div>
 
     <script src="sidebar.js"></script>
     <script>
         async function initProject() {
-            const params = new URLSearchParams(window.location.search), currentFolder = params.get('folder');
+            const params = new URLSearchParams(window.location.search);
+            const currentFolder = params.get('folder');
             if(!currentFolder) return;
+
             try {
+                // טעינת רשימת התיקיות לניווט החצים
                 const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await listRes.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
                 const idx = folders.indexOf(currentFolder);
 
-                document.getElementById('prev-project').href = `project.html?folder=${folders[(idx === 0) ? folders.length - 1 : idx - 1]}`;
-                document.getElementById('next-project').href = `project.html?folder=${folders[(idx === folders.length - 1) ? 0 : idx + 1]}`;
+                // הגדרת חצים אינסופיים
+                const prevIdx = (idx === 0) ? folders.length - 1 : idx - 1;
+                const nextIdx = (idx === folders.length - 1) ? 0 : idx + 1;
+                document.getElementById('prev-project').href = `project.html?folder=${folders[prevIdx]}`;
+                document.getElementById('next-project').href = `project.html?folder=${folders[nextIdx]}`;
 
+                // טעינת תוכן הפרויקט
                 const res = await fetch(`${baseURL}/images/${currentFolder}/info.txt?v=${Date.now()}`);
                 const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
+                
                 document.getElementById('project-title').innerText = lines[0];
                 
-                const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc'), credit = document.getElementById('photo-credit');
+                const meta = document.getElementById('project-meta');
+                const desc = document.getElementById('project-desc');
+                const credit = document.getElementById('photo-credit');
+
                 for(let i=1; i<lines.length; i++) {
                     const line = lines[i];
-                    if (line.toLowerCase().includes("photo")) { credit.innerText = line; }
-                    else if(line.includes(":")) {
+                    const lowerLine = line.toLowerCase();
+                    
+                    if (lowerLine.includes("photo") || lowerLine.includes("photography") || lowerLine.includes("צלם")) {
+                        credit.innerText = line;
+                    } else if(line.includes(":")) {
                         const [k, ...v] = line.split(":");
-                        meta.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
-                    } else { desc.innerText = line; }
+                        // החזרת המבנה: Label מודגש, Value רגיל
+                        meta.innerHTML += `
+                            <div class="meta-item">
+                                <span class="label">${k.trim()}:</span>
+                                <span class="value">${v.join(":").trim()}</span>
+                            </div>`;
+                    } else {
+                        desc.innerText = line;
+                    }
                 }
 
+                // טעינת תמונות
                 const gal = document.getElementById('gallery');
                 for(let i=1; i<=30; i++) {
                     const img = new Image();
                     img.src = `${baseURL}/images/${currentFolder}/${i}.jpg`;
                     img.onload = () => gal.appendChild(img);
                 }
-            } catch(e) {}
+            } catch(e) { console.error("Error initializing project page", e); }
         }
+
         initProject();
     </script>
 </body>
