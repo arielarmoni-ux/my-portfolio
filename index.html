@@ -18,7 +18,6 @@
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
         .project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 14px; font-weight: 400; transition: 0.3s; }
-        .project-list-nav a:hover { transform: translateX(5px); }
 
         header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
         .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
@@ -29,12 +28,29 @@
         body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
         body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
+        /* Portfolio Grid - 5 Projects */
         .portfolio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 25px; padding: 80px 5% 100px; max-width: 1800px; margin: 0 auto; transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1); }
-        .project-card { display: flex; flex-direction: column; text-decoration: none; transition: 0.7s cubic-bezier(0.23, 1, 0.32, 1); position: relative; z-index: 1; }
-        .project-card:hover { transform: scale(1.15); z-index: 10; }
+        
+        .project-card { display: flex; flex-direction: column; text-decoration: none; transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1); position: relative; z-index: 1; }
+        
+        /* הגדלה עדינה בהובר - ללא פייד לשאר התמונות */
+        .project-card:hover { transform: scale(1.05); z-index: 10; }
+
         .img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .project-info { padding: 15px 0; text-align: left; direction: ltr; }
+
+        /* טקסט מוסתר כברירת מחדל */
+        .project-info { 
+            padding: 15px 0; 
+            text-align: left; 
+            direction: ltr; 
+            opacity: 0; 
+            transition: opacity 0.4s ease; 
+        }
+
+        /* הטקסט מופיע רק ב-Hover על הכרטיס */
+        .project-card:hover .project-info { opacity: 1; }
+        
         .project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
         @media (max-width: 1400px) { .portfolio-grid { grid-template-columns: repeat(4, 1fr); } }
