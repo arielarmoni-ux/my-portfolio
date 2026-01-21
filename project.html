@@ -5,82 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body class="project-page">
-    <div id="loader"></div>
-
-    <div id="side-nav">
-        <div class="nav-links">
-            <a href="index.html">Projects</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </div>
-        <div class="project-index-title">Index</div>
-        <div id="sidebar-list" class="project-list-nav"></div>
-    </div>
-
-    <a id="back-to-top">&#8593;</a>
-    <a href="#" id="prev-project" class="nav-arrow">&#8592;</a>
-    <a href="#" id="next-project" class="nav-arrow">&#8594;</a>
+<body>
+    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
+    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
 
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
-            </div>
-            <div id="header-branding" class="project-header-title">...</div>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin: 0;"></h1>
         </header>
 
         <div id="project-meta" class="project-meta"></div>
-        <div id="project-desc" class="project-description"></div>
+        <div id="project-desc" class="project-description" style="max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr;"></div>
+        
         <main id="gallery" class="gallery"></main>
     </div>
 
     <script src="sidebar.js"></script>
     <script>
-        async function init() {
-            const folder = new URLSearchParams(window.location.search).get('folder');
-            if (!folder) return;
+        async function initProject() {
+            const params = new URLSearchParams(window.location.search);
+            const currentFolder = params.get('folder');
+            if(!currentFolder) return;
+
             try {
-                const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
-                const folders = list.split(/\r?\n/).filter(f => f.trim());
-                const sidebarList = document.getElementById('sidebar-list');
-                folders.forEach(f => { sidebarList.innerHTML += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`; });
+                // ניווט בין פרויקטים
+                const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+                const folders = (await listRes.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
+                const idx = folders.indexOf(currentFolder);
+                document.getElementById('prev-project').href = `project.html?folder=${folders[(idx === 0) ? folders.length - 1 : idx - 1]}`;
+                document.getElementById('next-project').href = `project.html?folder=${folders[(idx === folders.length - 1) ? 0 : idx + 1]}`;
 
-                const idx = folders.indexOf(folder);
-                if (idx !== -1) {
-                    document.getElementById('prev-project').href = `project.html?folder=${folders[(idx-1+folders.length)%folders.length]}`;
-                    document.getElementById('next-project').href = `project.html?folder=${folders[(idx+1)%folders.length]}`;
+                // טעינת טקסטים
+                const res = await fetch(`${baseURL}/images/${currentFolder}/info.txt?v=${Date.now()}`);
+                const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
+                document.getElementById('project-title').innerText = lines[0];
+                
+                const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc');
+                for(let i=1; i<lines.length; i++) {
+                    if(lines[i].includes(":")) {
+                        const [k, ...v] = lines[i].split(":");
+                        meta.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
+                    } else { desc.innerText = lines[i]; }
                 }
 
-                const info = await fetch(`images/${folder}/info.txt?v=${Date.now()}`).then(r => r.text());
-                const lines = info.split('\n').map(l => l.trim()).filter(l => l !== "");
-                const branding = document.getElementById('header-branding');
-                const metaDiv = document.getElementById('project-meta');
-                const descDiv = document.getElementById('project-desc');
-
-                lines.forEach((line, i) => {
-                    if (i === 0) branding.innerText = line.toUpperCase();
-                    else if (line.includes(":")) {
-                        const [l, ...v] = line.split(":");
-                        metaDiv.innerHTML += `<div class="meta-item"><span class="label">${l.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
-                    } else descDiv.innerHTML += `<p>${line}</p>`;
-                });
-
+                // טעינת תמונות בסדר רץ (01, 02, 03...)
                 const gal = document.getElementById('gallery');
-                for (let i = 1; i <= 20; i++) {
+                for(let i=1; i<=30; i++) {
+                    // הופך את המספר למחרוזת עם אפס מוביל (למשל 1 הופך ל-"01")
+                    const fileName = i.toString().padStart(2, '0'); 
+                    
                     const img = new Image();
-                    img.src = `images/${folder}/${i}.jpg`;
-                    img.onload = () => { img.style.order = i; gal.appendChild(img); };
+                    img.src = `${baseURL}/images/${currentFolder}/${fileName}.jpg`;
+                    
+                    // רק אם התמונה קיימת היא תתווסף לגלריה
+                    img.onload = () => {
+                        img.style.display = "block";
+                        gal.appendChild(img);
+                    };
                 }
-            } catch (e) {}
-            document.getElementById('loader').classList.add('hidden');
+            } catch(e) { console.error(e); }
         }
-        window.onload = init;
-        const btt = document.getElementById("back-to-top");
-        window.onscroll = () => btt.classList.toggle("visible", window.scrollY > 400);
-        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+        initProject();
     </script>
 </body>
 </html>
