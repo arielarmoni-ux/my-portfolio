@@ -6,58 +6,55 @@
     <title>About | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* מירכוז התוכן בדף */
         .about-content {
-            max-width: 1200px;
+            max-width: 1000px; /* צמצום הרוחב כדי שהכל יהיה יותר במרכז */
             margin: 0 auto;
-            padding: 80px 5% 100px;
+            padding: 100px 5% 100px;
             display: grid;
-            grid-template-columns: 1fr 1.2fr; /* חלוקה מאוזנת בין תמונה לטקסט */
-            gap: 80px;
+            grid-template-columns: 1fr 1.1fr; 
+            gap: 60px;
             align-items: start;
-            direction: ltr; /* יישור תוכן לשמאל כפי שביקשת */
+            direction: ltr; /* טקסט לשמאל */
         }
 
         .about-image img {
             width: 100%;
             height: auto;
-            filter: grayscale(100%); /* מראה מינימליסטי בשחור-לבן */
-            transition: filter 0.5s ease;
+            filter: grayscale(100%);
+            transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
-        .about-image img:hover {
-            filter: grayscale(0%);
-        }
+        .about-image img:hover { filter: grayscale(0%); }
 
-        .about-text {
-            text-align: left;
-        }
+        .about-text { text-align: left; }
 
         .about-text h2 {
-            font-size: 22px;
+            font-size: 20px;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 25px;
             font-weight: 500;
             color: var(--main);
+            line-height: 1.4;
         }
 
         .about-text p {
-            font-size: 17px;
-            line-height: 1.7;
+            font-size: 16px;
+            line-height: 1.8;
             margin-bottom: 20px;
             color: var(--main);
-            max-width: 600px;
         }
 
-        /* רשימת הלקוחות */
+        /* רשימת לקוחות מלמעלה למטה */
         .clients-section {
-            margin-top: 40px;
+            margin-top: 50px;
             padding-top: 30px;
             border-top: 1px solid #eee;
         }
 
         .clients-section h3 {
-            font-size: 13px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--muted);
@@ -69,24 +66,24 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* חלוקה לשתי עמודות של לקוחות */
-            gap: 10px 40px;
+            display: flex;
+            flex-direction: column; /* רשימה אנכית */
+            gap: 12px;
         }
 
         .clients-list li {
             font-size: 15px;
             color: var(--main);
-            line-height: 1.4;
+            line-height: 1.2;
+            font-weight: 400;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 850px) {
             .about-content {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                padding-top: 60px;
             }
-            .about-text { text-align: left; }
-            .clients-list { grid-template-columns: 1fr; }
+            .about-image { max-width: 500px; margin: 0 auto; }
         }
     </style>
 </head>
@@ -123,16 +120,13 @@
                 <div class="clients-section">
                     <h3>Selected Clients</h3>
                     <ul class="clients-list">
-                        <li>The Israel Museum, Jerusalem</li>
-                        <li>Tel Aviv Museum of Art</li>
+                        <li>The National Library of Israel</li>
                         <li>Haifa Museum of Art</li>
-                        <li>Herzliya Museum of Contemporary Art
-                        <li>Hecht Museum Haifa</li>
-                        <li>Design Museum Holon<li>
-                        <li>Nahum Gutman Museum Tel Aviv <li>
-                        <li>Agam Museum Rishon Lezion<li>
-                            
-                       
+                        <li>Tel Aviv Museum of Art</li>
+                        <li>The Israel Museum, Jerusalem</li>
+                        <li>Museum Villa Stuck, Munich</li>
+                        <li>Eretz Israel Museum (MUZA)</li>
+                        <li>Akevot Institute</li>
                     </ul>
                 </div>
             </div>
