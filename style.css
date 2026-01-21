@@ -1,126 +1,34 @@
-/* --- Ariel Armoni Portfolio | Unified UI & Fixed Project Titles --- */
-
-:root {
-    --bg: #fff;           
-    --main: #000;         
-    --muted: #888;        
-    --nav-width: 320px;   
-    --transition-smooth: 0.8s cubic-bezier(0.23, 1, 0.32, 1); 
-    --ui-size: 46px; /* גודל אחיד לכל כפתורי הממשק */
+/* --- תיקון גלריה --- */
+.gallery { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 60px; /* מרווח קבוע בין תמונות */
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 60px 5% 100px;
 }
 
-* { box-sizing: border-box; }
+.gallery div { width: 100%; display: block; }
 
-html, body {
-    margin: 0; padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    scroll-behavior: smooth;
+.gallery img { 
+    width: 100%; 
+    height: auto; 
+    display: block;
+    background: #fdfdfd; /* צבע רקע זמני עד שהתמונה נטענת */
 }
 
-/* --- Loader --- */
-#loader {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 20px; height: 20px; border: 1px solid #eee; border-top: 1px solid var(--main);
-    border-radius: 50%; animation: spin 1s linear infinite; z-index: 9999;
-    pointer-events: none; transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-#loader.hidden { opacity: 0; visibility: hidden; }
-@keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-
-/* --- Navigation Button (Hamburger) --- */
-.nav-wrapper { 
-    position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4500; 
-    transition: transform var(--transition-smooth), top 0.3s ease;
-}
-body.project-page .nav-wrapper { position: fixed; top: 47px; transform: none; }
-body.nav-open .nav-wrapper { transform: translateX(var(--nav-width)) translateY(-50%); }
-body.project-page.nav-open .nav-wrapper { transform: translateX(var(--nav-width)); }
-
-.menu-toggle { 
-    width: var(--ui-size); height: var(--ui-size); background: var(--bg); border: 1px solid #eee;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
-    cursor: pointer; border-radius: 50%; opacity: 0.3; transition: 0.4s;
-}
-.menu-toggle span { display: block; width: 16px; height: 1px; background: var(--main); transition: 0.3s; }
-.menu-toggle:hover { opacity: 1; border-color: var(--main); transform: scale(1.05); }
-body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
-body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
-body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
-
-/* --- Arrows (חצי מעבר בין פרויקטים - זהים להמבורגר) --- */
-.nav-arrow, #back-to-top {
-    position: fixed; z-index: 2500; width: var(--ui-size); height: var(--ui-size);
-    background: var(--bg); border: 1px solid #eee; color: var(--main);
-    display: flex; align-items: center; justify-content: center;
-    text-decoration: none; font-size: 18px; font-weight: 200;
-    border-radius: 50%; opacity: 0.3; cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-}
-.nav-arrow { top: 50%; transform: translateY(-50%); }
-#prev-project { left: 2%; }
-#next-project { right: 2%; }
-#back-to-top { bottom: 40px; right: 2%; opacity: 0; visibility: hidden; }
-#back-to-top.visible { opacity: 0.3; visibility: visible; }
-
-.nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: var(--main); transform: translateY(-50%) scale(1.05); }
-#back-to-top:hover { transform: translateY(-3px) scale(1.05); }
-
-/* --- Header --- */
-header { 
-    position: relative; min-height: 140px; padding: 60px 5% 20px; 
-    display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    border-bottom: 1px solid #f0f0f0; 
-}
-.logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
-
-/* --- Home Grid & Titles --- */
-.portfolio-grid {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
-    padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto;
-}
-.portfolio-grid:has(.project-card:hover) { gap: 40px; }
-
-.project-card {
-    display: flex; flex-direction: column; text-decoration: none;
-    position: relative; z-index: 1; transition: transform var(--transition-smooth);
-}
-.project-card:hover { transform: scale(1.25); z-index: 100; }
-.portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); opacity: 1; }
-
-.img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
-.img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* טייטלים בדף הבית */
-.project-info { padding: 12px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.3s ease; }
-.project-card:hover .project-info { opacity: 1; }
-.project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
-
-/* --- Project Page Details --- */
+/* --- תיקון טייטלים בתוך המטא --- */
 .project-meta { 
-    max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; 
-    display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; 
+    max-width: 1200px; 
+    margin: 40px auto 20px; 
+    padding: 0 5%; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+    text-align: left; 
+    direction: ltr; 
 }
-.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 500; color: var(--main); }
-.project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
-/* --- Sidebar --- */
-#side-nav {
-    position: fixed; top: 0; left: calc(-1 * var(--nav-width));
-    width: var(--nav-width); height: 100vh; background: var(--bg);
-    z-index: 5000; padding: 60px 40px; text-align: left; border-right: 1px solid #f0f0f0; direction: ltr;
-    transition: left var(--transition-smooth);
-}
-body.nav-open #side-nav { left: 0; }
-.nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; display: block; margin-bottom: 20px; }
-.project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-top: 60px; margin-bottom: 25px; padding-top: 30px; border-top: 1px solid #eee; letter-spacing: 2px; display: block; }
-.project-list-nav a { font-size: 15px; text-decoration: none; color: var(--main); display: block; margin-bottom: 12px; font-weight: 400; }
-
-@media (max-width: 768px) {
-    .portfolio-grid { grid-template-columns: 1fr; }
-    .nav-arrow { display: none; }
-    .project-meta, .project-description { text-align: center; }
-}
+.meta-item { display: block; line-height: 1.4; }
+.meta-item .label { color: var(--muted); margin-right: 10px; font-weight: 400; }
+.meta-item .value { color: var(--main); font-weight: 500; }
