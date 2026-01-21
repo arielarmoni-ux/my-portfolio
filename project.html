@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project | Ariel Armoni</title>
+    <title>Ariel Armoni | Project</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="project-page">
     <div id="loader"></div>
@@ -27,7 +28,7 @@
             <div class="nav-wrapper">
                 <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
             </div>
-            <div id="header-branding" class="project-header-title">...</div>
+            <div id="header-branding" class="project-header-title">LOADING...</div>
         </header>
 
         <div id="project-meta" class="project-meta"></div>
@@ -42,8 +43,8 @@
             if (!folder) return;
 
             try {
-                const listRes = await fetch(`list.txt?v=${Date.now()}`);
-                const folders = (await listRes.text()).split(/\r?\n/).filter(f => f.trim());
+                const list = await fetch(`list.txt?v=${Date.now()}`).then(r => r.text());
+                const folders = list.split(/\r?\n/).filter(f => f.trim());
                 
                 const sidebarList = document.getElementById('sidebar-list');
                 folders.forEach(f => {
@@ -84,6 +85,10 @@
             document.getElementById('loader').classList.add('hidden');
         }
         window.onload = init;
+
+        const btt = document.getElementById("back-to-top");
+        window.onscroll = () => btt.classList.toggle("visible", window.scrollY > 400);
+        btt.onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
     </script>
 </body>
 </html>
