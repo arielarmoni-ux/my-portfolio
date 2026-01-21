@@ -1,7 +1,7 @@
 const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
 
 function injectSidebar() {
-    if (document.getElementById('side-nav')) return; // מונע הזרקה כפולה
+    if (document.getElementById('side-nav')) return;
     const navHTML = `
     <nav id="side-nav">
         <div class="nav-links">
