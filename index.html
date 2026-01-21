@@ -49,7 +49,12 @@
             padding: 80px 5% 100px; 
             max-width: 1600px; 
             margin: 0 auto;
-            transition: gap 0.5s ease;
+            transition: gap 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* כשמצביעים על תמונה, הרווחים גדלים כדי לתת מקום לגדילה המשמעותית */
+        .portfolio-grid:has(.project-card:hover) {
+            gap: 70px;
         }
 
         .project-card { 
@@ -61,17 +66,10 @@
             z-index: 1;
         }
 
-        /* האפקט המבוקש: גדילה של 15% ודחיפת השכנים לכל הכיוונים */
+        /* גדילה של 25% (1.25) */
         .project-card:hover { 
-            transform: scale(1.15); 
+            transform: scale(1.25); 
             z-index: 10;
-            /* שימוש ב-margin שלילי גורם לדחיפה פיזית של הגריד סביב התמונה */
-            margin: 0 10px; 
-        }
-
-        /* גורם לשאר התמונות לזוז מעט הצידה כשאחת גדלה */
-        .portfolio-grid:has(.project-card:hover) {
-            gap: 60px;
         }
 
         .img-container {
@@ -97,7 +95,7 @@
         .project-card:hover .project-info { opacity: 1; }
         .project-title { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-        /* Sidebar Design */
+        /* Sidebar Design Restored */
         .nav-links { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
         .nav-links a { font-size: 14px; text-decoration: none; color: var(--main); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
         .project-index-title { font-size: 11px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; border-top: 1px solid #eee; padding-top: 25px; letter-spacing: 2px; }
@@ -106,7 +104,7 @@
         @media (max-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { 
             .portfolio-grid { grid-template-columns: 1fr; } 
-            .project-card:hover { transform: none; margin: 0; }
+            .project-card:hover { transform: none; }
             body.nav-open #site-wrapper { width: 100%; margin-left: 0; transform: translateX(var(--nav-width)); }
         }
     </style>
