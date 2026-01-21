@@ -21,26 +21,46 @@
 
     <script src="sidebar.js"></script>
     <script>
-        // הקוד לטעינת הגריד והסרת השעון
+        // הגדרת בסיס הכתובת - אם אתה עובד לוקאלית, השאר ריק או שים נקודה
+        const base = "."; 
+
         async function loadGrid() {
             const grid = document.getElementById('portfolio-grid');
             const loader = document.getElementById('loader');
+            
             try {
-                // טעינת פרויקטים (החלף baseURL בכתובת שלך)
-                const res = await fetch(`${baseURL}/list.txt`);
-                const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
+                // טעינת רשימת התיקיות מקובץ list.txt
+                const res = await fetch(`${base}/list.txt?v=${Date.now()}`);
+                if (!res.ok) throw new Error("Could not load list.txt");
+                
+                const text = await res.text();
+                const folders = text.split(/\r?\n/).filter(f => f.trim() !== "");
+                
                 let html = "";
                 for (const f of folders) {
-                    html += `<a href="project.html?folder=${f}" class="project-card">
-                        <div class="img-container"><img src="${baseURL}/images/${f}/cover.jpg"></div>
-                        <div class="project-info"><div class="project-title">${f}</div></div>
+                    // יצירת הכרטיס לכל פרויקט
+                    html += `
+                    <a href="project.html?folder=${f}" class="project-card">
+                        <div class="img-container">
+                            <img src="${base}/images/${f}/cover.jpg" alt="${f}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title">${f.replace(/-/g, ' ')}</div>
+                        </div>
                     </a>`;
                 }
                 grid.innerHTML = html;
-            } catch(e) {}
-            loader.classList.add('hidden');
+            } catch (e) {
+                console.error("Error loading projects:", e);
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center;'>שגיאה בטעינת הפרויקטים. וודא שקובץ list.txt קיים ותיקיית images מכילה את התמונות.</p>";
+            } finally {
+                // העלמת השעון בכל מקרה
+                loader.classList.add('hidden');
+            }
         }
-        loadGrid();
+
+        // הפעלת הפונקציה
+        window.addEventListener('DOMContentLoaded', loadGrid);
     </script>
 </body>
 </html>
