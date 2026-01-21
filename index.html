@@ -5,32 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ariel Armoni | Exhibition Architecture</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="loader"></div>
-
     <div id="side-nav">
-        <div class="nav-links">
-            <a href="index.html">Projects</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </div>
+        <div class="nav-links"><a href="index.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
         <div class="project-index-title">Index</div>
         <div id="sidebar-list" class="project-list-nav"></div>
     </div>
-
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button>
-            </div>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="logo-subtitle">EXHIBITION ARCHITECTURE</div>
         </header>
         <main class="portfolio-grid" id="portfolio-grid"></main>
     </div>
-
     <script src="sidebar.js"></script>
     <script>
         async function loadGrid() {
@@ -40,8 +30,7 @@
             try {
                 const res = await fetch(`list.txt?v=${Date.now()}`);
                 const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim());
-                let gridHtml = "";
-                let sidebarHtml = "";
+                let gridHtml = ""; let sidebarHtml = "";
                 for (const f of folders) {
                     gridHtml += `<a href="project.html?folder=${f}" class="project-card"><div class="img-container"><img src="images/${f}/cover.jpg"></div><div class="project-info"><div class="project-title">${f.replace(/-/g, ' ')}</div></div></a>`;
                     sidebarHtml += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`;
