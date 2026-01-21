@@ -15,57 +15,41 @@
             <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
             <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin: 0;"></h1>
         </header>
-
         <div id="project-meta" class="project-meta"></div>
         <div id="project-desc" class="project-description" style="max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr;"></div>
-        
         <main id="gallery" class="gallery"></main>
     </div>
 
     <script src="sidebar.js"></script>
     <script>
         async function initProject() {
-            const params = new URLSearchParams(window.location.search);
-            const currentFolder = params.get('folder');
+            const params = new URLSearchParams(window.location.search), currentFolder = params.get('folder');
             if(!currentFolder) return;
-
             try {
-                // ניווט בין פרויקטים
                 const listRes = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
                 const folders = (await listRes.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
                 const idx = folders.indexOf(currentFolder);
                 document.getElementById('prev-project').href = `project.html?folder=${folders[(idx === 0) ? folders.length - 1 : idx - 1]}`;
                 document.getElementById('next-project').href = `project.html?folder=${folders[(idx === folders.length - 1) ? 0 : idx + 1]}`;
 
-                // טעינת טקסטים
                 const res = await fetch(`${baseURL}/images/${currentFolder}/info.txt?v=${Date.now()}`);
                 const lines = (await res.text()).split('\n').map(l => l.trim()).filter(l => l !== "");
                 document.getElementById('project-title').innerText = lines[0];
-                
                 const meta = document.getElementById('project-meta'), desc = document.getElementById('project-desc');
+
                 for(let i=1; i<lines.length; i++) {
                     if(lines[i].includes(":")) {
                         const [k, ...v] = lines[i].split(":");
                         meta.innerHTML += `<div class="meta-item"><span class="label">${k.trim()}:</span><span class="value">${v.join(":").trim()}</span></div>`;
                     } else { desc.innerText = lines[i]; }
                 }
-
-                // טעינת תמונות בסדר רץ (01, 02, 03...)
                 const gal = document.getElementById('gallery');
                 for(let i=1; i<=30; i++) {
-                    // הופך את המספר למחרוזת עם אפס מוביל (למשל 1 הופך ל-"01")
-                    const fileName = i.toString().padStart(2, '0'); 
-                    
                     const img = new Image();
-                    img.src = `${baseURL}/images/${currentFolder}/${fileName}.jpg`;
-                    
-                    // רק אם התמונה קיימת היא תתווסף לגלריה
-                    img.onload = () => {
-                        img.style.display = "block";
-                        gal.appendChild(img);
-                    };
+                    img.src = `${baseURL}/images/${currentFolder}/${i}.jpg`;
+                    img.onload = () => gal.appendChild(img);
                 }
-            } catch(e) { console.error(e); }
+            } catch(e) {}
         }
         initProject();
     </script>
