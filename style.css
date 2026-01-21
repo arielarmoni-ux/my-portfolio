@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Final Master CSS --- */
+/* --- Ariel Armoni Portfolio | Clean Architecture Master CSS --- */
 
 :root {
     --bg: #fff;           
@@ -19,15 +19,15 @@ html, body {
     scroll-behavior: smooth;
 }
 
-/* --- Loader (תיקון השעון) --- */
+/* --- Loader --- */
 #loader {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 20px; height: 20px; border: 1px solid #eee; border-top: 1px solid var(--main);
     border-radius: 50%; animation: spin 1s linear infinite; z-index: 9999;
-    pointer-events: none; /* מבטיח שגם אם הוא מופיע, הוא לא חוסם לחיצות */
+    pointer-events: none;
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-#loader.hidden { opacity: 0; visibility: hidden; } /* העלמה מוחלטת */
+#loader.hidden { opacity: 0; visibility: hidden; }
 @keyframes spin { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
 
 /* --- Structure --- */
@@ -75,18 +75,20 @@ header {
 }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
 
+/* כפתור המבורגר מוגדל מעט (46px) */
 .nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4000; }
 .menu-toggle { 
-    width: 40px; height: 40px; background: var(--bg); border: 1px solid #eee;
-    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 3px;
+    width: 46px; height: 46px; background: var(--bg); border: 1px solid #eee;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
     cursor: pointer; border-radius: 50%; opacity: 0.3; transition: 0.4s;
 }
-.menu-toggle span { display: block; width: 14px; height: 1px; background: var(--main); transition: 0.3s; }
+.menu-toggle span { display: block; width: 16px; height: 1px; background: var(--main); transition: 0.3s; }
 .menu-toggle:hover { opacity: 1; border-color: var(--main); transform: scale(1.05); }
 
-body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+/* אנימציית X מותאמת לגודל החדש */
+body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
-body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
 
 /* --- Home Grid (6 Columns) --- */
 .portfolio-grid {
@@ -111,7 +113,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-/* --- Project Page (פרטים מוחלפים וגלריה טורית) --- */
+/* --- Project Page --- */
 .gallery { display: grid; grid-template-columns: 1fr; gap: 80px; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; }
 
@@ -127,12 +129,12 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-4px) rotat
     font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; 
 }
 
-/* --- Unified Controls (40px) --- */
+/* --- Unified Controls (46px) --- */
 .nav-arrow, #back-to-top {
-    position: fixed; z-index: 2500; width: 40px; height: 40px;
+    position: fixed; z-index: 2500; width: 46px; height: 46px;
     background: var(--bg); border: 1px solid #eee; color: var(--main);
     display: flex; align-items: center; justify-content: center;
-    text-decoration: none; font-size: 18px; font-weight: 200;
+    text-decoration: none; font-size: 20px; font-weight: 200;
     border-radius: 50%; opacity: 0.3; cursor: pointer;
     transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
