@@ -6,37 +6,80 @@
     <title>Contact | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* מירכוז התוכן וצמצום שטח הפנים */
         .contact-content {
             max-width: 600px;
             margin: 0 auto;
-            padding: 180px 5% 100px; /* יותר רווח מלמעלה למירכוז אנכי */
+            padding: 180px 5% 100px; /* רווח עליון גדול למירכוז אנכי */
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: center; 
             text-align: center;
             direction: ltr;
         }
-        .sub-info { font-size: 12px; color: var(--muted); margin-bottom: 25px; letter-spacing: 2px; text-transform: uppercase; }
-        .contact-details { display: flex; flex-direction: column; gap: 15px; }
-        .contact-item a { font-size: 18px; text-decoration: none; color: var(--main); font-weight: 400; transition: 0.4s; }
-        .contact-item a:hover { opacity: 0.5; text-decoration: underline; text-underline-offset: 5px; }
-        @media (max-width: 768px) { .contact-content { padding-top: 120px; } }
+
+        .sub-info {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item a {
+            font-size: 18px; /* פונט קטן ומעודן */
+            text-decoration: none;
+            color: var(--main);
+            font-weight: 400;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .contact-item a:hover {
+            opacity: 0.5;
+            text-decoration: underline;
+            text-underline-offset: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-content { padding-top: 120px; }
+        }
     </style>
 </head>
 <body>
+
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
+
         <main class="contact-content">
+            <div class="sub-info">Architect & Exhibition Designer</div>
+            
             <div class="contact-details">
-                <div class="contact-item"><a href="mailto:arielarmoni@gmail.com">arielarmoni@gmail.com</a></div>
-                <div class="contact-item"><a href="tel:+972528924624">+972 52 8924624</a></div>
+                <div class="contact-item">
+                    <a href="mailto:arielarmoni@gmail.com">arielarmoni@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <a href="tel:+972528924624">+972 52 8924624</a>
+                </div>
             </div>
         </main>
     </div>
+
     <script src="sidebar.js"></script>
+
 </body>
 </html>
