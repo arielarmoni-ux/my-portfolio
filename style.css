@@ -1,67 +1,30 @@
-/* --- תיקון רעידות סופי ל-Grid --- */
+<script src="sidebar.js"></script>
+<script>
+    async function initProject() {
+        const params = new URLSearchParams(window.location.search), currentFolder = params.get('folder');
+        if(!currentFolder) return;
+        
+        try {
+            // ... (הקוד של הניווט והמטא נשאר אותו דבר)
 
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    padding: 80px 8% 100px;
-    max-width: 1600px;
-    margin: 0 auto;
-    /* הגריד עצמו נשאר קפוא ולא משנה את ה-GAP כדי למנוע רעידות */
-    transition: none; 
-}
+            const gal = document.getElementById('gallery');
+            
+            // אנחנו מייצרים לולאה שטוענת את התמונות ושומרת על הסדר
+            for(let i=1; i<=30; i++) {
+                const img = new Image();
+                img.src = `${baseURL}/images/${currentFolder}/${i}.jpg`;
+                
+                img.onload = () => {
+                    img.classList.add('loaded');
+                    // מוודא שהתמונה נכנסת בדיוק למקומה המספרי
+                    img.style.order = i; 
+                    gal.appendChild(img);
+                };
 
-.project-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-    /* התיבה הזו היא ה"עוגן" - היא לעולם לא זזה או גדלה */
-    background: transparent;
-}
-
-.img-container {
-    width: 100%;
-    aspect-ratio: 4/3;
-    overflow: visible; /* מאפשר לתמונה לגלוש החוצה בלי להזיז את השכנים */
-    background: #f7f7f7;
-    position: relative;
-}
-
-.img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    /* האנימציה עוברת רק לתמונה עצמה */
-    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.7s ease;
-    will-change: transform;
-    transform: translateZ(0);
-}
-
-/* רק כשעוברים על ה-Card הקבוע, התמונה שבפנים גדלה */
-.project-card:hover {
-    z-index: 100;
-}
-
-.project-card:hover img {
-    transform: scale(1.25); /* הגדלה ל-25% */
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-/* אפקט ריכוך על השכנים - רק שקיפות, ללא שינוי גודל (כדי למנוע תזוזות) */
-.portfolio-grid:hover .project-card:not(:hover) {
-    opacity: 0.4;
-    filter: grayscale(0.3);
-    transition: 0.5s ease;
-}
-
-.project-info {
-    padding: 15px 0;
-    text-align: left;
-    direction: ltr;
-    /* מונע מהטקסט לרעוד כשהתמונה שמעליו גדלה */
-    position: relative;
-    z-index: 1;
-}
+                // אם התמונה לא קיימת, הלולאה פשוט תמשיך
+                img.onerror = () => { img.style.display = 'none'; };
+            }
+        } catch(e) {}
+    }
+    initProject();
+</script>
