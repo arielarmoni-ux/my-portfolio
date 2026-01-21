@@ -1,4 +1,4 @@
-/* --- Ariel Armoni Portfolio | Final Master CSS --- */
+/* --- Ariel Armoni Portfolio | Final Header Branding CSS --- */
 
 :root {
     --bg: #fff;           
@@ -33,11 +33,6 @@ body.project-page .nav-wrapper { position: fixed; top: 47px; transform: none; }
 .menu-toggle span { display: block; width: 16px; height: 1px; background: #000; margin: 2px 0; transition: 0.3s; }
 .menu-toggle:hover, .nav-arrow:hover, #back-to-top:hover { opacity: 1; border-color: #000; transform: scale(1.05); }
 
-/* Hamburger to X */
-body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
-body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
-body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
-
 /* Sidebar Logic */
 #side-nav { position: fixed; top: 0; left: calc(-1 * var(--nav-width)); width: var(--nav-width); height: 100vh; background: #fff; z-index: 7000; padding: 60px 40px; border-right: 1px solid #f0f0f0; transition: left var(--transition-smooth); text-align: left; direction: ltr; overflow-y: auto; }
 body.nav-open #side-nav { left: 0; }
@@ -47,9 +42,29 @@ body.project-page.nav-open .nav-wrapper { transform: translateX(var(--nav-width)
 
 #site-wrapper { position: relative; width: 100%; transition: transform var(--transition-smooth); min-height: 100vh; z-index: 1000; }
 
-/* Header & Logo */
-header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
-.logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
+/* Header & Logo Section */
+header { 
+    position: relative; 
+    min-height: 140px; 
+    padding: 60px 5% 20px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+
+/* הלוגו והכותרת של הפרויקט מקבלים אותו עיצוב בדיוק */
+.logo, .project-header-title { 
+    font-size: 29px; 
+    letter-spacing: 5px; 
+    text-transform: uppercase; 
+    text-decoration: none; 
+    color: #000; 
+    font-weight: 400;
+    margin: 0;
+    text-align: center;
+}
 
 /* Home Grid (5 Columns) */
 .portfolio-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding: 80px 4% 100px; max-width: 1800px; margin: 0 auto; }
@@ -61,24 +76,15 @@ header { position: relative; min-height: 140px; padding: 60px 5% 20px; display: 
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #000; }
 
-/* Project Page Typography */
-.project-main-title { font-size: 32px; font-weight: 600; margin: 0 0 25px 0; letter-spacing: -0.5px; color: #000; text-align: left; direction: ltr; }
+/* Project Meta Data */
 .project-meta { max-width: 1200px; margin: 40px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; text-align: left; direction: ltr; }
-.meta-item .label { color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 500; color: #000; }
+.meta-item .label { color: var(--muted); margin-right: 8px; font-size: 14px; }
+.meta-item .value { font-weight: 500; color: #000; font-size: 14px; }
 .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
 /* Gallery */
 .gallery { display: flex; flex-direction: column; max-width: 1200px; margin: 0 auto; padding: 60px 5% 100px; }
 .gallery img { width: 100%; height: auto; display: block; margin-bottom: 80px; }
-
-/* Project Index in Sidebar */
-.nav-links { display: flex; flex-direction: column; gap: 20px; margin-bottom: 40px; }
-.nav-links a { text-decoration: none; color: #000; font-size: 20px; font-weight: 500; }
-.project-index-title { font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; margin-bottom: 20px; }
-.project-list-nav { display: flex; flex-direction: column; gap: 12px; }
-.project-list-nav a { text-decoration: none; color: var(--muted); font-size: 14px; transition: 0.3s; }
-.project-list-nav a:hover { color: #000; }
 
 /* Arrows */
 .nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2000; font-size: 18px; }
