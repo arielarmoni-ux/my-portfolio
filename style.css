@@ -54,14 +54,30 @@ body.nav-open #side-nav { left: 0; }
 /* --- Header --- */
 header { position: relative; min-height: 120px; padding: 50px 5% 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-bottom: 1px solid #f0f0f0; }
 .logo { font-size: 29px; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; color: #000; }
-.nav-wrapper { position: absolute; left: 5%; top: 62px; z-index: 4000; }
-.menu-toggle { display: flex; flex-direction: column; justify-content: space-between; width: 26px; height: 14px; cursor: pointer; border: none; background: none; padding: 0; }
-.menu-toggle span { display: block; width: 100%; height: 1px; background: var(--main); transition: 0.3s; }
-body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
-body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* --- גריד דף הבית - ללא פייד לשכנים --- */
+/* --- כפתור המבורגר בעיצוב החצים --- */
+.nav-wrapper { position: absolute; left: 5%; top: 50%; transform: translateY(-50%); z-index: 4000; }
+
+.menu-toggle { 
+    width: 50px; height: 50px;
+    background: var(--bg); border: 1px solid #eee;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+    cursor: pointer; border-radius: 50%; opacity: 0.3;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.menu-toggle span { display: block; width: 18px; height: 1px; background: var(--main); transition: 0.3s; }
+
+.menu-toggle:hover { 
+    opacity: 1; border-color: var(--main); transform: scale(1.1);
+}
+
+/* אנימציית ה-X בזמן שהתפריט פתוח */
+body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
+body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+
+/* --- גריד דף הבית --- */
 .portfolio-grid {
     display: grid; 
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
@@ -71,46 +87,20 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     margin: 0 auto;
     transition: gap var(--transition-smooth);
 }
-
-/* הגדלת המרווחים בזמן הובר - "דחיפת" השכנים */
-.portfolio-grid:has(.project-card:hover) { 
-    gap: 40px; 
-}
+.portfolio-grid:has(.project-card:hover) { gap: 40px; }
 
 .project-card {
-    display: flex; 
-    flex-direction: column; 
-    text-decoration: none;
-    position: relative; 
-    z-index: 1;
+    display: flex; flex-direction: column; text-decoration: none;
+    position: relative; z-index: 1;
     transition: transform var(--transition-smooth);
-    outline: 30px solid transparent;
-    outline-offset: -30px;
+    outline: 30px solid transparent; outline-offset: -30px;
 }
+.project-card:hover { transform: scale(1.25); z-index: 100; }
+.portfolio-grid:hover .project-card:not(:hover) { transform: scale(0.9); opacity: 1; }
 
-.project-card:hover { 
-    transform: scale(1.25); 
-    z-index: 100; 
-}
+.img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
+.img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* השכנים - קטנים וזזים, אבל ללא שום שינוי בשקיפות (Opacity) */
-.portfolio-grid:hover .project-card:not(:hover) { 
-    transform: scale(0.9);
-    opacity: 1; /* מוודא שהם נשארים בבהירות מלאה */
-}
-
-.img-container { 
-    width: 100%; 
-    aspect-ratio: 4/3; 
-    overflow: hidden; 
-    background: #f7f7f7; 
-}
-
-.img-container img { 
-    width: 100%; height: 100%; object-fit: cover; display: block; 
-}
-
-/* טקסט פרויקט */
 .project-info { padding: 12px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
 .project-card:hover .project-info { opacity: 1; }
 .project-title { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--main); font-weight: 500; }
@@ -121,7 +111,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 .project-meta { max-width: 1200px; margin: 40px auto; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
 .project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; }
 
-/* --- פקדים צפים --- */
+/* --- פקדים צפים (חצים וחזרה למעלה) --- */
 .nav-arrow, #back-to-top {
     position: fixed; z-index: 2500; width: 50px; height: 50px;
     background: var(--bg); border: 1px solid #eee; color: var(--main);
