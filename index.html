@@ -37,34 +37,24 @@
             const grid = document.getElementById('portfolio-grid');
             const sidebarList = document.getElementById('sidebar-list');
             const loader = document.getElementById('loader');
-
             try {
-                // טעינת רשימת הפרויקטים מהשרת
                 const res = await fetch(`list.txt?v=${Date.now()}`);
-                const text = await res.text();
-                const folders = text.split(/\r?\n/).filter(f => f.trim());
+                const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim());
                 
                 let gridHtml = "";
                 let sidebarHtml = "";
 
                 for (const f of folders) {
-                    // יצירת הגריד
                     gridHtml += `
                     <a href="project.html?folder=${f}" class="project-card">
-                        <div class="img-container"><img src="images/${f}/cover.jpg" onerror="this.src='https://via.placeholder.com/400x300?text=${f}'"></div>
+                        <div class="img-container"><img src="images/${f}/cover.jpg"></div>
                         <div class="project-info"><div class="project-title">${f.replace(/-/g, ' ')}</div></div>
                     </a>`;
-
-                    // יצירת האינדקס לסיידבר
                     sidebarHtml += `<a href="project.html?folder=${f}">${f.replace(/-/g, ' ')}</a>`;
                 }
-                
                 grid.innerHTML = gridHtml;
                 sidebarList.innerHTML = sidebarHtml;
-                
-            } catch(e) {
-                console.error("Error loading grid:", e);
-            }
+            } catch(e) {}
             loader.classList.add('hidden');
         }
         window.addEventListener('load', loadGrid);
