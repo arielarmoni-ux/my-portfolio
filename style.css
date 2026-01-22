@@ -1,4 +1,3 @@
-
 :root { 
     --bg: #fff; 
     --main: #000; 
@@ -17,7 +16,7 @@ html, body {
     -webkit-font-smoothing: antialiased; 
 }
 
-/* מבנה כללי ותנועת סיידבר */
+/* --- מבנה כללי ותנועת סיידבר --- */
 #site-wrapper { 
     position: relative; 
     width: 100%; 
@@ -83,7 +82,12 @@ body.nav-open #side-nav { left: 0; }
     transition: 0.3s; 
 }
 
-/* Header & Logo */
+.project-list-nav a:hover { 
+    transform: translateX(5px); 
+    opacity: 0.7; 
+}
+
+/* --- Header & Logo --- */
 header { 
     position: relative; 
     min-height: 120px; 
@@ -134,7 +138,7 @@ body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rota
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* דף הבית - גריד 5 פרויקטים ותנועה רכה */
+/* --- דף הבית: גריד סטטי עם זום ממוקד --- */
 .portfolio-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
@@ -142,52 +146,138 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     padding: 80px 5% 100px; 
     max-width: 1800px; 
     margin: 0 auto; 
-    transition: gap 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
 }
-
-.portfolio-grid:has(.project-card:hover) { gap: 45px; }
 
 .project-card { 
     display: flex; 
     flex-direction: column; 
     text-decoration: none; 
-    transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1); 
     position: relative; 
     z-index: 1; 
 }
 
-.project-card:hover { transform: scale(1.15); z-index: 10; }
-
-.portfolio-grid:has(.project-card:hover) .project-card:not(:hover) { 
-    transform: scale(0.96); 
-    opacity: 1; 
+/* רק הפרויקט הנבחר גדל - השאר לא זזים */
+.project-card:hover { 
+    transform: scale(1.1); 
+    z-index: 10; 
 }
 
-.img-container { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #f7f7f7; }
-.img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-container { 
+    width: 100%; 
+    aspect-ratio: 4/3; 
+    overflow: hidden; 
+    background: #f7f7f7; 
+}
 
-.project-info { padding: 15px 0; text-align: left; direction: ltr; opacity: 0; transition: opacity 0.5s ease; }
+.img-container img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    display: block; 
+}
+
+.project-info { 
+    padding: 15px 0; 
+    text-align: left; 
+    direction: ltr; 
+    opacity: 0; 
+    transition: opacity 0.4s ease; 
+}
+
 .project-card:hover .project-info { opacity: 1; }
-.project-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--main); font-weight: 500; }
 
-/* דף פרויקט - בולד הפוך */
-.project-meta { max-width: 1200px; margin: 40px auto 30px; padding: 0 5%; display: flex; flex-direction: column; gap: 8px; direction: ltr; text-align: left; }
-.meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
-.meta-item .value { font-weight: 600; color: var(--main); }
-.project-description { max-width: 1200px; margin: 0 auto 60px; padding: 0 5%; font-size: 19px; line-height: 1.8; text-align: left; direction: ltr; white-space: pre-wrap; }
-.gallery { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-.gallery img { width: 100%; height: auto; margin-bottom: 60px; display: block; }
+.project-title { 
+    font-size: 11px; 
+    letter-spacing: 1.2px; 
+    text-transform: uppercase; 
+    color: var(--main); 
+    font-weight: 500; 
+}
 
-.nav-arrow { position: fixed; top: 50%; transform: translateY(-50%); z-index: 2500; text-decoration: none; color: var(--main); font-size: 30px; opacity: 0.2; padding: 20px; transition: 0.3s; }
+/* --- דף פרויקט: בולד הפוך --- */
+.project-meta { 
+    max-width: 1200px; 
+    margin: 40px auto 30px; 
+    padding: 0 5%; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    direction: ltr; 
+    text-align: left; 
+}
+
+.meta-item .label { 
+    font-weight: 400; 
+    color: var(--muted); 
+    margin-right: 8px; 
+}
+
+.meta-item .value { 
+    font-weight: 600; 
+    color: var(--main); 
+}
+
+.project-description { 
+    max-width: 1200px; 
+    margin: 0 auto 60px; 
+    padding: 0 5%; 
+    font-size: 19px; 
+    line-height: 1.8; 
+    text-align: left; 
+    direction: ltr; 
+    white-space: pre-wrap; 
+}
+
+.gallery { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 5%; 
+}
+
+.gallery img { 
+    width: 100%; 
+    height: auto; 
+    margin-bottom: 60px; 
+    display: block; 
+}
+
+/* חצי ניווט */
+.nav-arrow { 
+    position: fixed; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    z-index: 2500; 
+    text-decoration: none; 
+    color: var(--main); 
+    font-size: 30px; 
+    opacity: 0.2; 
+    padding: 20px; 
+    transition: 0.3s; 
+}
+
 .nav-arrow:hover { opacity: 1; }
 
-/* התאמות מובייל */
+/* --- התאמות מובייל: מירכוז --- */
 @media (max-width: 768px) {
     header { padding-top: 85px; min-height: 140px; }
     .logo { font-size: 22px; letter-spacing: 3px; }
     .nav-wrapper { position: fixed; left: 20px; top: 25px; z-index: 5000; }
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-    .portfolio-grid:has(.project-card:hover) { gap: 20px; }
+
+    /* מירכוז פרטי פרויקט במובייל */
+    .project-meta { align-items: center; text-align: center; }
+    .project-description { text-align: center; font-size: 17px; padding: 0 8%; }
+    
+    .portfolio-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px; 
+    }
+    
     .nav-arrow { display: none; }
-    body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+    
+    body.nav-open #site-wrapper { 
+        transform: translateX(var(--nav-width)); 
+        margin-left: 0; 
+        width: 100%; 
+    }
 }
