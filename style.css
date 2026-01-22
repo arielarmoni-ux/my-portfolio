@@ -3,6 +3,7 @@
     --main: #000; 
     --muted: #888; 
     --nav-width: 320px; 
+    --grid-gap: 35px; /* מרווח שווה ומאוזן */
 }
 
 * { box-sizing: border-box; }
@@ -50,7 +51,7 @@ body.nav-open #site-wrapper {
 
 body.nav-open #side-nav { left: 0; }
 
-/* טיפוגרפיה סיידבר */
+/* --- טיפוגרפיה סיידבר עם הובר --- */
 .nav-links a { 
     font-size: 14px; 
     text-decoration: none; 
@@ -60,6 +61,12 @@ body.nav-open #side-nav { left: 0; }
     font-weight: 600; 
     display: block; 
     margin-bottom: 12px; 
+    transition: 0.3s;
+}
+
+.nav-links a:hover { 
+    color: var(--muted); 
+    transform: translateX(4px); 
 }
 
 .project-index-title { 
@@ -83,11 +90,16 @@ body.nav-open #side-nav { left: 0; }
     transition: 0.3s; 
 }
 
+.project-list-nav a:hover { 
+    color: var(--muted);
+    transform: translateX(8px); 
+}
+
 /* --- Header & Logo --- */
 header { 
     position: relative; 
     min-height: 100px; 
-    padding: 30px 5% 10px; 
+    padding: 40px 5% 20px; 
     display: flex; 
     flex-direction: column; 
     justify-content: center; 
@@ -106,7 +118,7 @@ header {
 .nav-wrapper { 
     position: absolute; 
     left: 5%; 
-    top: 45px; 
+    top: 52px; 
     z-index: 4000; 
 }
 
@@ -135,12 +147,12 @@ body.nav-open .menu-toggle span:nth-child(1) { transform: translateY(6.5px) rota
 body.nav-open .menu-toggle span:nth-child(2) { opacity: 0; }
 body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* --- דף הבית: גריד מהודק עם טקסט לימין --- */
+/* --- דף הבית: גריד ריבועי ותוכן לשמאל --- */
 .portfolio-grid { 
     display: grid; 
     grid-template-columns: repeat(5, 1fr); 
-    gap: 15px; 
-    padding: 40px 5% 80px; 
+    gap: var(--grid-gap); 
+    padding: 60px 5% 100px; 
     max-width: 1800px; 
     margin: 0 auto; 
 }
@@ -155,7 +167,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 }
 
 .project-card:hover { 
-    transform: scale(1.08); 
+    transform: scale(1.06); 
     z-index: 10; 
 }
 
@@ -174,11 +186,11 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 }
 
 .project-info { 
-    padding: 8px 0; 
+    padding: 12px 0; 
     opacity: 0; 
     transition: opacity 0.4s ease; 
-    text-align: right; /* יישור לימין */
-    direction: rtl;    /* כיוון טקסט עברי */
+    text-align: left; /* יישור לשמאל */
+    direction: ltr;    /* כיוון טקסט אנגלי/בינלאומי */
 }
 
 .project-card:hover .project-info { opacity: 1; }
@@ -192,7 +204,7 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     line-height: 1.2; 
 }
 
-/* --- דף פרויקט: מהודק --- */
+/* --- דף פרויקט --- */
 .project-meta { max-width: 1200px; margin: 30px auto 20px; padding: 0 5%; display: flex; flex-direction: column; gap: 5px; direction: ltr; text-align: left; }
 .meta-item { line-height: 1.3; }
 .meta-item .label { font-weight: 400; color: var(--muted); margin-right: 8px; }
@@ -205,11 +217,14 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 
 /* --- התאמות מובייל --- */
 @media (max-width: 768px) {
-    header { padding-top: 70px; min-height: 120px; }
-    .nav-wrapper { position: fixed; left: 20px; top: 20px; z-index: 5000; }
+    header { padding-top: 75px; min-height: 120px; }
+    .nav-wrapper { position: fixed; left: 20px; top: 22px; z-index: 5000; }
     .project-description { line-height: 1.5; font-size: 16px; text-align: center; }
     .project-meta { align-items: center; text-align: center; margin-top: 20px; gap: 4px; }
-    .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .portfolio-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px; 
+    }
     .nav-arrow { display: none; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
 }
