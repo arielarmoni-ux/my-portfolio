@@ -18,15 +18,13 @@
             direction: ltr;
         }
 
+        /* תמונה ללא פילטר וללא אפקט הובר */
         .about-image img { 
             width: 100%; 
             height: auto; 
-            filter: grayscale(100%); 
-            transition: 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
             display: block;
+            /* הפילטר הוסר */
         }
-
-        .about-image img:hover { filter: grayscale(0%); }
 
         .about-text { 
             text-align: left; 
@@ -49,12 +47,11 @@
             margin-bottom: 20px; 
         }
 
-        /* רשימה בטור אחד */
         .clients-list { 
             list-style: none; 
             padding: 0; 
             display: flex;
-            flex-direction: column; /* טור אחד */
+            flex-direction: column; 
             gap: 12px; 
         }
 
@@ -63,7 +60,7 @@
             color: var(--main); 
             border-bottom: 1px solid #f0f0f0; 
             padding-bottom: 8px; 
-            max-width: 300px; /* מגביל את רוחב הטור למראה נקי */
+            max-width: 300px; 
         }
 
         @media (max-width: 900px) {
