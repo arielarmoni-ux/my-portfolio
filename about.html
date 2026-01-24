@@ -6,16 +6,16 @@
     <title>About | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* התאמות ספציפיות לדף אודות */
+        /* מבנה דף אודות - טקסט בשמאל, תמונה בימין */
         .about-content { 
             max-width: 1200px; 
             margin: 0 auto; 
-            padding: 100px 5% 100px; 
+            padding: 80px 5% 100px; 
             display: grid; 
-            grid-template-columns: 1.1fr 1fr; /* תמונה מימין, טקסט משמאל בעיקרון, אבל נהפוך כיוון */
+            grid-template-columns: 1.1fr 1fr; 
             gap: 80px; 
             align-items: start; 
-            direction: rtl; /* יישור לימין */
+            direction: ltr; /* טקסט בשמאל, תמונה בימין */
         }
 
         .about-image img { 
@@ -25,20 +25,18 @@
             transition: 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
         }
 
-        .about-image img:hover { 
-            filter: grayscale(0%); 
-        }
+        .about-image img:hover { filter: grayscale(0%); }
 
         .about-text { 
-            text-align: right; 
+            text-align: left; 
+            direction: ltr;
         }
 
         .about-text p { 
             font-size: 17px; 
-            line-height: 1.8; 
+            line-height: 1.55; 
             margin-bottom: 25px; 
             color: var(--main); 
-            font-weight: 400;
         }
 
         .clients-section { 
@@ -52,49 +50,47 @@
             text-transform: uppercase; 
             letter-spacing: 2px; 
             color: var(--muted); 
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
             font-weight: 600; 
         }
 
+        /* רשימה בטור אחד כפי שביקשת */
         .clients-list { 
             list-style: none; 
             padding: 0; 
             margin: 0; 
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* רשימת לקוחות בשני טורים */
-            gap: 15px; 
+            display: flex;
+            flex-direction: column; 
+            gap: 12px; 
         }
 
         .clients-list li { 
             font-size: 14px; 
             color: var(--main); 
-            line-height: 1.4; 
+            line-height: 1.3; 
         }
 
         @media (max-width: 850px) { 
-            .about-content { 
-                grid-template-columns: 1fr; 
-                padding-top: 140px; /* מקום להמבורגר הקבוע במובייל */
-            } 
-            .clients-list {
-                grid-template-columns: 1fr;
-            }
+            .about-content { grid-template-columns: 1fr; padding-top: 140px; } 
+            .about-text { text-align: center; }
         }
     </style>
 </head>
 <body>
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
             <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
 
         <main class="about-content">
             <div class="about-text">
-                <p>I am an architect and exhibition designer specializing in translating curatorial visions into design concepts that are inherently tied to an exhibition’s narrative. My process bridges the gap between abstract ideas and physical space, ensuring that content and form resonate as a single, cohesive entity.</p>
-                <p>To achieve this, I utilize advanced digital tools and high-fidelity 3D visualizations, providing a profound understanding of the exhibition's atmosphere and flow long before it is built. Beyond spatial design, I collaborate closely with artists to develop and realize their works, bringing a meticulous architectural perspective to the creative process.</p>
-                <p>My practice spans a diverse range of environments, from contemporary art and archaeology to interactive exhibitions for children.</p>
+                <p>I am an architect and exhibition designer specializing in translating curatorial visions into design concepts that are inherently tied to an exhibition’s narrative...</p>
                 
                 <div class="clients-section">
                     <h3>Selected Clients</h3>
