@@ -10,9 +10,9 @@
         .contact-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 80px 5% 100px;
+            padding: 100px 5% 100px;
             display: grid;
-            grid-template-columns: 1.1fr 1fr; /* חלוקה דומה לאודות */
+            grid-template-columns: 1.1fr 1fr; 
             gap: 80px;
             align-items: start;
             direction: ltr; /* יישור לשמאל */
@@ -21,14 +21,7 @@
         .contact-info { 
             text-align: left; 
             direction: ltr;
-        }
-
-        .contact-info h2 { 
-            font-size: 32px; 
-            font-weight: 400; 
-            letter-spacing: -1px; 
-            margin-bottom: 40px; 
-            color: var(--main);
+            padding-top: 20px; /* איזון גובה מול ההדר */
         }
 
         .contact-details { 
@@ -86,7 +79,6 @@
 
         <main class="contact-container">
             <div class="contact-info">
-                <h2>Let's collaborate.</h2>
                 <div class="contact-details">
                     <div class="contact-item">
                         <div class="contact-label">Email</div>
@@ -95,10 +87,6 @@
                     <div class="contact-item">
                         <div class="contact-label">Phone</div>
                         <a href="tel:+972507204430">+972 (0) 50 720 4430</a>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-label">Social</div>
-                        <a href="https://instagram.com/ariel_armoni" target="_blank">Instagram</a>
                     </div>
                 </div>
             </div>
