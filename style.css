@@ -231,13 +231,15 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 /* הובר להמבורגר ולאיקס */
 .menu-toggle:hover span {
     background: var(--muted); /* משנה את צבע הפסים לאפור בזמן הובר */
+     color: var(--muted); /* שינוי צבע קל לאפור */
+    transform: translateY(-50%) scale(1.1);
 }
 
 /* הובר לחצי הניווט בדף פרויקט */
 .nav-arrow:hover {
     opacity: 1; /* הופך לברור לגמרי (100%) בזמן הובר */
     color: var(--muted); /* שינוי צבע קל לאפור */
-    transform: translateY(-50%) scale(1.2); /* הגדלה קלה של החץ */
+    transform: translateY(-50%) scale(1.1); /* הגדלה קלה של החץ */
 }
 
 /* תנועה חלקה לשינויים */
