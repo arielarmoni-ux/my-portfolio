@@ -2,7 +2,7 @@
     --bg: #fff; 
     --main: #000; 
     --muted: #888; 
-    --grid-gap: 35px;
+    --nav-width: 320px; 
 }
 
 * { box-sizing: border-box; }
@@ -14,16 +14,27 @@ body {
     overflow-x: hidden; 
 }
 
-/* --- Header עם תפריט טקסט משמאל --- */
+/* התנועה של האתר כולו כשהסיידבר נפתח */
+#site-wrapper { 
+    position: relative; 
+    width: 100%; 
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1); 
+}
+
+body.nav-open #site-wrapper { 
+    transform: translateX(var(--nav-width)); 
+}
+
+/* --- Header --- */
 header { 
     position: relative; 
     min-height: 100px; 
     padding: 40px 5% 20px; 
     display: flex; 
-    flex-direction: row; 
     align-items: baseline; 
-    justify-content: center; /* לוגו במרכז */
+    justify-content: center; 
     border-bottom: 1px solid #f0f0f0; 
+    background: var(--bg);
 }
 
 .nav-wrapper { 
@@ -32,6 +43,7 @@ header {
     top: 52px; 
     display: flex; 
     gap: 25px; 
+    z-index: 10;
 }
 
 .nav-wrapper a {
@@ -40,6 +52,7 @@ header {
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
+    cursor: pointer;
     transition: opacity 0.3s;
 }
 
@@ -61,33 +74,56 @@ header {
     text-transform: uppercase;
     white-space: nowrap;
     line-height: 1;
-    margin-left: 15px; /* רווח בין הלוגו לתת-כותרת */
+    margin-left: 15px;
 }
 
-/* --- דף אודות וקשר --- */
-.page-content { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding: 80px 5% 100px; 
-    display: grid; 
-    grid-template-columns: 1.1fr 1fr; 
-    gap: 80px; 
-    direction: ltr; 
+/* --- Sidebar (האינדקס שנפתח) --- */
+#side-nav { 
+    position: fixed; 
+    top: 0; 
+    left: calc(-1 * var(--nav-width)); 
+    width: var(--nav-width); 
+    height: 100vh; 
+    background: var(--bg); 
+    z-index: 3000; 
+    padding: 80px 40px; 
+    transition: left 0.8s cubic-bezier(0.23, 1, 0.32, 1); 
+    border-right: 1px solid #f0f0f0; 
+    overflow-y: auto;
 }
 
+body.nav-open #side-nav { left: 0; }
+
+.project-index-title {
+    margin-top: 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--muted);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.project-list-nav a {
+    display: block;
+    font-size: 14px;
+    color: var(--main);
+    text-decoration: none;
+    margin-bottom: 12px;
+    transition: 0.3s;
+}
+
+.project-list-nav a:hover { padding-left: 5px; color: var(--muted); }
+
+/* --- תוכן דפים --- */
+.page-content { max-width: 1200px; margin: 0 auto; padding: 80px 5%; display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; direction: ltr; }
 .text-side { text-align: left; }
-.text-side p { font-size: 17px; line-height: 1.65; margin-bottom: 25px; }
-
 .image-side img { width: 100%; height: auto; display: block; }
-
 .clients-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
 .clients-list li { font-size: 14px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; max-width: 300px; }
 
-/* התאמה למובייל */
 @media (max-width: 768px) {
-    header { flex-direction: column; align-items: center; padding-top: 20px; }
-    .nav-wrapper { position: static; margin-bottom: 20px; gap: 15px; }
-    .sub-logo { margin-left: 0; margin-top: 10px; }
-    .page-content { grid-template-columns: 1fr; gap: 40px; }
+    header { flex-direction: column; align-items: center; }
+    .nav-wrapper { position: static; margin-bottom: 20px; }
+    .page-content { grid-template-columns: 1fr; }
     .image-side { order: -1; }
 }
