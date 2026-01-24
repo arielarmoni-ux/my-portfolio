@@ -6,77 +6,24 @@
     <title>Contact | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* מבנה דף צור קשר - תואם לשפה העיצובית של ה-About */
-        .contact-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 5% 100px;
-            display: grid;
-            grid-template-columns: 1.1fr 1fr; 
-            gap: 80px;
-            align-items: start;
-            direction: ltr; /* יישור לשמאל */
-        }
-
-        .contact-info { 
-            text-align: left; 
-            direction: ltr;
-            padding-top: 20px; /* איזון גובה מול ההדר */
-        }
-
-        .contact-details { 
-            font-size: 17px; 
-            line-height: 1.55; 
-        }
-
-        .contact-item { 
-            margin-bottom: 35px; 
-        }
-
-        .contact-label { 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            color: var(--muted); 
-            letter-spacing: 2px; 
-            margin-bottom: 10px; 
-            font-weight: 600;
-        }
-
-        .contact-details a { 
-            color: var(--main); 
-            text-decoration: none; 
-            border-bottom: 1px solid #eee; 
-            transition: 0.3s ease; 
-        }
-
-        .contact-details a:hover { 
-            border-bottom-color: var(--main); 
-            color: var(--muted);
-        }
-
-        @media (max-width: 850px) {
-            .contact-container { 
-                grid-template-columns: 1fr; 
-                padding-top: 140px; 
-            }
-            .contact-info { 
-                text-align: center; 
-            }
-        }
+        .contact-container { max-width: 1200px; margin: 0 auto; padding: 120px 5%; display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; direction: ltr; }
+        .contact-info { text-align: left; }
+        .contact-item { margin-bottom: 35px; }
+        .contact-label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
+        .contact-details a { font-size: 17px; color: var(--main); text-decoration: none; border-bottom: 1px solid #eee; transition: 0.3s; }
+        .contact-details a:hover { border-bottom-color: var(--main); color: var(--muted); }
+        @media (max-width: 850px) { .contact-container { grid-template-columns: 1fr; } .contact-info { text-align: center; } }
     </style>
 </head>
 <body>
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
+            <div class="header-left">
+                <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
+                <a href="index.html" class="logo">ARIEL ARMONI</a>
+                <span class="sub-logo">Exhibition Architecture</span>
             </div>
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
         </header>
-
         <main class="contact-container">
             <div class="contact-info">
                 <div class="contact-details">
@@ -90,11 +37,8 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="contact-visual"></div>
         </main>
     </div>
-
     <script src="sidebar.js"></script>
 </body>
 </html>
