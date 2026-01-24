@@ -227,7 +227,8 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     }
     .nav-arrow { display: none; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
-    /* הובר להמבורגר ולאיקס */
+}
+/* הובר להמבורגר ולאיקס */
 .menu-toggle:hover span {
     background: var(--muted); /* משנה את צבע הפסים לאפור בזמן הובר */
 }
@@ -242,5 +243,4 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
 /* תנועה חלקה לשינויים */
 .menu-toggle span, .nav-arrow {
     transition: all 0.3s ease;
-}
 }
