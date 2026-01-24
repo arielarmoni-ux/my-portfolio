@@ -1,38 +1,13 @@
 const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
 
-async function injectSidebar() {
-    if (document.getElementById('side-nav')) return;
-
-    // הזרקת הסיידבר כולל ההדר החדש בתוכו
-    const navHTML = `
-    <nav id="side-nav">
-        <div class="side-nav-header">
-            <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <span class="sub-logo">Exhibition Architecture</span>
-        </div>
-        <div class="nav-links">
-            <a href="index.html">Projects</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </div>
-        <div class="project-index-title">Project Index</div>
-        <div id="side-project-list" class="project-list-nav"></div>
-    </nav>`;
-
-    document.body.insertAdjacentHTML('afterbegin', navHTML);
-
-    const initMenu = () => {
-        const menuBtn = document.getElementById('menu-btn');
-        if (menuBtn) {
-            menuBtn.onclick = (e) => {
-                e.stopPropagation();
-                document.body.classList.toggle('nav-open');
-            };
-        }
-    };
-
-    initMenu();
-    window.addEventListener('load', initMenu);
+async function initSidebar() {
+    const menuBtn = document.getElementById('menu-btn');
+    if (menuBtn) {
+        menuBtn.onclick = (e) => {
+            e.stopPropagation();
+            document.body.classList.toggle('nav-open');
+        };
+    }
 
     document.addEventListener('click', (e) => {
         if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
@@ -53,7 +28,7 @@ async function injectSidebar() {
                 }
             }
         }
-    } catch (e) { console.error("Sidebar load failed", e); }
+    } catch (e) { console.log("Sidebar load error", e); }
 }
 
-injectSidebar();
+initSidebar();
