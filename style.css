@@ -227,4 +227,20 @@ body.nav-open .menu-toggle span:nth-child(3) { transform: translateY(-6.5px) rot
     }
     .nav-arrow { display: none; }
     body.nav-open #site-wrapper { transform: translateX(var(--nav-width)); margin-left: 0; width: 100%; }
+    /* הובר להמבורגר ולאיקס */
+.menu-toggle:hover span {
+    background: var(--muted); /* משנה את צבע הפסים לאפור בזמן הובר */
+}
+
+/* הובר לחצי הניווט בדף פרויקט */
+.nav-arrow:hover {
+    opacity: 1; /* הופך לברור לגמרי (100%) בזמן הובר */
+    color: var(--muted); /* שינוי צבע קל לאפור */
+    transform: translateY(-50%) scale(1.2); /* הגדלה קלה של החץ */
+}
+
+/* תנועה חלקה לשינויים */
+.menu-toggle span, .nav-arrow {
+    transition: all 0.3s ease;
+}
 }
