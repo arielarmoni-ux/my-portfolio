@@ -1,5 +1,3 @@
-const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
-
 async function injectSidebar() {
     if (document.getElementById('side-nav')) return;
 
@@ -15,7 +13,6 @@ async function injectSidebar() {
     </nav>`;
     document.body.insertAdjacentHTML('afterbegin', navHTML);
 
-    // סגירה בלחיצה בחוץ
     document.addEventListener('click', (e) => {
         if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
             document.body.classList.remove('nav-open');
@@ -27,19 +24,19 @@ async function injectSidebar() {
 
 async function loadSideProjects() {
     try {
-        const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
+        const res = await fetch(`${window.baseURL}/list.txt?v=${Date.now()}`);
         const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
         const sideList = document.getElementById('side-project-list');
         if (!sideList) return;
 
         for (const f of folders) {
-            const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+            const iR = await fetch(`${window.baseURL}/images/${f}/info.txt`);
             if (iR.ok) {
                 const title = (await iR.text()).split('\n')[0].trim();
                 sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
             }
         }
-    } catch (e) { console.error("Sidebar projects load failed", e); }
+    } catch (e) { console.log("Sidebar load error", e); }
 }
 
 injectSidebar();
