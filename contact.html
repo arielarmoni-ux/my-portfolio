@@ -6,31 +6,84 @@
     <title>Contact | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .contact-container {
+        /* מבנה דף קונטקט - זהה לאבאוט */
+        .contact-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 100px 5%;
+            padding: 80px 5% 100px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 100px;
-            direction: ltr;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 80px;
+            direction: ltr; /* יישור לשמאל */
         }
-        .contact-info h2 { font-size: 32px; font-weight: 400; letter-spacing: -1px; margin-bottom: 40px; }
-        .contact-details { font-size: 18px; line-height: 1.6; }
-        .contact-details a { color: var(--main); text-decoration: none; border-bottom: 1px solid #eee; transition: 0.3s; }
-        .contact-details a:hover { border-bottom-color: var(--main); }
-        .contact-item { margin-bottom: 30px; }
-        .contact-label { font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: 2px; margin-bottom: 10px; }
 
-        @media (max-width: 768px) {
-            .contact-container { grid-template-columns: 1fr; padding-top: 140px; text-align: center; }
-            .contact-info h2 { font-size: 24px; }
+        .contact-info {
+            text-align: left;
+        }
+
+        .contact-info h2 { 
+            font-size: 32px; 
+            font-weight: 400; 
+            letter-spacing: -1px; 
+            margin-bottom: 40px; 
+            color: var(--main);
+        }
+
+        .contact-item { margin-bottom: 40px; }
+        
+        .contact-label { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            color: var(--muted); 
+            letter-spacing: 2px; 
+            margin-bottom: 10px; 
+        }
+
+        .contact-details a { 
+            font-size: 18px; 
+            color: var(--main); 
+            text-decoration: none; 
+            border-bottom: 1px solid #eee; 
+            transition: 0.3s; 
+            display: inline-block;
+        }
+
+        .contact-details a:hover { 
+            border-bottom-color: var(--main); 
+        }
+
+        /* תמונה בצד ימין - זהה לאבאוט */
+        .contact-image img { 
+            width: 100%; 
+            height: auto; 
+            filter: grayscale(100%); 
+            transition: 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
+            display: block;
+        }
+
+        .contact-image img:hover { filter: grayscale(0%); }
+
+        @media (max-width: 900px) {
+            .contact-content { grid-template-columns: 1fr; gap: 40px; padding-top: 40px; }
+            .contact-image { order: -1; }
+            .contact-info h2 { font-size: 24px; text-align: center; }
+            .contact-info { text-align: center; }
         }
     </style>
 </head>
 <body>
     <div id="site-wrapper">
-        <main class="contact-container">
+        <header>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <span class="sub-logo">Exhibition Architecture</span>
+        </header>
+
+        <main class="contact-content">
             <div class="contact-info">
                 <h2>Contact.</h2>
                 <div class="contact-details">
@@ -42,14 +95,15 @@
                         <div class="contact-label">Phone</div>
                         <a href="tel:+972528924624">+972 (0) 528924624</a>
                     </div>
-                    <div class="contact-item">
-                        
                 </div>
             </div>
+
             <div class="contact-image">
-                </div>
+                <img src="images/profile.jpg" alt="Ariel Armoni">
+            </div>
         </main>
     </div>
-    <script src="main.js"></script>
+
+    <script src="sidebar.js"></script>
 </body>
 </html>
