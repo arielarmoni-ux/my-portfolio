@@ -1,57 +1,47 @@
 const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
 
-function initSidebar() {
-    const menuBtn = document.getElementById('menu-btn');
-    const body = document.body;
+async function injectSidebar() {
+    if (document.getElementById('side-nav')) return;
 
+    const navHTML = `
+    <nav id="side-nav">
+        <div class="nav-links">
+            <a href="index.html">Projects</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="project-index-title">Project Index</div>
+        <div id="side-project-list" class="project-list-nav"></div>
+    </nav>`;
+
+    document.body.insertAdjacentHTML('afterbegin', navHTML);
+
+    const menuBtn = document.getElementById('menu-btn');
     if (menuBtn) {
-        // ביטול אירועים קודמים כדי למנוע כפילויות
-        menuBtn.onclick = null; 
-        
-        menuBtn.onclick = function(e) {
+        menuBtn.onclick = (e) => {
             e.stopPropagation();
-            body.classList.toggle('nav-open');
-            console.log("Menu toggled. Current class:", body.className);
+            document.body.classList.toggle('nav-open');
         };
-    } else {
-        console.error("Menu button (menu-btn) not found in this page!");
     }
 
-    // סגירה בלחיצה מחוץ לתפריט
-    document.onclick = function(e) {
-        if (body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
-            body.classList.remove('nav-open');
+    document.onclick = (e) => {
+        if (document.body.classList.contains('nav-open') && !e.target.closest('#side-nav')) {
+            document.body.classList.remove('nav-open');
         }
     };
-
-    // טעינת רשימת הפרויקטים
-    loadSideList();
-}
-
-async function loadSideList() {
-    const sideList = document.getElementById('side-project-list');
-    if (!sideList) return;
 
     try {
         const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
         const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
-        
-        sideList.innerHTML = ""; // ניקוי לפני טעינה
+        const sideList = document.getElementById('side-project-list');
         for (const f of folders) {
-            const infoRes = await fetch(`${baseURL}/images/${f}/info.txt`);
-            if (infoRes.ok) {
-                const title = (await infoRes.text()).split('\n')[0].trim();
+            const iR = await fetch(`${baseURL}/images/${f}/info.txt`);
+            if (iR.ok) {
+                const title = (await iR.text()).split('\n')[0].trim();
                 sideList.innerHTML += `<a href="project.html?folder=${f}">${title}</a>`;
             }
         }
-    } catch (e) {
-        console.error("Error loading project list:", e);
-    }
+    } catch (e) { console.error("Sidebar load failed", e); }
 }
 
-// הרצה ברגע שהדף מוכן
-if (document.readyState === "complete" || document.readyState === "interactive") {
-    initSidebar();
-} else {
-    document.addEventListener("DOMContentLoaded", initSidebar);
-}
+injectSidebar();
