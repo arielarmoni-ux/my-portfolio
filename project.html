@@ -3,87 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project | Ariel Armoni</title>
+    <title>Project Name | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <a href="#" id="prev-project" class="nav-arrow" style="left: 2%;">&#8592;</a>
-    <a href="#" id="next-project" class="nav-arrow" style="right: 2%;">&#8594;</a>
+
+    <nav id="side-nav">
+        <div class="project-index-title">Project Index</div>
+        <div class="project-list-nav">
+            <a href="project1.html">Exhibition 01</a>
+            <a href="project2.html">Exhibition 02</a>
+            <a href="project3.html">Exhibition 03</a>
+            <a href="project4.html">Exhibition 04</a>
+        </div>
+    </nav>
 
     <div id="site-wrapper">
         <header>
             <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
+                <a id="projects-btn">Projects</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
             </div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
+            <div class="sub-logo">Exhibition Architecture</div>
         </header>
 
-        <main>
-            <div style="text-align: center; padding: 60px 5% 20px;">
-                <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin-bottom: 25px;"></h1>
-                <div id="project-meta" class="project-meta"></div>
-                <div id="project-desc" class="project-description"></div>
-            </div>
+        <main class="project-container">
+            <section class="project-meta-section">
+                <h1 class="project-title">Project Name</h1>
+                <div class="project-details-grid">
+                    <div class="meta-item"><span class="label">Location:</span> Tel Aviv Museum</div>
+                    <div class="meta-item"><span class="label">Year:</span> 2025</div>
+                    <div class="meta-item"><span class="label">Status:</span> Completed</div>
+                </div>
+                <div class="project-description">
+                    This is a brief description of the exhibition design process. We focused on the interaction between light, space, and the observer.
+                </div>
+            </section>
 
-            <div id="gallery" class="gallery"></div>
+            <section class="project-gallery">
+                
+                <div class="image-wrapper">
+                    <img src="images/project-image-1.jpg" alt="Exhibition View 1">
+                    <div class="photo-credit">Photo: Photographer Name</div>
+                </div>
+
+                <div class="image-wrapper">
+                    <img src="images/project-image-2.jpg" alt="Exhibition View 2">
+                    <div class="photo-credit">Photo: Photographer Name</div>
+                </div>
+
+                <div class="image-wrapper">
+                    <img src="images/project-image-3.jpg" alt="Exhibition View 3">
+                    <div class="photo-credit">Photo: Photographer Name</div>
+                </div>
+
+            </section>
         </main>
     </div>
 
     <script src="sidebar.js"></script>
-    <script>
-        async function initProject() {
-            const folder = new URLSearchParams(window.location.search).get('folder');
-            if(!folder) return;
-
-            try {
-                // ניווט בין פרויקטים
-                const resList = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
-                const folders = (await resList.text()).split(/\r?\n/).map(f => f.trim()).filter(f => f !== "");
-                const idx = folders.indexOf(folder);
-                
-                if (idx !== -1) {
-                    document.getElementById('prev-project').href = `project.html?folder=${folders[idx <= 0 ? folders.length-1 : idx-1]}`;
-                    document.getElementById('next-project').href = `project.html?folder=${folders[idx >= folders.length-1 ? 0 : idx+1]}`;
-                }
-
-                // טעינת תוכן הפרויקט (info.txt)
-                const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${Date.now()}`);
-                const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
-                
-                document.getElementById('project-title').innerText = lines[0];
-                
-                const metaDiv = document.getElementById('project-meta');
-                const descDiv = document.getElementById('project-desc');
-
-                lines.slice(1).forEach(line => {
-                    if(line.includes(":")) {
-                        const [k, ...v] = line.split(":");
-                        metaDiv.innerHTML += `
-                            <div class="meta-item">
-                                <span class="label">${k.trim()}:</span>
-                                <span class="value">${v.join(":").trim()}</span>
-                            </div>`;
-                    } else { 
-                        descDiv.innerText += (descDiv.innerText ? "\n\n" : "") + line; 
-                    }
-                });
-
-                // טעינת תמונות הגלריה
-                const gallery = document.getElementById('gallery');
-                for(let i=1; i<=30; i++) {
-                    const img = new Image();
-                    img.src = `${baseURL}/images/${folder}/${i.toString().padStart(2, '0')}.jpg`;
-                    img.onload = () => { 
-                        img.style.display="block"; 
-                        gallery.appendChild(img); 
-                    };
-                }
-            } catch(e) { console.error("Error loading project:", e); }
-        }
-        initProject();
-    </script>
 </body>
 </html>
