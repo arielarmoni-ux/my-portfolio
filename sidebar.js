@@ -1,7 +1,6 @@
 const baseURL = "https://arielarmoni-ux.github.io/my-portfolio";
 
 async function injectSidebar() {
-    // מונע הזרקה כפולה אם הסיידבר כבר קיים
     if (document.getElementById('side-nav')) return;
 
     const navHTML = `
@@ -14,23 +13,7 @@ async function injectSidebar() {
         <div class="project-index-title">Project Index</div>
         <div id="side-project-list" class="project-list-nav"></div>
     </nav>`;
-
     document.body.insertAdjacentHTML('afterbegin', navHTML);
-
-    // לוגיקה להפעלת הכפתור
-    const initMenu = () => {
-        const menuBtn = document.getElementById('menu-btn');
-        if (menuBtn) {
-            menuBtn.onclick = (e) => {
-                e.stopPropagation();
-                document.body.classList.toggle('nav-open');
-            };
-        }
-    };
-
-    // מפעיל את הכפתור מיד, ואם לא מצא - מנסה שוב כשהדף נטען
-    initMenu();
-    window.addEventListener('load', initMenu);
 
     // סגירה בלחיצה בחוץ
     document.addEventListener('click', (e) => {
@@ -39,7 +22,10 @@ async function injectSidebar() {
         }
     });
 
-    // טעינת רשימת הפרויקטים מהשרת
+    loadSideProjects();
+}
+
+async function loadSideProjects() {
     try {
         const res = await fetch(`${baseURL}/list.txt?v=${Date.now()}`);
         const folders = (await res.text()).split(/\r?\n/).filter(f => f.trim() !== "");
@@ -56,5 +42,4 @@ async function injectSidebar() {
     } catch (e) { console.error("Sidebar projects load failed", e); }
 }
 
-// הרצה
 injectSidebar();
