@@ -1,125 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ariel Armoni | Exhibition Design & Architecture</title>
+    <title>About | Ariel Armoni</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            background-color: #fff;
+        /* מבנה דף אודות - טקסט בשמאל, תמונה בימין */
+        .about-content { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 80px 5% 100px; 
+            display: grid; 
+            grid-template-columns: 1.1fr 1fr; 
+            gap: 80px; 
+            align-items: start; 
+            direction: ltr; 
         }
 
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            margin-bottom: 50px;
-            text-transform: uppercase;
+        .about-image img { 
+            width: 100%; 
+            height: auto; 
+            filter: grayscale(100%); 
+            transition: 0.9s cubic-bezier(0.23, 1, 0.32, 1); 
         }
 
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 60px;
+        .about-image img:hover { filter: grayscale(0%); }
+
+        .about-text { 
+            text-align: left; 
+            direction: ltr;
         }
 
-        .bio p {
-            font-size: 1.05rem;
-            margin-bottom: 20px;
+        .about-text p { 
+            font-size: 17px; 
+            line-height: 1.55; 
+            margin-bottom: 25px; 
+            color: var(--main); 
         }
 
-        .clients h2 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #888;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
+        .clients-section { 
+            margin-top: 50px; 
+            padding-top: 30px; 
+            border-top: 1px solid #eee; 
         }
 
-        .clients ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .clients-section h3 { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: var(--muted); 
+            margin-bottom: 20px; 
+            font-weight: 600; 
         }
 
-        .clients li {
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-            color: #444;
+        /* רשימה אחת מתחת לשנייה כפי שביקשת */
+        .clients-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            display: flex;
+            flex-direction: column; 
+            gap: 12px; 
         }
 
-        .contact-section {
-            margin-top: 70px;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
+        .clients-list li { 
+            font-size: 14px; 
+            color: var(--main); 
+            line-height: 1.3; 
         }
 
-        .contact-section h2 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #888;
-            margin-bottom: 15px;
-        }
-
-        .contact-details {
-            font-size: 1rem;
-            line-height: 1.8;
-        }
-
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            body { padding: 30px 20px; }
+        @media (max-width: 850px) { 
+            .about-content { grid-template-columns: 1fr; padding-top: 140px; } 
+            .about-text { text-align: center; }
         }
     </style>
 </head>
 <body>
+    <div id="site-wrapper">
+        <header>
+            <div class="nav-wrapper">
+                <button class="menu-toggle" id="menu-btn">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+            <a href="index.html" class="logo">ARIEL ARMONI</a>
+            <div class="sub-logo" style="font-size: 13px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 8px;">Exhibition Architecture</div>
+        </header>
 
-    <header>
-        <h1>ARIEL ARMONI</h1>
-    </header>
+        <main class="about-content">
+            <div class="about-text">
+                <p>I am an architect and exhibition designer specializing in translating curatorial visions into design concepts that are inherently tied to an exhibition’s narrative. My process bridges the gap between abstract ideas and physical space, ensuring that content and form resonate as a single, cohesive entity.</p>
+                <p>To achieve this, I utilize advanced digital tools and high-fidelity 3D visualizations, providing a profound understanding of the exhibition's atmosphere and flow long before it is built. Beyond spatial design, I collaborate closely with artists to develop and realize their works, bringing a meticulous architectural perspective to the creative process.</p>
+                <p>My practice spans a diverse range of environments, from contemporary art and archaeology to interactive exhibitions for children.</p>
+                
+                <div class="clients-section">
+                    <h3>Selected Clients</h3>
+                    <ul class="clients-list">
+                        <li>The Israel Museum, Jerusalem</li>
+                        <li>Tel Aviv Museum of Art</li>
+                        <li>Haifa Museum of Art</li>
+                        <li>Herzliya Museum of Contemporary Art</li>
+                        <li>Hecht Museum Haifa</li>
+                        <li>Design Museum Holon</li>
+                        <li>Nahum Gutman Museum Tel Aviv</li>
+                        <li>Agam Museum Rishon Lezion</li>
+                    </ul>
+                </div>
+            </div>
 
-    <main class="content-grid">
-        <section class="bio">
-            <p>I am Ariel Armoni, an architect and the founder of an exhibition design studio. A graduate of the Bezalel Academy of Arts and Design in Jerusalem, I lead a practice that specialises in museum exhibitions, covering the entire process from initial concept to final execution.</p>
-            
-            <p>The studio has extensive experience across a wide range of projects—from contemporary art and archaeology to interactive exhibitions for children and families. Beyond spatial design, we collaborate closely with artists, providing creative direction and technical guidance to help develop and realise their works.</p>
-            
-            <p>We utilise advanced digital tools and 3D visualisations to define the atmosphere and flow of every exhibition long before it is built, ensuring a seamless integration of content and space.</p>
-        </section>
+            <div class="about-image">
+                <img src="images/profile.jpg" alt="Ariel Armoni" onerror="this.src='https://via.placeholder.com/800x1000?text=Ariel+Armoni'">
+            </div>
+        </main>
+    </div>
 
-        <section class="clients">
-            <h2>Selected Clients</h2>
-            <ul>
-                <li>The Israel Museum, Jerusalem</li>
-                <li>Tel Aviv Museum of Art</li>
-                <li>Haifa Museum of Art</li>
-                <li>Herzliya Museum of Contemporary Art</li>
-                <li>Hecht Museum Haifa</li>
-                <li>Design Museum Holon</li>
-                <li>Nahum Gutman Museum Tel Aviv</li>
-                <li>Agam Museum Rishon LeZion</li>
-            </ul>
-        </section>
-    </main>
-
-    <section class="contact-section">
-        <h2>Contact</h2>
-        <div class="contact-details">
-            arielarmoni@gmail.com<br>
-            +972 52 8924624
-        </div>
-    </section>
-
+    <script src="sidebar.js"></script>
 </body>
 </html>
