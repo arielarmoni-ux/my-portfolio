@@ -5,83 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact | Ariel Armoni</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* מבנה דף קונטקט נקי וממורכז */
-        .contact-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 120px 5% 100px;
-            text-align: center;
-            direction: ltr; /* יישור פרטי הקשר לשמאל בתוך המרכז */
-        }
-
-        .contact-details {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 50px;
-        }
-
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .contact-label { 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            color: var(--muted); 
-            letter-spacing: 2px; 
-            margin-bottom: 12px; 
-        }
-
-        .contact-details a { 
-            font-size: 20px; 
-            color: var(--main); 
-            text-decoration: none; 
-            border-bottom: 1px solid #eee; 
-            transition: 0.3s; 
-            display: inline-block;
-            padding-bottom: 4px;
-        }
-
-        .contact-details a:hover { 
-            border-bottom-color: var(--main); 
-        }
-
-        @media (max-width: 768px) {
-            .contact-content { padding-top: 80px; }
-            .contact-details a { font-size: 18px; }
-        }
-    </style>
 </head>
 <body>
     <div id="site-wrapper">
         <header>
-            <div class="nav-wrapper">
-                <button class="menu-toggle" id="menu-btn">
-                    <span></span><span></span><span></span>
-                </button>
-            </div>
+            <div class="nav-wrapper"><button class="menu-toggle" id="menu-btn"><span></span><span></span><span></span></button></div>
             <a href="index.html" class="logo">ARIEL ARMONI</a>
-            <span class="sub-logo">Exhibition Architecture</span>
+            <div class="sub-logo">Exhibition Architecture</div>
         </header>
 
-        <main class="contact-content">
-            <div class="contact-details">
-                <div class="contact-item">
-                    <div class="contact-label">Email</div>
-                    <a href="mailto:ariel.armoni@gmail.com">ariel.armoni@gmail.com</a>
+        <main style="max-width: 800px; margin: 0 auto; padding: 120px 5%; text-align: center; direction: ltr;">
+            <div style="display: flex; flex-direction: column; gap: 60px; align-items: center;">
+                <div>
+                    <div style="font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 2px; margin-bottom: 12px;">Email</div>
+                    <a href="mailto:ariel.armoni@gmail.com" style="font-size: 20px; color: #000; text-decoration: none; border-bottom: 1px solid #eee;">ariel.armoni@gmail.com</a>
                 </div>
-                <div class="contact-item">
-                    <div class="contact-label">Phone</div>
-                    <a href="tel:+972528924624">+972 (0) 528924624</a>
+                <div>
+                    <div style="font-size: 11px; text-transform: uppercase; color: #888; letter-spacing: 2px; margin-bottom: 12px;">Phone</div>
+                    <a href="tel:+972528924624" style="font-size: 20px; color: #000; text-decoration: none; border-bottom: 1px solid #eee;">+972 (0) 528924624</a>
                 </div>
             </div>
         </main>
     </div>
-
     <script src="sidebar.js"></script>
 </body>
 </html>
