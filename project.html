@@ -22,8 +22,8 @@
         </header>
 
         <main>
-            <div style="text-align: center; padding: 60px 5% 20px;">
-                <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin-bottom: 20px;"></h1>
+            <div style="text-align: center; padding: 60px 5% 40px;">
+                <h1 id="project-title" style="font-size: 20px; letter-spacing: 4px; text-transform: uppercase; font-weight: 400; margin-bottom: 25px;"></h1>
                 <div id="project-meta" class="project-meta"></div>
                 <div id="project-desc" class="project-description"></div>
             </div>
@@ -50,8 +50,10 @@
             const res = await fetch(`${baseURL}/images/${folder}/info.txt?v=${Date.now()}`);
             const lines = (await res.text()).split(/\r?\n/).map(l => l.trim()).filter(l => l !== "");
             
+            // הכותרת (שורה ראשונה ב-info.txt)
             document.getElementById('project-title').innerText = lines[0];
             
+            // פירוט מטה-דאטה ותיאור
             lines.slice(1).forEach(line => {
                 if(line.includes(":")) {
                     const [k, ...v] = line.split(":");
@@ -65,7 +67,7 @@
                 }
             });
 
-            // טעינת תמונות (01.jpg עד 30.jpg)
+            // טעינת תמונות הגלריה
             for(let i=1; i<=30; i++) {
                 const img = new Image();
                 img.src = `${baseURL}/images/${folder}/${i.toString().padStart(2, '0')}.jpg`;
